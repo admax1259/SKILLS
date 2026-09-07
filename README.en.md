@@ -4,7 +4,7 @@
 
 A personal Agent Skills collector: collect consistently, preserve provenance, review each workflow, then package for different engines.
 
-**19 skills, 6 categories, 2 sources. Currently 2 ready and 17 awaiting adaptation.**
+**19 skills, 6 categories, 2 sources. Currently 3 ready and 16 awaiting adaptation.**
 
 ## Layout
 
@@ -35,7 +35,8 @@ Browse by category through the [index](docs/CATALOG.md), without moving skills t
 
 - [show-me](skills/show-me/SKILL.md): ready for packaging; from HumanLayer, with portable preview behavior.
 - [check-compiler-errors](skills/check-compiler-errors/SKILL.md): adapted to check/report by default and repair when requested; install the compiler-checks bundle.
-- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. Except for the adapted check-compiler-errors skill, the other 17 retain upstream behavior and remain review-needed pending [individual discussion](docs/migration-review.zh-CN.md).
+- [deslop](skills/deslop/SKILL.md): focused diff cleanup preserving behavior, necessary comments, and error handling; install the code-cleanup bundle.
+- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. Except for the adapted check-compiler-errors and deslop skills, the other 16 retain upstream behavior and remain review-needed pending [individual discussion](docs/migration-review.zh-CN.md).
 
 Ready means eligible for packaging, not behaviorally verified on every engine. Bundles containing unreviewed members are withheld entirely rather than silently published with missing skills. Generic third-party installers may ignore this repository's status metadata; the installer below enforces it.
 
@@ -49,6 +50,8 @@ cd SKILLS
 python3 scripts/install.py --engine codex --bundle show-me
 # Compiler checking skill:
 python3 scripts/install.py --engine codex --bundle compiler-checks
+# Focused code cleanup:
+python3 scripts/install.py --engine codex --bundle code-cleanup
 # Claude Code:
 python3 scripts/install.py --engine claude --bundle show-me
 ```
@@ -70,7 +73,7 @@ Outputs in dist/packages/:
 | File | Purpose |
 |---|---|
 | skills-<version>.zip | Complete native marketplace; extract and run the same installer without Git or build dependencies |
-| <bundle>-<version>.zip | Standalone plugin (show-me or compiler-checks) with both engine manifests |
+| <bundle>-<version>.zip | Standalone plugin (show-me, compiler-checks, or code-cleanup) with both engine manifests |
 | SHA256SUMS | ZIP checksums |
 
 Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); formal versions follow the [release process](docs/releases.md). Verify with shasum -a 256 -c SHA256SUMS on macOS or sha256sum -c SHA256SUMS on Linux.

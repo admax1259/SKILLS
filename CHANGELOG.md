@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 — Unreleased
+
+- Adapt deslop for evidence-based diff cleanup, discovered comparison refs, preserved behavior and safeguards, and valid no-change outcomes.
+- Add the independently installable code-cleanup bundle; 3 skills ready, 16 pending.
+- Record deslop's original and adapted hashes without replacing import provenance.
+
 ## 0.3.0 — Unreleased
 
 - Keep source-installed marketplace paths stable across version upgrades.

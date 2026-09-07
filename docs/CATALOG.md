@@ -34,7 +34,7 @@ Ready means eligible for packaging, not verified on every engine. / 可打包不
 
 | Skill | 来源 / Source | 状态 / Status |
 |---|---|---|
-| [deslop](../skills/deslop/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 待适配 / Review needed |
+| [deslop](../skills/deslop/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 可打包 / Ready |
 
 ## 交付与 CI / Delivery & CI
 
