@@ -56,7 +56,9 @@ def validate(root=ROOT):
         if not re.search(r"^description: \S.+$", front, re.M):
             raise ValueError("Missing skill description")
         if entry["status"] == "ready" and re.search(r"^disable-model-invocation: true", front, re.M):
-            raise ValueError("Explicit-only policy needs engine adaptation before marking ready")
+            policy = skill / "agents/openai.yaml"
+            if not policy.is_file() or policy.read_text().strip() != "policy:\n  allow_implicit_invocation: false":
+                raise ValueError("Explicit-only policy needs matching Codex invocation policy")
         if not (skill / "LICENSE").is_file():
             raise ValueError("Each skill must retain its license")
     bundles = catalog["bundles"]
