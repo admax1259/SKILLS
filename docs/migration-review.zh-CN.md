@@ -22,7 +22,7 @@ OpenAI 当前支持 skills-only 插件，ChatGPT 与 Codex 共享插件目录，
 
 | # | Skill | 作用与 GPT 适配判断 | 迁移时要讨论或修改的地方 |
 |---|---|---|---|
-| 1 | check-compiler-errors | 高可移植；运行编译与类型检查，按文件归类错误 | 原版会自动修复，与“check”名称不完全一致；默认只检查还是直接修复？发现项目命令，不预设语言。 |
+| 1 | check-compiler-errors | 高可移植；运行编译与类型检查，按文件归类错误 | 已确定：默认检查并报告，明确要求或当前任务包含修复时才修改。发现项目命令，区分环境阻塞与编译错误，不预设语言。 |
 | 2 | deslop | 高可移植；清理当前 diff 中多余注释、类型逃逸及不一致风格 | 自动发现基线分支；不能把必要的容错或说明当成垃圾删除。 |
 | 3 | fix-merge-conflicts | 高可移植；解决冲突、重建 lockfile、验证 | 区分 merge/rebase/cherry-pick；编译通过不等于冲突语义正确；保留原版不推送、不打 tag 的边界。 |
 | 4 | run-smoke-tests | 需要本地测试环境；运行并排查冒烟测试 | `smoketest` 与 `smoketest-no-compile` 是示例而非通用命令；先发现项目实际套件。区分环境失败与产品失败。 |
@@ -44,7 +44,7 @@ OpenAI 当前支持 skills-only 插件，ChatGPT 与 Codex 共享插件目录，
 
 ## 已采用的收集与分发结构
 
-以 skills/<id>/ 为唯一源码，19 项均已收录。catalog.json 管理分类、来源、状态和集合；sources/ 保留固定上游版本、许可证与修改记录。插件清单与缓存所需层级在 dist/ 中生成。show-me 可打包；18 个工程技能保留原始行为、待逐项适配，默认安装包不包含它们。参见 [目录设计](architecture.md) 与 [全部技能索引](CATALOG.md)。
+以 skills/<id>/ 为唯一源码，19 项均已收录。catalog.json 管理分类、来源、状态和集合；sources/ 保留固定上游版本、许可证与修改记录。插件清单与缓存所需层级在 dist/ 中生成。show-me 和 check-compiler-errors 可打包；其余 17 个工程技能保留原始行为、待逐项适配，默认安装包不包含它们。参见 [目录设计](architecture.md) 与 [全部技能索引](CATALOG.md)。
 
 GitHub 与 GitLab 是两层支持：一是收集仓库可从任意 Git URL 安装；二是工作流能操作 GitHub PR 与 GitLab MR。自建 GitLab、嵌套 group、fork、分页、当前 SHA 与外部 CI 都需要覆盖，不能只把 `gh` 替换成 `glab`。
 
@@ -52,7 +52,7 @@ GitHub 与 GitLab 是两层支持：一是收集仓库可从任意 Git URL 安�
 
 - 已收录 show-me，保留完整 MIT 声明、固定来源版本与修改说明。Codex manifest 通过官方本地校验器，已通过原生 CLI 安装到版本化插件缓存；新会话行为验证尚未完成。
 - 已确定：提供 Codex / ChatGPT 格式与 Claude Code 格式；其他界面的导入和公开目录上架独立验证。
-- 当前第 1 项：check-compiler-errors 默认仅检查，还是自动修复。
+- 第 1 项已确认并适配：check-compiler-errors 默认检查、要求时修复。下一项为 deslop。
 - 已提供中英文 README、安装器及 CI 打包流程；后续逐项确认工程 skills 行为后迁移。正式 Release 尚未发布。
 
 ## 核实资料

@@ -4,7 +4,7 @@
 
 个人 Agent Skills 收集器：统一收录、保留来源、逐项适配，再打包给不同引擎。
 
-**19 个技能，6 个分类，2 个来源。目前 1 个可打包、18 个待适配。**
+**19 个技能，6 个分类，2 个来源。目前 2 个可打包、17 个待适配。**
 
 ## 目录
 
@@ -34,7 +34,8 @@ SKILLS/
 ## 已收录内容
 
 - [show-me](skills/show-me/SKILL.md)：可打包。来自 HumanLayer，已适配跨平台预览。
-- **cursor-team-kit 全部 18 个 skills 已实际收录**，包含 PR canvas 的配套资源；按验证、审查、代码质量、交付、知识复盘分类。保留上游行为，状态为 `review-needed`，等待[逐项讨论](docs/migration-review.zh-CN.md)后适配。
+- [check-compiler-errors](skills/check-compiler-errors/SKILL.md)：已适配，默认检查并报告，明确要求时修复；独立安装集合为 `compiler-checks`。
+- **cursor-team-kit 全部 18 个 skills 已实际收录**，包含 PR canvas 的配套资源；按验证、审查、代码质量、交付、知识复盘分类。除已适配的 check-compiler-errors 外，其余 17 项保留上游行为，状态为 `review-needed`，等待[逐项讨论](docs/migration-review.zh-CN.md)后适配。
 
 `ready` 表示可以进入包，不代表每个引擎均已行为验证。包含待适配成员的 bundle 整体不生成，避免发布内容不完整的集合。通用第三方安装器可能不读取本仓库状态；使用下面的安装器可执行审核过滤。
 
@@ -46,11 +47,13 @@ SKILLS/
 git clone https://github.com/admax1259/SKILLS.git
 cd SKILLS
 python3 scripts/install.py --engine codex --bundle show-me
+# 安装编译检查技能：
+python3 scripts/install.py --engine codex --bundle compiler-checks
 # Claude Code：
 python3 scripts/install.py --engine claude --bundle show-me
 ```
 
-`--dry-run` 只预览，不写文件、不安装。安装器从就绪技能构建 `dist/marketplace-<version>/`，注册该目录后调用引擎原生安装命令。保留这个目录供后续使用。新结构合并前请使用 PR 分支或对应 CI artifact。
+`--dry-run` 只预览，不写文件、不安装。安装器从就绪技能构建 `dist/marketplace/`，注册该目录后调用引擎原生安装命令。保留这个目录供后续使用。新结构合并前请使用 PR 分支或对应 CI artifact。
 
 **源码仓库不再直接作为原生 marketplace 注册。** 这是明确的分离：源码不保存生成的插件副本；原生 marketplace 位于生成目录或解压后的安装包。不要对源码根目录运行 `codex plugin marketplace add .` 或 `/plugin marketplace add admax1259/SKILLS`。Claude Code 可在对话中注册构建后的绝对路径，再安装 `show-me@admax-skills`。
 
@@ -67,7 +70,7 @@ python3 scripts/package.py
 | 文件 | 用途 |
 |---|---|
 | `skills-<version>.zip` | 完整原生 marketplace；解压后执行同样的安装命令，无需 Git 或构建依赖 |
-| `show-me-<version>.zip` | 单个双引擎插件，根目录含 Codex 与 Claude manifest |
+| `<bundle>-<version>.zip` | 单个双引擎插件（show-me 或 compiler-checks），根目录含两种 manifest |
 | `SHA256SUMS` | ZIP 校验和 |
 
 可从 [Actions artifacts](https://github.com/admax1259/SKILLS/actions) 下载；正式版本遵循[发版流程](docs/releases.md)。macOS 用 `shasum -a 256 -c SHA256SUMS` 校验，Linux 用 `sha256sum -c SHA256SUMS`。

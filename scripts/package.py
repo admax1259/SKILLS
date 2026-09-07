@@ -16,7 +16,7 @@ def write_json(path, value):
 def build_marketplace(root=ROOT, destination=None):
     root = Path(root).resolve()
     version, catalog = validate(root)
-    destination = Path(destination) if destination else root / "dist" / ("marketplace-" + version)
+    destination = Path(destination) if destination else root / "dist" / "marketplace"
     if destination.is_symlink():
         raise ValueError("Build destination cannot be a symlink")
     destination = destination.resolve()

@@ -7,6 +7,13 @@
     "Imported local source snapshot without changing skill behavior. Review each skill before marking ready. Cursor agents/rules are not skills and are not imported as executable engine configuration.",
     "Added a final newline to get-pr-comments/SKILL.md; original SHA-256: 8bf292736cab922276feb4d8377edc2fc4102a7beb62bcd1f3f5cf72a79b16cc. imported_files records the imported snapshot."
   ],
+  "adapted_files": {
+    "check-compiler-errors/SKILL.md": {
+      "baseline_sha256": "1ad76beccd581fc285199334709e0a37cdc2f76e5d0d33c90e1dc21905518004",
+      "sha256": "0c2e47d3af5769f9300002304c28899097ac51acb827d3ae542660587691e4df",
+      "reason": "Owner accepted check/report by default, repair when requested. Added repository command discovery, environment-vs-compiler diagnostics, scoped results and stopping conditions. Original import hashes remain unchanged."
+    }
+  },
   "imported_files": {
     "make-pr-easy-to-review/SKILL.md": "e8da0d4a85b7c04823698f539251617389f827fd9137100ef7eaea5dcc992fe7",
     "control-ui/SKILL.md": "410cae25bdb1e5d2323b126abc5047b0213be7fdb0195710213fa8de8a751871",

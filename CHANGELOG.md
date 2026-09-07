@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 — Unreleased
+
+- Keep source-installed marketplace paths stable across version upgrades.
+
+- Adapt check-compiler-errors to report by default and repair only when requested; discover repository commands, distinguish blockers, and scope results.
+- Add the independently installable compiler-checks bundle; 2 skills ready, 17 pending.
+- Preserve import hashes and record intentional adaptations separately with current hashes and reasons.
+
 ## 0.2.0 — Unreleased
 
 - Replace plugin-first source folders with canonical skills/<id>, catalog.json, provenance records, and a generated bilingual index.

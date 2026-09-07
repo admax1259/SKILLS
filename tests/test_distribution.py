@@ -33,7 +33,8 @@ class DistributionTests(unittest.TestCase):
                 self.assertEqual(digest, hashlib.sha256((temp / "a" / name).read_bytes()).hexdigest())
             with zipfile.ZipFile(temp / f"a/skills-{version}.zip") as z:
                 self.assertFalse(any(".git/" in n or "catalog.json" in n or "AGENTS.md" in n for n in z.namelist()))
-                self.assertFalse(any("check-compiler-errors" in n for n in z.namelist()))
+                self.assertTrue(any("check-compiler-errors/SKILL.md" in n for n in z.namelist()))
+                self.assertFalse(any("fix-ci/SKILL.md" in n for n in z.namelist()))
                 z.extractall(temp / "extracted")
             extracted = temp / f"extracted/skills-{version}"
             subprocess.run([sys.executable, str(extracted / "scripts/install.py"),
@@ -50,6 +51,11 @@ class DistributionTests(unittest.TestCase):
         source = json.loads((ROOT / "sources/cursor-team-kit.json").read_text())
         for relative, digest in source["imported_files"].items():
             with self.subTest(path=relative):
+                adaptation = source.get("adapted_files", {}).get(relative)
+                if adaptation:
+                    self.assertTrue(adaptation["reason"])
+                    self.assertEqual(adaptation["baseline_sha256"], digest)
+                    digest = adaptation["sha256"]
                 self.assertEqual(digest, hashlib.sha256((ROOT / "skills" / relative).read_bytes()).hexdigest())
 
     def test_unlisted_skill_is_rejected(self):
@@ -80,7 +86,7 @@ class DistributionTests(unittest.TestCase):
             data = json.loads(path.read_text())
             data["skills"].append({"id": "example", "category": "visualization", "source": "humanlayer",
                                    "upstream_path": "example", "status": "ready"})
-            data["bundles"][0]["skills"].append("example")
+            next(b for b in data["bundles"] if b["id"] == "show-me")["skills"].append("example")
             path.write_text(json.dumps(data))
             built = build_marketplace(root, Path(temp) / "built")
             self.assertEqual((skill / "SKILL.md").read_bytes(),
@@ -103,6 +109,11 @@ class DistributionTests(unittest.TestCase):
                                      "--engine", "codex", "--dry-run"], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertFalse((root / "dist").exists())
+            (root / "VERSION").write_text("0.4.0\n")
+            upgraded = subprocess.run([sys.executable, str(root / "scripts/install.py"),
+                                       "--engine", "codex", "--dry-run"], capture_output=True, text=True)
+            self.assertEqual(upgraded.returncode, 0, upgraded.stderr)
+            self.assertEqual(result.stdout, upgraded.stdout, "Version upgrades must retain marketplace source identity")
             rejected = subprocess.run([sys.executable, str(root / "scripts/install.py"),
                                        "--engine", "codex", "--bundle", "engineering-kit", "--dry-run"],
                                       capture_output=True, text=True)

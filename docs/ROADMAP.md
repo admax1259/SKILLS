@@ -6,13 +6,13 @@
 - [x] 分类、来源、状态与 bundle 的统一 catalog；中英文分类目录自动生成。
 - [x] 插件目录与 ZIP 从源码生成，未审核 bundle 不发布。
 - [x] 单一源码扩展、导入完整性、可重现打包和解压安装测试。
-- [ ] 当前结构 PR 的远程 CI 与 artifact 复核。
+- [x] 结构 PR #2 已合并；CI 通过，artifact 已生成。
 - [ ] Claude Code 实机安装与行为验证。
 - [ ] 合并后按需发布正式版本。
 
 ## Engineering adaptation
 
-逐项讨论全部 18 个已收录的工程 skills；当前第一项 check-compiler-errors 默认检查还是自动修复仍待确认。补 GitHub PR / GitLab MR 差异、自建 GitLab、分页、fork 与当前 SHA 检查。原始收录状态不代表适配完成。
+逐项讨论全部 18 个已收录的工程 skills；第一项 check-compiler-errors 已接受“默认检查、明确要求时修复”，完成适配并进入 compiler-checks 独立集合；其余 17 项仍待适配，下一项为 deslop。补 GitHub PR / GitLab MR 差异、自建 GitLab、分页、fork 与当前 SHA 检查。原始收录状态不代表适配完成。
 
 ## Growth and promotion
 
