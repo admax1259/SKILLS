@@ -5,7 +5,8 @@
   "copyright": "Copyright (c) 2026 Cursor",
   "adaptations": [
     "Imported local source snapshot without changing skill behavior. Review each skill before marking ready. Cursor agents/rules are not skills and are not imported as executable engine configuration.",
-    "Added a final newline to get-pr-comments/SKILL.md; original SHA-256: 8bf292736cab922276feb4d8377edc2fc4102a7beb62bcd1f3f5cf72a79b16cc. imported_files records the imported snapshot."
+    "Added a final newline to get-pr-comments/SKILL.md; original SHA-256: 8bf292736cab922276feb4d8377edc2fc4102a7beb62bcd1f3f5cf72a79b16cc. imported_files records the imported snapshot.",
+    "Completed batch workflow adaptation; retained explicit-only Claude policy and added matching Codex agents/openai.yaml for two review skills. Added original collector/render helpers, snapshot contract and regression tests; inherited per-skill MIT licenses apply to helper adaptations."
   ],
   "adapted_files": {
     "deslop/SKILL.md": {
@@ -17,6 +18,96 @@
       "baseline_sha256": "1ad76beccd581fc285199334709e0a37cdc2f76e5d0d33c90e1dc21905518004",
       "sha256": "0c2e47d3af5769f9300002304c28899097ac51acb827d3ae542660587691e4df",
       "reason": "Owner accepted check/report by default, repair when requested. Added repository command discovery, environment-vs-compiler diagnostics, scoped results and stopping conditions. Original import hashes remain unchanged."
+    },
+    "make-pr-easy-to-review/SKILL.md": {
+      "baseline_sha256": "e8da0d4a85b7c04823698f539251617389f827fd9137100ef7eaea5dcc992fe7",
+      "sha256": "640d5dc35639f8373ea24633029a51abc5683c366356897a7090d66f41bdb7cf",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "control-ui/SKILL.md": {
+      "baseline_sha256": "410cae25bdb1e5d2323b126abc5047b0213be7fdb0195710213fa8de8a751871",
+      "sha256": "833871fb3c4d61d8cef9f5d64fdd687632a6c2150b95e52c95e8d9567b3ca45e",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "get-pr-comments/SKILL.md": {
+      "baseline_sha256": "4c7dc1851ff61d43ec8de3f54fef3aac5b296dfbfb8f81c3896bab5dd240c85f",
+      "sha256": "08bb1a261546a1b02eaa524a07a32c50b7cb35c580fc73bc385185db74441c52",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "verify-this/SKILL.md": {
+      "baseline_sha256": "c1c7b27c1133085bd3409c601ea12b6e6f61b4b23debcd52bc248fc01907e7de",
+      "sha256": "7a2a8b1b3c6a515793cd76af44790e344dd4a9cb505732e3e3bc5cb790f4deb7",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "new-branch-and-pr/SKILL.md": {
+      "baseline_sha256": "4e8f502fcf48553949387a9a7f58b21349e0ff87c24bf8ff5c0013e9da6819fd",
+      "sha256": "b8d4ecb8c134ebfc04f176543d815e444d7544e4b96d6a6e43c6bfa9707b6625",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "weekly-review/SKILL.md": {
+      "baseline_sha256": "b56a2c283916b4551aeb322398ab99a19b4b5d7678ffd7f9c9f3df9fa05f4712",
+      "sha256": "0f58bdc0a73c2f227c31fa26846449fb730c2f4402d0670cf21c18b084e29651",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "what-did-i-get-done/SKILL.md": {
+      "baseline_sha256": "479813c9abaacb5b6b0531f1de7dc5eb2f3bd9673707a992d1073335836e82f8",
+      "sha256": "5daed33e11bd7d15a6953460451307d269b9e481213009b2b3c614bd5dbb65cf",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "loop-on-ci/SKILL.md": {
+      "baseline_sha256": "66b85dbd2bc3700386283539292a55438652bbe227271fd90b73b74525b9b9de",
+      "sha256": "bc4812cfa1fe3139322acf6c237838f47bb653730f34503e1787a5776f83ecb1",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "workflow-from-chats/SKILL.md": {
+      "baseline_sha256": "b568176390165921c5e351cc73b553e3e997f92c9f85dfb1c5a220c943fbaa16",
+      "sha256": "4e03842fde1406b24560391dc9feaf17af30a12e4057cfdb16f9f2e602f0cc15",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "fix-merge-conflicts/SKILL.md": {
+      "baseline_sha256": "738b251281b30fd33e3892d0679cf94249e9c9e29e1bed40bcdde4a6aca98a76",
+      "sha256": "d6ca7c2a48bbdcede98ae42841ea61c6db6986a01ce50bc9064b1daeaa0bb4bf",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "review-and-ship/SKILL.md": {
+      "baseline_sha256": "5c8e88c91e726e024c824d2b02be6bfc7ad81ac5e67c104ef2b66840715373c1",
+      "sha256": "c391a5c1a105db97b3755a42d92c5361779831a0796241825f7dcbea6e7448dc",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "control-cli/SKILL.md": {
+      "baseline_sha256": "13ac93e595bbda2000849bdb815d5f2ca03f7c2ca63788c8335f9212b9b422a2",
+      "sha256": "a2810838c7e4d644966617e3f87a168f46d340b90184f9e25207275877b0fb07",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "run-smoke-tests/SKILL.md": {
+      "baseline_sha256": "848c9f34af50f8a0edecbdc239707b694f5f9ac497c61b5907f2bf0caa1372fb",
+      "sha256": "d11c568d148dc130f38626173f11386e79ce6d4b77d2201560a1245f55c87d85",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "fix-ci/SKILL.md": {
+      "baseline_sha256": "925f8c3e11de8bcc0cd015ec907f4d00b12cde6714246554ed3a52e096536522",
+      "sha256": "51e4548e4d50978b8b8e6a83cae67eb5afab4c45c7069219109c86beff0fcfca",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "pr-review-canvas/renderer.js": {
+      "baseline_sha256": "d78d36a46b0aeae755e2edd9b712970fd181183bb1c320d10caa8d9f776695c6",
+      "sha256": "cca1145192aba7783c2cc9317e5e2394995d4f15fc0ae3ddc75ce8f64b9e0ba4",
+      "reason": "Preserve imports, whitespace and hunk line numbers; remove heuristic equivalence; safely render original diff."
+    },
+    "pr-review-canvas/SKILL.md": {
+      "baseline_sha256": "88a07a2459197acba3c5e06b7d695e35ad618a998442b72d05cdba4efc117ac6",
+      "sha256": "f1973faa5d85fd9a1e4743e433be60c69940820bcde08bf69af42861629c6f8c",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
+    },
+    "pr-review-canvas/template.html": {
+      "baseline_sha256": "cb56bc764384856da4733d1c999521c3e1b20d65ed80605630b74da448abe756",
+      "sha256": "7d9125b10d4e2614e05627a80e5c1288f12baf0a133b601e912b387d74c47526",
+      "reason": "Use local fonts and bundled assets for offline rendering."
+    },
+    "thermo-nuclear-code-quality-review/SKILL.md": {
+      "baseline_sha256": "7faca08b51b643b2ddd0836f92af15574444024685dcc1e677dbbb39ae8c9e8f",
+      "sha256": "b012ca2c2cf4ed3832b3caa045a7d1552411caffb6599e443ebdaea60289a02a",
+      "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
     }
   },
   "imported_files": {

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 — Unreleased
+
+- Complete the remaining 16 workflow adaptations; all 19 skills are package-eligible, with engineering-kit available.
+- Cover GitHub PR/GitLab MR host, fork, comments and current-revision CI semantics with bounded delivery instructions.
+- Add read-only dual-provider Canvas collection, safe offline rendering and faithful import/whitespace line numbers.
+- Generate engine-specific engineering plugins to preserve explicit invocation policies; retain one canonical source.
+- Rebuild owned current package output to prevent stale release assets; add provider, rendering and distribution regressions.
+- Document repository bootstrap evidence and unverified Claude/GitLab/automatic-selection boundaries. No release tag is created.
+
 ## 0.4.0 — Unreleased
 
 - Adapt deslop for evidence-based diff cleanup, discovered comparison refs, preserved behavior and safeguards, and valid no-change outcomes.

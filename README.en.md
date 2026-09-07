@@ -4,7 +4,7 @@
 
 A personal Agent Skills collector: collect consistently, preserve provenance, review each workflow, then package for different engines.
 
-**19 skills, 6 categories, 2 sources. Currently 3 ready and 16 awaiting adaptation.**
+**19 skills, 6 categories, 2 sources. All 19 adapted and eligible for packaging; see [bootstrap evidence](docs/bootstrap.md) for tested scope.**
 
 ## Layout
 
@@ -36,7 +36,7 @@ Browse by category through the [index](docs/CATALOG.md), without moving skills t
 - [show-me](skills/show-me/SKILL.md): ready for packaging; from HumanLayer, with portable preview behavior.
 - [check-compiler-errors](skills/check-compiler-errors/SKILL.md): adapted to check/report by default and repair when requested; install the compiler-checks bundle.
 - [deslop](skills/deslop/SKILL.md): focused diff cleanup preserving behavior, necessary comments, and error handling; install the code-cleanup bundle.
-- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. Except for the adapted check-compiler-errors and deslop skills, the other 16 retain upstream behavior and remain review-needed pending [individual discussion](docs/migration-review.zh-CN.md).
+- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. All 18 engineering skills are adapted and available in engineering-kit; see the [migration review](docs/migration-review.zh-CN.md).
 
 Ready means eligible for packaging, not behaviorally verified on every engine. Bundles containing unreviewed members are withheld entirely rather than silently published with missing skills. Generic third-party installers may ignore this repository's status metadata; the installer below enforces it.
 
@@ -48,19 +48,21 @@ Requires Python 3.10+ and the Codex or Claude Code CLI. Clone, then build and in
 git clone https://github.com/admax1259/SKILLS.git
 cd SKILLS
 python3 scripts/install.py --engine codex --bundle show-me
-# Compiler checking skill:
+# Complete engineering collection (already includes compiler-checks and code-cleanup skills):
+python3 scripts/install.py --engine codex --bundle engineering-kit
+# Or install only compiler checking:
 python3 scripts/install.py --engine codex --bundle compiler-checks
 # Focused code cleanup:
 python3 scripts/install.py --engine codex --bundle code-cleanup
 # Claude Code:
-python3 scripts/install.py --engine claude --bundle show-me
+python3 scripts/install.py --engine claude --bundle engineering-kit
 ```
 
-Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until the new layout is merged, use the PR branch or its CI artifact.
+Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until 0.5.0 is merged, use this PR branch or its CI artifact.
 
 **The source repository is no longer a directly registrable native marketplace.** Sources do not contain generated plugin copies; the native marketplace lives in build output or an extracted installation ZIP. Do not run codex plugin marketplace add . or /plugin marketplace add admax1259/SKILLS against source. Inside Claude Code, register the generated absolute directory path and install show-me@admax-skills.
 
-Invoke $show-me in Codex or /show-me:show-me in Claude Code. For a standalone skill, take the complete skills/show-me/ directory including its license.
+Invoke $show-me or $verify-this in Codex; /show-me:show-me or /engineering-kit:verify-this in Claude Code. Canvas and strict quality review retain explicit-only invocation. For a standalone skill, take the complete skills/show-me/ directory including its license.
 
 ## Packages and support
 
@@ -68,12 +70,13 @@ Invoke $show-me in Codex or /show-me:show-me in Claude Code. For a standalone sk
 python3 scripts/package.py
 ```
 
-Outputs in dist/packages/:
+Outputs in dist/packages/current/:
 
 | File | Purpose |
 |---|---|
 | skills-<version>.zip | Complete native marketplace; extract and run the same installer without Git or build dependencies |
-| <bundle>-<version>.zip | Standalone plugin (show-me, compiler-checks, or code-cleanup) with both engine manifests |
+| <bundle>-<version>.zip | Dual-engine show-me, compiler-checks, or code-cleanup plugin |
+| engineering-kit-<engine>-<version>.zip | Engine-specific Codex or Claude engineering plugin; differing invocation policies are generated automatically |
 | SHA256SUMS | ZIP checksums |
 
 Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); formal versions follow the [release process](docs/releases.md). Verify with shasum -a 256 -c SHA256SUMS on macOS or sha256sum -c SHA256SUMS on Linux.
@@ -81,7 +84,7 @@ Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); 
 - Codex: native format and installation flow have been validated; new versions are rechecked.
 - Claude Code: native format generated; CLI installation remains untested on the development machine.
 - ChatGPT / other Claude surfaces: plugin ZIPs provided; UI import and public listing are separate verification steps, with no listing claimed.
-- GitHub / GitLab: source on any Git host can be cloned and built. Engineering PR/MR workflow adaptation remains pending.
+- GitHub / GitLab: instructions cover PR/MR, forks, current-revision CI, and discussion state; Canvas includes read-only collection for both. GitHub has live repository evidence; GitLab collection uses fixtures and live MR writes remain unverified.
 
 ## Collection workflow
 
@@ -93,6 +96,8 @@ python3 scripts/catalog.py --check
 python3 -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
+
+Full development tests also require Node.js 22+ for Canvas rendering regressions; installing a prebuilt plugin does not require Node.js.
 
 CI checks missing entries, duplicate names, invalid bundles, exclusion of unreviewed skills, import integrity, and reproducible archives. Deliver changes through PRs.
 

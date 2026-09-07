@@ -39,6 +39,12 @@
 - 废弃先标 deprecated，保留迁移说明；不在无说明的情况下让用户旧路径失效。
 - 新资源类型按实际用途加入技能目录，避免空 references/scripts/assets 模板泛滥。
 
+## 引擎策略适配
+
+源码仍是单份 skills/<id>。普通 bundle 生成双 manifest；包含显式调用技能的 bundle 自动生成 plugins/<bundle>（Codex）与 claude-plugins/<bundle>（Claude），各 marketplace 指向对应产物。Codex 使用 agents/openai.yaml 调用策略，Claude 保留 disable-model-invocation 前言。复制只发生在 dist，无手工维护副本。
+
+打包目录固定为 dist/packages/current，仅重建带所有权标记的输出；CI 与 Release 只上传这里的 ZIP 和校验和，避免旧产物混入。
+
 ## 当前结构验证
 
 19 项已登记；21 个 Cursor 原始文件已记录导入 SHA-256（get-pr-comments 的结尾换行规范化单独说明），18 份 MIT 声明跟随技能。Cursor agents/rules 未作为跨引擎配置启用。测试覆盖：额外未登记技能、非法集合引用、待适配成员隔离、打包可重现、解压安装、新技能扩展和 dry-run 无副作用。

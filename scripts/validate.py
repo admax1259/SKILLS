@@ -57,7 +57,9 @@ def validate(root=ROOT):
             raise ValueError("Missing skill description")
         if entry["status"] == "ready" and re.search(r"^disable-model-invocation: true", front, re.M):
             policy = skill / "agents/openai.yaml"
-            if not policy.is_file() or policy.read_text().strip() != "policy:\n  allow_implicit_invocation: false":
+            if not policy.is_file() or not re.search(
+                r"^policy:\n  allow_implicit_invocation: false\s*$", policy.read_text(), re.M
+            ):
                 raise ValueError("Explicit-only policy needs matching Codex invocation policy")
         if not (skill / "LICENSE").is_file():
             raise ValueError("Each skill must retain its license")

@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import re
 import shutil
 import zipfile
 from pathlib import Path
@@ -60,7 +61,21 @@ def build_marketplace(root=ROOT, destination=None):
         codex_entries.append({"name": name, "source": {"source": "local", "path": "./plugins/" + name},
                               "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                               "category": "Productivity"})
-        claude_entries.append({"name": name, "source": "./plugins/" + name, "version": version})
+        explicit = [p for p in (plugin / "skills").glob("*/SKILL.md")
+                    if re.search(r"^disable-model-invocation: true\s*$", p.read_text(), re.M)]
+        claude_source = "./plugins/" + name
+        if explicit:
+            # Engine metadata differs; copies exist only in generated distribution.
+            claude_plugin = destination / "claude-plugins" / name
+            shutil.copytree(plugin, claude_plugin)
+            shutil.rmtree(claude_plugin / ".codex-plugin")
+            shutil.rmtree(plugin / ".claude-plugin")
+            for path in explicit:
+                path.write_text(re.sub(r"^disable-model-invocation: true\n", "",
+                                       path.read_text(encoding="utf-8"), count=1, flags=re.M),
+                                encoding="utf-8")
+            claude_source = "./claude-plugins/" + name
+        claude_entries.append({"name": name, "source": claude_source, "version": version})
     write_json(destination / ".agents/plugins/marketplace.json",
                {"name": "admax-skills", "interface": {"displayName": "Admax Skills"}, "plugins": codex_entries})
     write_json(destination / ".claude-plugin/marketplace.json",
@@ -99,12 +114,28 @@ def write_zip(destination, root, prefix=""):
 def package(root=ROOT, output=None):
     root = Path(root).resolve()
     version, _ = validate(root)
-    output = Path(output) if output else root / "dist" / "packages"
-    output.mkdir(parents=True, exist_ok=True)
+    output = Path(output) if output else root / "dist" / "packages" / "current"
+    if output.is_symlink():
+        raise ValueError("Package output cannot be a symlink")
+    output = output.resolve()
+    if output == root or root.is_relative_to(output):
+        raise ValueError("Package output cannot contain source repository")
+    marker = output / ".skills-packages"
+    if output.exists():
+        if not marker.is_file() or marker.read_text() != "admax-skills\n":
+            raise ValueError("Refusing to replace package output not owned by this builder")
+        shutil.rmtree(output)
+    output.mkdir(parents=True)
+    marker.write_text("admax-skills\n")
     marketplace = build_marketplace(root, output / ("marketplace-" + version))
     archives = []
     for plugin in sorted((marketplace / "plugins").iterdir()):
-        dest = output / f"{plugin.name}-{version}.zip"
+        suffix = "" if (plugin / ".claude-plugin").exists() else "-codex"
+        dest = output / f"{plugin.name}{suffix}-{version}.zip"
+        write_zip(dest, plugin)
+        archives.append(dest)
+    for plugin in sorted((marketplace / "claude-plugins").glob("*")):
+        dest = output / f"{plugin.name}-claude-{version}.zip"
         write_zip(dest, plugin)
         archives.append(dest)
     dest = output / f"skills-{version}.zip"

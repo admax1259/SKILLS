@@ -21,14 +21,14 @@
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/control-cli",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "control-ui",
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/control-ui",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "deslop",
@@ -42,63 +42,63 @@
       "category": "delivery",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/fix-ci",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "fix-merge-conflicts",
       "category": "delivery",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/fix-merge-conflicts",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "get-pr-comments",
       "category": "code-review",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/get-pr-comments",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "loop-on-ci",
       "category": "delivery",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/loop-on-ci",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "make-pr-easy-to-review",
       "category": "code-review",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/make-pr-easy-to-review",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "new-branch-and-pr",
       "category": "delivery",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/new-branch-and-pr",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "pr-review-canvas",
       "category": "code-review",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/pr-review-canvas",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "review-and-ship",
       "category": "delivery",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/review-and-ship",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "run-smoke-tests",
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/run-smoke-tests",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "show-me",
@@ -112,47 +112,51 @@
       "category": "code-review",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/thermo-nuclear-code-quality-review",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "verify-this",
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/verify-this",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "weekly-review",
       "category": "knowledge",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/weekly-review",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "what-did-i-get-done",
       "category": "knowledge",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/what-did-i-get-done",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "workflow-from-chats",
       "category": "knowledge",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/workflow-from-chats",
-      "status": "review-needed"
+      "status": "ready"
     }
   ],
   "bundles": [
     {
       "id": "code-cleanup",
       "description": "Focused diff cleanup that preserves behavior and necessary safeguards",
-      "skills": ["deslop"]
+      "skills": [
+        "deslop"
+      ]
     },
     {
       "id": "compiler-checks",
       "description": "Check compiler and type errors; repair only when requested",
-      "skills": ["check-compiler-errors"]
+      "skills": [
+        "check-compiler-errors"
+      ]
     },
     {
       "id": "show-me",
@@ -163,7 +167,7 @@
     },
     {
       "id": "engineering-kit",
-      "description": "Engineering workflows under individual migration review",
+      "description": "Repository verification, GitHub PR and GitLab MR delivery, visual review and work summaries",
       "skills": [
         "check-compiler-errors",
         "control-cli",
