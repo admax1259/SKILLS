@@ -1,0 +1,11 @@
+{
+  "name": "show-me",
+  "version": "0.1.0",
+  "description": "Explain ideas with focused diagrams, code sketches, and HTML visuals.",
+  "author": {
+    "name": "admax1259",
+    "url": "https://github.com/admax1259"
+  },
+  "repository": "https://github.com/admax1259/SKILLS",
+  "license": "MIT"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "show-me",
+  "version": "0.1.0",
+  "description": "Explain ideas with focused diagrams, code sketches, and HTML visuals.",
+  "author": {
+    "name": "admax1259",
+    "url": "https://github.com/admax1259"
+  },
+  "repository": "https://github.com/admax1259/SKILLS",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Show Me",
+    "shortDescription": "Explain ideas with focused diagrams, code sketches, and HTML visuals.",
+    "longDescription": "A portable adaptation of HumanLayer's show-me skill. Choose a small visual that helps explain the current topic.",
+    "developerName": "admax1259",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Explain this visually with show-me."
+    ]
+  }
+}
