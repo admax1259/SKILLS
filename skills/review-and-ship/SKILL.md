@@ -1,41 +1,20 @@
 ---
 name: review-and-ship
-description: Review the current branch for bugs, intent fit, and test coverage; run or write tests; commit focused work; open or update a PR.
+description: Review and verify a change, fix scoped issues, and deliver focused commits through a GitHub PR or GitLab MR.
 ---
 
 # Review and ship
 
-## Trigger
+Resolve user intent, repository instructions, actual base/head, provider/host, source and target projects, staged/unstaged edits, and existing PR/MR. Review the entire proposed diff, including packaging, generated contracts, and tests. Prioritize correctness, regressions, security, and intent fit over cosmetic changes.
 
-Reviewing changes before shipping. Close key issues, verify behavior, and open or update a PR.
+Use focused tests for changed behavior. Add tests when they establish a meaningful regression boundary; do not mirror implementation or invent a passing suite when no harness exists. State environmental blockers and untested integrations.
 
-## Workflow
+Report evidence-backed findings with location, trigger, consequence, and severity. Repair task-scoped issues when authorized, then rerun affected verification and inspect the resulting diff. Do not expand a delivery request into an unrelated architectural rewrite. Independent review is optional when available and authorized; a single-agent review must not be described as independent.
 
-1. Gather context: diff against base branch, uncommitted changes, recent commits, changed files, and user intent from recent relevant chats if useful.
-2. Run targeted tests for changed behavior. If no focused tests exist, decide whether to add them or document the gap.
-3. Review for correctness, regressions, security, and intent fit. Use parallel subagents for larger diffs.
-4. Fix critical issues before finalizing and re-run affected tests.
-5. Commit selective files with a concise message.
-6. Push branch and open or update a PR.
+Stage only task-owned changes and make focused commits. Preserve existing local commit history and user work. Push through an authorized transport to the correct source project. API-based transfer must verify the remote tree against the local tree, including executable modes and deletions.
 
-## Suggested Checks
+Open or update the matching GitHub PR/GitLab MR, checking for duplicates first. Describe the final behavior for a reviewer without chat context; include verification and material limits. Preserve target/source distinctions for forks and explicit self-managed hosts.
 
-```bash
-git fetch origin main
-git diff origin/main...HEAD
-git status
-gh pr checks --json name,bucket,state,workflow,link
-```
+Inspect current-head CI: GitHub's full PR checks, or GitLab's MR-associated pipeline and jobs. An Actions-only list omits external GitHub checks; an unrelated GitLab branch pipeline cannot prove MR readiness. No checks, stale results, and manual/pending states remain explicit. Passing checks do not establish approvals or merge authorization.
 
-## Guardrails
-
-- Prioritize correctness, security, and regressions over style-only comments.
-- Keep commits focused and avoid unrelated file changes.
-- If pre-commit checks fail, fix the issues rather than bypassing hooks.
-- Use `gh pr checks` instead of GitHub Actions-only commands when judging PR readiness.
-
-## Output
-
-- Findings summary (critical, warning, note)
-- Tests run and outcomes
-- PR URL
+Return findings/fixes, tests, current commit, URL, and remaining checks. “Ship” here means the authorized PR/MR delivery; merging, tagging, release publication, and deployment require their own user instruction.

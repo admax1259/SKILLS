@@ -1,50 +1,18 @@
 ---
 name: loop-on-ci
-description: Monitor PR checks and fix failures until green. Uses gh pr checks as the source of truth for PR-attached checks.
+description: Watch current GitHub PR or GitLab MR checks with bounded waits, and repair failures when requested.
 ---
 
 # Loop on CI
 
-## Trigger
+Resolve the provider, hostname, target repository, PR/MR, and head SHA from the request and repository. Prefer available connectors; otherwise use authenticated gh or glab. Monitoring alone is read-only. Repair only when requested or already authorized.
 
-Need to watch a branch or pull request and iterate on CI failures until all required checks are green.
+For GitHub, use the full PR checks set (`gh pr checks` or connector equivalent), including external providers, and associate individual runs with the current head. For GitLab, use the MR's pipelines and pipeline jobs, retaining pipeline project IDs, downstream checks, and MR association. Do not substitute the target branch's pipeline for the MR pipeline. A synthetic merged-results SHA needs explicit association evidence.
 
-Use `gh pr checks` as the source of truth. It includes all PR-attached checks, while `gh run list` only covers GitHub Actions.
+Inspect before waiting. Separate required failures, optional failures, pending work, manual action, cancellation, and unknown coverage. No checks is unknown, not green. Verify approvals and merge rules separately from CI.
 
-## Workflow
+Poll with bounded tool waits, normally 15–30 seconds and at most 10 minutes total unless the user specifies otherwise. Report meaningful changes; do not loop indefinitely or create a scheduler task unless the user requests later monitoring.
 
-1. Resolve the PR for the current branch.
-2. Inspect current PR checks before waiting.
-3. If checks already failed, diagnose those failures first.
-4. If checks are pending, watch with `gh pr checks --watch --fail-fast`.
-5. After each push, re-check the full PR check set and repeat until green.
+If repair is authorized, diagnose actual failed logs, apply a focused correction, run affected checks, and push using existing authorization. Limit to three repair cycles and one evidence-backed transient retry. After a new push, discard the old head's success and inspect the new head's complete check set.
 
-## Commands
-
-```bash
-# Resolve the active PR
-gh pr view --json number,url,headRefName
-
-# Inspect all attached checks
-gh pr checks --json name,bucket,state,workflow,link
-
-# Watch pending checks and fail fast
-gh pr checks --watch --fail-fast
-
-# GitHub Actions logs, when the failing check links to a GHA run
-gh run view <run-id> --log-failed
-```
-
-## Guardrails
-
-- Keep each fix scoped to a single failure cause when possible.
-- Do not bypass hooks (`--no-verify`) to force progress.
-- If the failure is clearly unrelated to the PR and appears fixed on main, merge latest main instead of bloating the PR with unrelated fixes.
-- If failures are flaky, retry once and report flake evidence.
-- Re-run `gh pr checks --json name,bucket,state,workflow,link` after every push; the check set can change.
-
-## Output
-
-- Current CI status
-- Failure summary and fixes applied
-- PR URL once checks are green
+Stop on current required checks passing, the wait/repair budget, repeated identical failure, required manual action, lost access, or a superseding user instruction. Report the PR/MR URL, observed SHA, checks and remaining action. Passing CI does not authorize merge or release.
