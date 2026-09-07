@@ -1,85 +1,95 @@
-# SKILLS · 个人 Agent Skills 收集器
+# SKILLS
 
-[English](README.en.md) · [规划](docs/ROADMAP.md) · [贡献](CONTRIBUTING.md) · [版本](https://github.com/admax1259/SKILLS/releases)
+[English](README.en.md) · [技能目录](docs/CATALOG.md) · [目录设计](docs/architecture.md) · [收录规范](CONTRIBUTING.md)
 
-收集值得复用的 skills，保留来源和授权，逐项适配，在自己的工作流中验证。一份技能内容，分别通过 Codex 和 Claude Code 插件分发。
+个人 Agent Skills 收集器：统一收录、保留来源、逐项适配，再打包给不同引擎。
 
-## 当前收录
+**19 个技能，6 个分类，2 个来源。目前 1 个可打包、18 个待适配。**
 
-| 插件 | 用途 | 来源 | 状态 |
-|---|---|---|---|
-| show-me | 用 Mermaid、代码结构图、diff 或 HTML 解释当前问题 | [HumanLayer](plugins/show-me/UPSTREAM.md) · MIT | 已打包；运行验证状态见下文 |
+## 目录
 
-cursor-team-kit 的 18 项技能仍在[逐项评审](docs/migration-review.zh-CN.md)，尚未作为插件分发。
+```text
+SKILLS/
+├── skills/                       # 唯一技能源码；每个技能一个稳定路径
+│   ├── show-me/
+│   │   ├── SKILL.md
+│   │   └── LICENSE
+│   ├── check-compiler-errors/
+│   ├── control-cli/
+│   ├── control-ui/
+│   ├── pr-review-canvas/          # 自带 renderer.js、styles.css、template.html
+│   └── …                         # 全部 19 项见技能目录
+├── catalog.json                  # 分类、来源、审核状态与 bundle 成员
+├── sources/                      # 上游 URL、固定 commit、授权、导入记录
+│   ├── cursor-team-kit.json
+│   └── humanlayer.json
+├── scripts/                      # 校验、索引、构建、安装
+├── tests/
+├── docs/
+└── dist/                         # 生成的插件与 ZIP；不提交、不手改
+```
+
+分类通过[索引](docs/CATALOG.md)导航，不通过多层目录移动技能。一个技能只维护一份源码，可以加入多个安装集合（bundle）。以后增加作者、分类或引擎，都不需要改变已有 skill 路径。
+
+## 已收录内容
+
+- [show-me](skills/show-me/SKILL.md)：可打包。来自 HumanLayer，已适配跨平台预览。
+- **cursor-team-kit 全部 18 个 skills 已实际收录**，包含 PR canvas 的配套资源；按验证、审查、代码质量、交付、知识复盘分类。保留上游行为，状态为 `review-needed`，等待[逐项讨论](docs/migration-review.zh-CN.md)后适配。
+
+`ready` 表示可以进入包，不代表每个引擎均已行为验证。包含待适配成员的 bundle 整体不生成，避免发布内容不完整的集合。通用第三方安装器可能不读取本仓库状态；使用下面的安装器可执行审核过滤。
 
 ## 安装
 
-需要 Python 3.10+ 和所选引擎的 CLI。初始基础设施 PR 合并前，请使用该 PR 分支或 CI artifact；main 的安装入口在合并后才可用。
-
-克隆仓库后，一条命令安装所选插件：
+需要 Python 3.10+ 与 Codex 或 Claude Code CLI。克隆后一条命令构建并安装：
 
 ```sh
 git clone https://github.com/admax1259/SKILLS.git
 cd SKILLS
-python3 scripts/install.py --engine codex --plugin show-me
-# 或者：
-python3 scripts/install.py --engine claude --plugin show-me
+python3 scripts/install.py --engine codex --bundle show-me
+# Claude Code：
+python3 scripts/install.py --engine claude --bundle show-me
 ```
 
-加 `--dry-run` 只显示将运行的命令。安装器向所选引擎注册本地 marketplace，再调用原生安装命令；它不直接覆盖技能目录。已有同名 marketplace 的冲突由引擎处理，失败时不会继续下一步。保留克隆/解压目录，供本地 marketplace 更新使用。
+`--dry-run` 只预览，不写文件、不安装。安装器从就绪技能构建 `dist/marketplace-<version>/`，注册该目录后调用引擎原生安装命令。保留这个目录供后续使用。新结构合并前请使用 PR 分支或对应 CI artifact。
 
-也可以在 Claude Code 对话中使用：
+**源码仓库不再直接作为原生 marketplace 注册。** 这是明确的分离：源码不保存生成的插件副本；原生 marketplace 位于生成目录或解压后的安装包。不要对源码根目录运行 `codex plugin marketplace add .` 或 `/plugin marketplace add admax1259/SKILLS`。Claude Code 可在对话中注册构建后的绝对路径，再安装 `show-me@admax-skills`。
 
-```text
-/plugin marketplace add admax1259/SKILLS
-/plugin install show-me@admax-skills
-/show-me:show-me 请用图解释这段代码
-```
+Codex 用 `$show-me`；Claude Code 用 `/show-me:show-me`。只需要单个 skill 的用户也可以从 `skills/show-me/` 获取包含许可证的完整目录。
 
-Codex 原生命令：
+## 安装包与支持范围
 
 ```sh
-codex plugin marketplace add admax1259/SKILLS
-codex plugin add show-me@admax-skills
+python3 scripts/package.py
 ```
 
-安装后开启新会话，用 `$show-me` 请求可视化解释；Claude Code 使用 `/show-me:show-me`。已经手动安装过同名独立 skill 时，请确认其来源后自行移除旧副本，避免重复发现。
+生成到 `dist/packages/`：
 
-## 下载 ZIP 后本地安装
-
-从 [Actions](https://github.com/admax1259/SKILLS/actions) 的成功运行下载 `skills-packages-<commit>` artifact，或从 [Releases](https://github.com/admax1259/SKILLS/releases) 下载正式版本。
-
-- `skills-<version>.zip`：完整 marketplace，解压后进入 `skills-<version>`，执行上面的 Python 安装命令，无需 Git。
-- `show-me-<version>.zip`：单插件 ZIP，根目录包含两种 manifest；适用于明确支持插件 ZIP 的导入入口，不是 marketplace 根目录。
-- `SHA256SUMS`：下载文件的 SHA-256。macOS 用 `shasum -a 256 -c SHA256SUMS`，Linux 用 `sha256sum -c SHA256SUMS`；Windows 可用 `Get-FileHash -Algorithm SHA256` 逐个核对。
-
-artifact 是临时构建产物，保留 30 天；正式版本资产走独立 Release 流程。首次正式版本尚未发布。
-
-## 支持范围
-
-| 入口/能力 | 当前范围 |
+| 文件 | 用途 |
 |---|---|
-| Codex | 官方本地校验器通过；原生 CLI 注册和安装成功；新会话行为验证尚未完成 |
-| ChatGPT Plugins | 按 OpenAI 插件格式打包；支持入口和权限取决于宿主，尚未提交公共目录或完成界面安装测试 |
-| Claude Code | 提供原生 manifest、marketplace 与安装命令；当前开发机未安装 Claude CLI，运行验证待完成 |
-| Claude 其他界面 | 单插件 ZIP 已生成；具体入口的导入能力尚未验证，不承诺任意 Claude 对话都能安装 |
-| GitHub / GitLab 托管 | 从任意 Git 主机克隆后可本地注册；当前项目远程和 CI 在 GitHub |
-| GitHub PR / GitLab MR 工作流 | 属于下一批工程 skills 的适配范围，当前 show-me 不操作 PR/MR |
+| `skills-<version>.zip` | 完整原生 marketplace；解压后执行同样的安装命令，无需 Git 或构建依赖 |
+| `show-me-<version>.zip` | 单个双引擎插件，根目录含 Codex 与 Claude manifest |
+| `SHA256SUMS` | ZIP 校验和 |
 
-模型能阅读 skill 不等于宿主提供终端、浏览器或仓库权限。纯文本/图表能力与本地 HTML 预览也需要分别验证。
+可从 [Actions artifacts](https://github.com/admax1259/SKILLS/actions) 下载；正式版本遵循[发版流程](docs/releases.md)。macOS 用 `shasum -a 256 -c SHA256SUMS` 校验，Linux 用 `sha256sum -c SHA256SUMS`。
 
-## 开发与发版
+- Codex：原生格式与安装流程已验证；新版本会重新检查。
+- Claude Code：生成原生格式；当前开发机没有 Claude CLI，实际安装待验证。
+- ChatGPT／其他 Claude 界面：提供插件 ZIP；界面导入能力、公共目录上架独立验证，未宣称已上架。
+- GitHub／GitLab：任何 Git 主机上的源码可克隆后构建；PR/MR 操作兼容属于工程 skills 下一步适配，尚未完成。
+
+## 收录与维护
+
+每个新技能：放入 `skills/<id>/` → 保留 LICENSE → 登记 source 与 catalog → 审阅与测试 → 标为 ready → 加入 bundle。见[收录规范](CONTRIBUTING.md)。
 
 ```sh
 python3 scripts/validate.py
+python3 scripts/catalog.py --check
 python3 -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
 
-输出在 `dist/`。每次仓库变动通过分支提交、推送和 PR 交付。CI 自动验证并打包；版本 tag 必须匹配 VERSION、位于 main 历史中，才发布 ZIP 和校验文件。详见[发版流程](docs/releases.md)。
+CI 检查索引遗漏、重名、非法 bundle、未审核技能隔离、导入完整性和可重现打包。所有变动通过 PR 交付。
 
-## 授权与来源
+## 授权
 
-仓库自有基础设施使用 [Apache-2.0](LICENSE)。第三方内容继续使用自己的许可证：show-me 为 [MIT](plugins/show-me/skills/show-me/LICENSE)，Copyright © 2026 HumanLayer。适配说明与固定上游版本见 [UPSTREAM.md](plugins/show-me/UPSTREAM.md)。此仓库是个人收集与适配项目，不代表原作者或任何引擎官方出品。
-
-格式参考：[OpenAI Plugins](https://developers.openai.com/plugins/build/plugins)、[Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)。
+仓库自有工具使用 [Apache-2.0](LICENSE)。收录技能保留各自许可证：Cursor 与 HumanLayer 的本批内容均为 MIT，完整声明位于每个技能目录。来源与修改见 [sources/](sources/)。本项目不是上游作者或引擎厂商的官方项目。

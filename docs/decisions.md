@@ -1,15 +1,15 @@
 # Decisions / 决策记录
 
-## 2026-09-03 — Repository management
+## Repository management
 
-The owner requests a personal skills collector at SKILLS, bilingual documentation, Codex and Claude plugin distribution, downloadable local-install artifacts, and pushing changes through PRs. Remote: https://github.com/admax1259/SKILLS . PRs are the default delivery boundary; publication in a platform directory is a separate process.
+Owner: admax1259. Remote: https://github.com/admax1259/SKILLS . Repository changes are synchronized through PRs. Merge, tagging, and public directory submission are separate actions.
 
-Canonical content lives under plugins/<collection>/skills/<skill>. Engine manifests and catalogs wrap the same files. Repository-owned infrastructure retains Apache-2.0; HumanLayer show-me retains MIT.
+## Replace plugin-first source layout
 
-Release 0.1.0 is the initial package version, not a claim that a release has already been published. CI packages every push/PR and publishes immutable versioned release assets on matching v* tags. No automatic merge.
+The owner rejected plugins/show-me/skills/show-me as the primary organization for a growing collection. Adopt stable skills/<id> paths, catalog-based categories/readiness/bundles, source records, and generated distribution. Both show-me and all 18 cursor-team-kit skills are now physically present. See architecture.md for researched alternatives and installation tradeoffs.
+
+Native marketplace output is generated; direct registration of the source Git URL is replaced by the build installer or prebuilt ZIP. Version 0.2.0 identifies this layout change; it is not a formal published release.
 
 ## Migration discussion 1 — check-compiler-errors (pending)
 
-Original behavior: run compile/type checks, group failures, automatically fix high-confidence issues, repeat until clean or blocked.
-
-Proposed choice: default to checking/reporting; repair only when the user's request includes fixing. Alternative: preserve automatic repair. Await the owner's choice before migrating. GitHub/GitLab are not required for local compiler checks; discover project commands rather than hardcoding npm or TypeScript.
+Original: run checks, group failures, automatically fix high-confidence issues, retry. Proposed: check/report by default, repair when asked. Await the owner's choice before adapting the imported skill. No behavior choice has been inferred from the repository reorganization request.

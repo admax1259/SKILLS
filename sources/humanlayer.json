@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/humanlayer/skills",
+  "revision": "3c2629142c5d437428269b1b722b08c0b87f574d",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 HumanLayer",
+  "adaptations": [
+    "Replace macOS-only Bash(open ...) with host preview tools and an OS-aware fallback."
+  ],
+  "imported_files": {}
+}

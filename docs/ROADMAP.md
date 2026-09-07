@@ -1,24 +1,22 @@
 # Roadmap / 仓库规划
 
-## 0.1 — Distribution foundation
+## 0.2 — Collection structure
 
-- [x] 收录并注明 show-me 来源与 MIT 授权。
-- [x] Codex / Claude Code manifest 与 marketplace。
-- [x] 中英文说明、本地安装入口、可重现 ZIP、校验和与 CI artifact 流程。
-- [ ] 验证远程 PR CI artifact 下载与本机 Codex 插件安装。
-- [ ] 在装有 Claude Code 的环境完成安装与行为验证。
-- [ ] 合并后按版本流程发布第一个正式 Release。
+- [x] 平铺 skills/<id>，收录 show-me 与 cursor-team-kit 共 19 项。
+- [x] 分类、来源、状态与 bundle 的统一 catalog；中英文分类目录自动生成。
+- [x] 插件目录与 ZIP 从源码生成，未审核 bundle 不发布。
+- [x] 单一源码扩展、导入完整性、可重现打包和解压安装测试。
+- [ ] 当前结构 PR 的远程 CI 与 artifact 复核。
+- [ ] Claude Code 实机安装与行为验证。
+- [ ] 合并后按需发布正式版本。
 
-## 0.2 — Engineering collection
+## Engineering adaptation
 
-逐项讨论 cursor-team-kit 的 18 个 skills，记录保留、修改、合并或暂缓。先从 check-compiler-errors 开始；不提前把未讨论项标成已迁移。
+逐项讨论全部 18 个已收录的工程 skills；当前第一项 check-compiler-errors 默认检查还是自动修复仍待确认。补 GitHub PR / GitLab MR 差异、自建 GitLab、分页、fork 与当前 SHA 检查。原始收录状态不代表适配完成。
 
-GitHub PR / GitLab MR 支持采用宿主工具选择与平台专用参考资料。覆盖自建 GitLab、嵌套 group、fork、分页、当前提交与 CI 状态，不靠命令名称替换宣称兼容。
+## Growth and promotion
 
-## Later — Collection and promotion
-
-- 建立按来源、场景、工具依赖和验证状态检索的目录。
-- 增加 upstream 更新检查与差异评审；不自动覆盖本地适配。
-- 收集实际案例、截图与演示，准备推广文案。
-- 根据平台要求准备 ChatGPT / Claude 目录提交；打包完成不等于已获上架。
-- 在有真实需求时扩展 Cursor 等引擎，并增加对应安装验证。
+- 增加真实使用案例、截图与可核验兼容状态。
+- 增加上游更新差异检查，保留本地适配，避免自动覆盖。
+- 按用户场景扩充 bundle，不按作者重复存放技能。
+- 准备平台目录提交资料与中英文推广文案；上架独立于打包。
