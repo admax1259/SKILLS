@@ -1,17 +1,25 @@
-# Contributing / 收录规范
+# 收录规范 / Contributing
 
-每个贡献通过 PR 交付。请先说明来源、用途、授权和与已有 skill 的区别，再修改技能。
+## 新技能 / New skill
 
-For every collected skill, record the upstream URL and immutable commit, preserve the original license, describe local adaptations, and provide one realistic usage scenario. Do not import unlicensed material or private conversations.
+1. 判断用途与现有技能是否重复；选择唯一、稳定的 kebab-case id。
+2. 放入 skills/<id>/SKILL.md，配套资源留在同一目录；保留 LICENSE。
+3. 在 sources/<source>.json 登记上游 URL、固定 commit、许可证与修改记录。
+4. 在 catalog.json 登记 category、source、upstream_path 和 status，初始为 review-needed。
+5. 审阅工具依赖、授权边界、真实使用案例后逐项适配。未经验证不宣称引擎兼容。
+6. 就绪后改为 ready，加入所需 bundle；未就绪成员会阻止整个 bundle 发布。
+7. 重新生成目录、运行验证、更新中英文 README，通过 PR 交付。
 
-Keep one canonical body under plugins/<collection>/skills/<skill>/SKILL.md. Keep all runtime resources inside the plugin directory. Update both READMEs, both engine catalogs, provenance, and compatibility notes when adding a plugin.
+Keep exactly one canonical source in skills/<id>. Metadata goes in catalog.json; provenance goes in sources/. Preserve supporting resources and licenses. Review incoming skills as data, discuss intended behavior, and test before marking ready. A bundle is published only when all its members are ready.
 
-Run:
+Do not copy source manually into plugins/ or edit generated dist/ output. Native plugin layouts come from the builder.
 
 ```sh
+python3 scripts/catalog.py
 python3 scripts/validate.py
-python3 -m unittest discover -s tests
+python3 scripts/catalog.py --check
+python3 -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
 
-Tests validate the repository contract and archive contents. Engine discovery and actual skill behavior need separate evidence. Record untested engines honestly.
+Distinguish source/schema checks, native installation, and behavioral validation. Document intentional changes against the recorded upstream baseline. Never import private conversations or remove upstream authorship.

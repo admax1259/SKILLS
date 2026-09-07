@@ -1,11 +1,17 @@
-# Releases / 发版
+# 发版 / Releases
 
-PR 和分支 CI 提供临时 Actions artifacts；正式 Release 提供长期可下载资产。首次基础设施 PR 尚未合并前，main 安装方式不会包含新插件。
+源码仓库与可安装产物分开。源码不提交 plugins 副本或 marketplace 配置。
 
-1. Open a release PR updating VERSION, both manifests, Claude catalog versions, and CHANGELOG.md. Run validation, tests, and package generation.
-2. After that PR is merged and a release is requested, tag that exact main commit with v<VERSION> and push the tag. Do not tag an unreviewed development branch.
-3. The release workflow checks version/tag agreement and main ancestry, builds ZIPs, and uploads them with SHA256SUMS to GitHub Releases. The workflow uses GitHub's generated release notes.
-4. Download the release artifact and verify the checksum before installing. Keep the extracted marketplace directory while registered as a local source.
-5. Never overwrite an existing version's assets; fix problems in a new release version.
+1. 版本 PR 更新 VERSION、CHANGELOG.md 与必要文档；插件版本由构建器派生，不手改多个 manifest。
+2. 运行校验、目录检查、测试与打包。核对生成包仅含就绪 bundle。
+3. 合并并收到发布指令后，在该 main 提交上创建 v<VERSION> tag 并推送。
+4. CI 检查 tag/version、main ancestry，发布 dist/packages/ 中的 ZIP 与 SHA256SUMS；不覆盖旧版本。
+5. 下载并核对校验和，解压安装验证。保留作为本地 marketplace 注册的解压目录。
 
-Artifacts: skills-<version>.zip contains the complete installable marketplace and its installer; show-me-<version>.zip contains the plugin at the archive root for tools accepting plugin ZIPs. The latter is not a marketplace root. GitHub's automatic Source code ZIP is distinct from these tested packages.
+PR artifacts 保留 30 天。正式 Release 资产是长期下载入口。GitHub 自动 Source code ZIP 是源码快照，需要构建，不等于预构建安装包。
+
+- skills-<version>.zip: complete generated marketplace, with standalone Python installer.
+- <bundle>-<version>.zip: native plugin at archive root for plugin-ZIP import surfaces.
+- SHA256SUMS: checksums for those archives only.
+
+Release versions are derived from VERSION. Publish only after the release change is merged and requested. Never upload the generated staging directory as a release asset.

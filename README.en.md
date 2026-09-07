@@ -1,85 +1,95 @@
-# SKILLS · A personal Agent Skills collection
+# SKILLS
 
-[中文](README.md) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Releases](https://github.com/admax1259/SKILLS/releases)
+[中文](README.md) · [Skill catalog](docs/CATALOG.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md)
 
-Collect reusable skills, preserve attribution and licenses, adapt them deliberately, and validate them in real workflows. One canonical skill body is distributed through Codex and Claude Code plugin manifests.
+A personal Agent Skills collector: collect consistently, preserve provenance, review each workflow, then package for different engines.
 
-## Collection
+**19 skills, 6 categories, 2 sources. Currently 1 ready and 18 awaiting adaptation.**
 
-| Plugin | Purpose | Upstream | Status |
-|---|---|---|---|
-| show-me | Explain a topic with Mermaid, code trees, diffs, or focused HTML | [HumanLayer](plugins/show-me/UPSTREAM.md) · MIT | Packaged; see runtime verification limits below |
+## Layout
 
-The 18 cursor-team-kit skills remain under [individual review](docs/migration-review.zh-CN.md); they are not distributed yet.
+```text
+SKILLS/
+├── skills/                       # Canonical sources; one stable path per skill
+│   ├── show-me/
+│   │   ├── SKILL.md
+│   │   └── LICENSE
+│   ├── check-compiler-errors/
+│   ├── control-cli/
+│   ├── control-ui/
+│   ├── pr-review-canvas/          # Includes renderer.js, styles.css, template.html
+│   └── …                         # All 19 entries are in the catalog
+├── catalog.json                  # Categories, origins, review status, bundle membership
+├── sources/                      # Upstream URLs, immutable commits, licenses, import records
+│   ├── cursor-team-kit.json
+│   └── humanlayer.json
+├── scripts/                      # Validation, index, build, installation
+├── tests/
+├── docs/
+└── dist/                         # Generated plugins and ZIPs; untracked, never hand-edited
+```
+
+Browse by category through the [index](docs/CATALOG.md), without moving skills through nested folders. Maintain one source per skill and include it in multiple bundles when useful. Adding an author, category, or engine does not change existing skill paths.
+
+## Collected content
+
+- [show-me](skills/show-me/SKILL.md): ready for packaging; from HumanLayer, with portable preview behavior.
+- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. Original behavior is preserved; status remains review-needed pending [individual discussion](docs/migration-review.zh-CN.md).
+
+Ready means eligible for packaging, not behaviorally verified on every engine. Bundles containing unreviewed members are withheld entirely rather than silently published with missing skills. Generic third-party installers may ignore this repository's status metadata; the installer below enforces it.
 
 ## Install
 
-Requires Python 3.10+ and your chosen engine CLI. Until the initial infrastructure PR is merged, use its branch or CI artifact. Installation from main becomes available after merge.
-
-After cloning, install a plugin with one command:
+Requires Python 3.10+ and the Codex or Claude Code CLI. Clone, then build and install with one command:
 
 ```sh
 git clone https://github.com/admax1259/SKILLS.git
 cd SKILLS
-python3 scripts/install.py --engine codex --plugin show-me
-# Or:
-python3 scripts/install.py --engine claude --plugin show-me
+python3 scripts/install.py --engine codex --bundle show-me
+# Claude Code:
+python3 scripts/install.py --engine claude --bundle show-me
 ```
 
-Use `--dry-run` to print commands. The installer registers the local marketplace and calls the engine's native plugin installer; it does not overwrite skill directories directly. The engine handles existing marketplace name conflicts; a failed command stops installation. Keep the cloned/extracted directory for local marketplace updates.
+Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace-<version>/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until the new layout is merged, use the PR branch or its CI artifact.
 
-Alternatively, inside Claude Code:
+**The source repository is no longer a directly registrable native marketplace.** Sources do not contain generated plugin copies; the native marketplace lives in build output or an extracted installation ZIP. Do not run codex plugin marketplace add . or /plugin marketplace add admax1259/SKILLS against source. Inside Claude Code, register the generated absolute directory path and install show-me@admax-skills.
 
-```text
-/plugin marketplace add admax1259/SKILLS
-/plugin install show-me@admax-skills
-/show-me:show-me Explain this code visually
-```
+Invoke $show-me in Codex or /show-me:show-me in Claude Code. For a standalone skill, take the complete skills/show-me/ directory including its license.
 
-Native Codex commands:
+## Packages and support
 
 ```sh
-codex plugin marketplace add admax1259/SKILLS
-codex plugin add show-me@admax-skills
+python3 scripts/package.py
 ```
 
-Start a fresh session and use `$show-me` in Codex or `/show-me:show-me` in Claude Code. If you previously installed a standalone skill with the same name, inspect its origin before removing the older copy to avoid duplicate discovery.
+Outputs in dist/packages/:
 
-## Install from a downloaded ZIP
-
-Download `skills-packages-<commit>` from a successful [Actions](https://github.com/admax1259/SKILLS/actions) run, or versioned assets from [Releases](https://github.com/admax1259/SKILLS/releases).
-
-- `skills-<version>.zip`: complete marketplace. Extract, enter `skills-<version>`, and run the Python install command above. Git is not required.
-- `show-me-<version>.zip`: standalone plugin with both manifests at the archive root, for surfaces explicitly supporting plugin ZIP import. It is not a marketplace root.
-- `SHA256SUMS`: archive checksums. Run `shasum -a 256 -c SHA256SUMS` on macOS or `sha256sum -c SHA256SUMS` on Linux; compare individual hashes using `Get-FileHash -Algorithm SHA256` on Windows.
-
-CI artifacts expire after 30 days. Versioned release assets use a separate release workflow. The first formal release has not been published yet.
-
-## Compatibility
-
-| Surface/capability | Current scope |
+| File | Purpose |
 |---|---|
-| Codex | Official local validator passed; native CLI registration and installation succeeded; fresh-session behavior remains untested |
-| ChatGPT Plugins | OpenAI plugin format provided; capabilities depend on the host. No public directory submission or UI installation test yet |
-| Claude Code | Native manifest, marketplace, and installer; Claude CLI is unavailable on the development machine, so runtime validation is pending |
-| Other Claude surfaces | Standalone plugin ZIP available; surface-specific import remains unverified |
-| GitHub / GitLab hosting | Clone from any Git host and register locally; this repository and its CI currently live on GitHub |
-| GitHub PR / GitLab MR workflows | Planned for the engineering collection; show-me does not operate on PRs/MRs |
+| skills-<version>.zip | Complete native marketplace; extract and run the same installer without Git or build dependencies |
+| show-me-<version>.zip | Standalone plugin with Codex and Claude manifests at its root |
+| SHA256SUMS | ZIP checksums |
 
-A model's ability to read a skill does not grant terminal, browser, or repository access. Text/diagram generation and local HTML preview need separate verification.
+Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); formal versions follow the [release process](docs/releases.md). Verify with shasum -a 256 -c SHA256SUMS on macOS or sha256sum -c SHA256SUMS on Linux.
 
-## Development and releases
+- Codex: native format and installation flow have been validated; new versions are rechecked.
+- Claude Code: native format generated; CLI installation remains untested on the development machine.
+- ChatGPT / other Claude surfaces: plugin ZIPs provided; UI import and public listing are separate verification steps, with no listing claimed.
+- GitHub / GitLab: source on any Git host can be cloned and built. Engineering PR/MR workflow adaptation remains pending.
+
+## Collection workflow
+
+Add skills/<id>/ → preserve LICENSE → register source and catalog entry → review and test → mark ready → include in a bundle. See [Contributing](CONTRIBUTING.md).
 
 ```sh
 python3 scripts/validate.py
+python3 scripts/catalog.py --check
 python3 -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
 
-Packages appear in `dist/`. Deliver repository changes through a committed and pushed branch and PR. CI validates and packages changes. Release tags must match VERSION and point into main history before publishing archives and checksums. See the [release process](docs/releases.md).
+CI checks missing entries, duplicate names, invalid bundles, exclusion of unreviewed skills, import integrity, and reproducible archives. Deliver changes through PRs.
 
-## Attribution and licenses
+## Licenses
 
-Original repository infrastructure uses [Apache-2.0](LICENSE). Third-party content retains its license: show-me uses [MIT](plugins/show-me/skills/show-me/LICENSE), Copyright © 2026 HumanLayer. See [UPSTREAM.md](plugins/show-me/UPSTREAM.md) for the immutable source revision and adaptations. This is a personal collection, not an official project of the upstream authors or engine vendors.
-
-Format references: [OpenAI Plugins](https://developers.openai.com/plugins/build/plugins), [Claude Code marketplaces](https://code.claude.com/docs/en/plugin-marketplaces).
+Repository-owned tools use [Apache-2.0](LICENSE). Collected skills retain their licenses: this batch from Cursor and HumanLayer is MIT, with full notices in each skill directory. See [sources/](sources/) for provenance and adaptations. This is not an official project of the upstream authors or engine vendors.

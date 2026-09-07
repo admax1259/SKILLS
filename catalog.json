@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "categories": [
+    "visualization",
+    "verification",
+    "code-review",
+    "code-quality",
+    "delivery",
+    "knowledge"
+  ],
+  "skills": [
+    {
+      "id": "check-compiler-errors",
+      "category": "verification",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/check-compiler-errors",
+      "status": "review-needed"
+    },
+    {
+      "id": "control-cli",
+      "category": "verification",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/control-cli",
+      "status": "review-needed"
+    },
+    {
+      "id": "control-ui",
+      "category": "verification",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/control-ui",
+      "status": "review-needed"
+    },
+    {
+      "id": "deslop",
+      "category": "code-quality",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/deslop",
+      "status": "review-needed"
+    },
+    {
+      "id": "fix-ci",
+      "category": "delivery",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/fix-ci",
+      "status": "review-needed"
+    },
+    {
+      "id": "fix-merge-conflicts",
+      "category": "delivery",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/fix-merge-conflicts",
+      "status": "review-needed"
+    },
+    {
+      "id": "get-pr-comments",
+      "category": "code-review",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/get-pr-comments",
+      "status": "review-needed"
+    },
+    {
+      "id": "loop-on-ci",
+      "category": "delivery",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/loop-on-ci",
+      "status": "review-needed"
+    },
+    {
+      "id": "make-pr-easy-to-review",
+      "category": "code-review",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/make-pr-easy-to-review",
+      "status": "review-needed"
+    },
+    {
+      "id": "new-branch-and-pr",
+      "category": "delivery",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/new-branch-and-pr",
+      "status": "review-needed"
+    },
+    {
+      "id": "pr-review-canvas",
+      "category": "code-review",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/pr-review-canvas",
+      "status": "review-needed"
+    },
+    {
+      "id": "review-and-ship",
+      "category": "delivery",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/review-and-ship",
+      "status": "review-needed"
+    },
+    {
+      "id": "run-smoke-tests",
+      "category": "verification",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/run-smoke-tests",
+      "status": "review-needed"
+    },
+    {
+      "id": "show-me",
+      "category": "visualization",
+      "source": "humanlayer",
+      "upstream_path": "plugins/show-me/skills/show-me",
+      "status": "ready"
+    },
+    {
+      "id": "thermo-nuclear-code-quality-review",
+      "category": "code-review",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/thermo-nuclear-code-quality-review",
+      "status": "review-needed"
+    },
+    {
+      "id": "verify-this",
+      "category": "verification",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/verify-this",
+      "status": "review-needed"
+    },
+    {
+      "id": "weekly-review",
+      "category": "knowledge",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/weekly-review",
+      "status": "review-needed"
+    },
+    {
+      "id": "what-did-i-get-done",
+      "category": "knowledge",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/what-did-i-get-done",
+      "status": "review-needed"
+    },
+    {
+      "id": "workflow-from-chats",
+      "category": "knowledge",
+      "source": "cursor-team-kit",
+      "upstream_path": "plugins/cursor-team-kit/skills/workflow-from-chats",
+      "status": "review-needed"
+    }
+  ],
+  "bundles": [
+    {
+      "id": "show-me",
+      "description": "Focused visual explanations",
+      "skills": [
+        "show-me"
+      ]
+    },
+    {
+      "id": "engineering-kit",
+      "description": "Engineering workflows under individual migration review",
+      "skills": [
+        "check-compiler-errors",
+        "control-cli",
+        "control-ui",
+        "deslop",
+        "fix-ci",
+        "fix-merge-conflicts",
+        "get-pr-comments",
+        "loop-on-ci",
+        "make-pr-easy-to-review",
+        "new-branch-and-pr",
+        "pr-review-canvas",
+        "review-and-ship",
+        "run-smoke-tests",
+        "thermo-nuclear-code-quality-review",
+        "verify-this",
+        "weekly-review",
+        "what-did-i-get-done",
+        "workflow-from-chats"
+      ]
+    }
+  ]
+}

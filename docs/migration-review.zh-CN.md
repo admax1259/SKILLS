@@ -6,7 +6,7 @@
 
 目标仓库：https://github.com/admax1259/SKILLS 。保留现有 Apache-2.0 LICENSE；收录的第三方内容分别保留其原许可证、作者和来源，不能统一改署为原创。
 
-当前可见源是 `../plugins/cursor-team-kit`，18 个 skills、2 个 Cursor agents、2 个 rules。源仓库 HEAD：`93b00b89ef425a9c1bac0d0b317dfc49c930ac99`，插件版本 1.2.0，MIT，Copyright (c) 2026 Cursor。来源声明为 https://github.com/cursor/plugins ，本地 remote 为作者的 fork https://github.com/admax1259/plugins 。本地 `pr-review-canvas/SKILL.md` 存在未提交修改，导入时必须记录工作副本差异。
+当前可见源是 `../plugins/cursor-team-kit`，18 个 skills、2 个 Cursor agents、2 个 rules。源仓库 HEAD：`93b00b89ef425a9c1bac0d0b317dfc49c930ac99`，插件版本 1.2.0，MIT，Copyright (c) 2026 Cursor。来源声明为 https://github.com/cursor/plugins ，本地 remote 为作者的 fork https://github.com/admax1259/plugins 。本次结构调整时源工作树干净；导入文件及校验和登记在 sources/cursor-team-kit.json。
 
 迁移基线需比较现有工作副本与历史备份后确定，并记录本地修改，避免遗漏先前适配。
 
@@ -42,13 +42,9 @@ OpenAI 当前支持 skills-only 插件，ChatGPT 与 Codex 共享插件目录，
 | 18 | workflow-from-chats | 工作流可移植，数据源需适配 | 原版指定 Cursor chats；使用用户提供或宿主授权可读的会话；一次性意见不变永久规则；不能直接把私聊写进公开收集仓库。 |
 | 19 | show-me | 高可移植；按需选择伪代码、树、Mermaid、diff、HTML | 将 `Bash(open ...)` 替换为宿主预览与跨平台回退；保留“小而清晰”的原则，不强制所有解释都生成网页。 |
 
-## 建议的收集与分发结构（待讨论）
+## 已采用的收集与分发结构
 
-以 `plugins/<collection>/skills/<skill>/` 为单一维护来源，例如 `engineering-kit` 与 `show-me` 两个集合。同一份 skill 内容由 Codex、Claude Code、Cursor 各自的 manifest 包装；不复制成三份独立维护的提示词。
-
-仓库提供中英文 README、按项兼容矩阵、第三方授权记录、固定上游 commit、修改说明与更新流程。来源记录应按 collection/skill 细化，便于未来继续收录；许可未明确的内容先登记链接，不直接再分发。
-
-一键安装先提供克隆后执行的可审阅安装命令，支持选择 engine、单 skill/集合、预览、冲突检测及卸载。默认不覆盖用户已有同名 skill。安装器的本地文件行为与真实 engine 发现能力分开验证。是否提供远程一行安装器，在分发结构稳定后确定。
+以 skills/<id>/ 为唯一源码，19 项均已收录。catalog.json 管理分类、来源、状态和集合；sources/ 保留固定上游版本、许可证与修改记录。插件清单与缓存所需层级在 dist/ 中生成。show-me 可打包；18 个工程技能保留原始行为、待逐项适配，默认安装包不包含它们。参见 [目录设计](architecture.md) 与 [全部技能索引](CATALOG.md)。
 
 GitHub 与 GitLab 是两层支持：一是收集仓库可从任意 Git URL 安装；二是工作流能操作 GitHub PR 与 GitLab MR。自建 GitLab、嵌套 group、fork、分页、当前 SHA 与外部 CI 都需要覆盖，不能只把 `gh` 替换成 `glab`。
 
