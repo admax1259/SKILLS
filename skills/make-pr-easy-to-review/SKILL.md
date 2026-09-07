@@ -1,59 +1,18 @@
 ---
 name: make-pr-easy-to-review
-description: Prepare PRs for review by cleaning noisy history, improving PR descriptions, and adding reviewer guidance without changing code behavior. Use for "make this easy to review", "tidy this PR", "clean up commits", or "annotate the diff".
+description: Improve GitHub PR or GitLab MR descriptions and review guidance while preserving code behavior and shared history.
 ---
 
-# Make PR Easy to Review
+# Make PR easy to review
 
-Prepare a PR so a reviewer can quickly understand the intent, important files, and risk. The default goal is reviewability without behavior changes.
+Resolve the explicit PR/MR or current branch, provider/host, source and target projects, and base/head revisions. Inspect the full diff, commits, generated files, existing description, and verification evidence using available connectors or authenticated gh/glab.
 
-## Workflow
+Identify actual friction: mixed purposes, hidden generated changes, stale scope, unclear entry points, missing rationale, and undocumented test limits. Prefer a concise problem/result description, suggested reading order, and important tradeoffs. A large change may need splitting; do not hide it with a polished summary.
 
-1. Resolve the target PR from the user-provided URL or current branch.
-2. Inspect commits, diff size, changed paths, generated files, and PR description.
-3. Identify reviewability issues: noisy commits, stale description, unrelated changes, mixed mechanical and logic changes, missing tests, or unclear reviewer entry points.
-4. Propose a plan before rewriting history or force-pushing.
-5. Apply safe improvements, then verify the tree or diff still matches the intended code.
+If editing the PR/MR is authorized, update its description through a structured API argument or newline-preserving body file. Posting comments or requesting reviewers needs corresponding authorization. Otherwise return the prepared text locally.
 
-## History Cleanup
+Do not rewrite history merely to improve reviewability. When the user explicitly requests cleanup, record the original commit and tree, check for collaborators' newer commits, and preserve a recovery ref. Work on task-owned history only. Verify the final tree equals the original unless content changes were separately requested.
 
-Only rewrite history when the user asks for it or agrees to the plan. Before rewriting:
+Force-push only with explicit authorization, a verified remote expectation, and lease protection. If the remote moved, stop and reconcile rather than overriding it. Do not bypass hooks.
 
-```bash
-gh pr view <PR> --json title,headRefName,baseRefName,state,commits
-git fetch origin <headRefName> <baseRefName>
-ORIGINAL_TREE=$(git rev-parse origin/<headRefName>^{tree})
-```
-
-Good commit groupings usually follow dependency order:
-
-1. Schema/storage or generated API definitions.
-2. Core logic.
-3. Wiring and integration.
-4. UI or surface behavior.
-5. Tests.
-
-After rewriting, verify content identity:
-
-```bash
-echo "Original tree: $ORIGINAL_TREE"
-echo "Current tree:  $(git rev-parse HEAD^{tree})"
-git diff origin/<headRefName> --stat
-```
-
-Do not push if the tree changed unintentionally.
-
-## Reviewer Guidance
-
-When code behavior should stay untouched, prefer PR description and review notes:
-
-- Add a TL;DR that matches the actual diff.
-- Separate core files from generated or mechanical files.
-- Call out risky behavior changes, migration order, rollout plan, and test coverage.
-- Link issue trackers, dashboards, or design docs when they explain intent.
-
-## Guardrails
-
-- Never hide meaningful behavior changes inside "cleanup".
-- Do not bypass hooks unless the user explicitly asks.
-- If the PR is too large to make reviewable with notes, recommend splitting instead of polishing around the problem.
+Return the changes or prepared guidance, code/tree identity evidence when history changed, and unresolved review friction. Do not claim tests ran or reviewers approved based on description text.
