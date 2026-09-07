@@ -4,7 +4,7 @@
 
 A personal Agent Skills collector: collect consistently, preserve provenance, review each workflow, then package for different engines.
 
-**19 skills, 6 categories, 2 sources. Currently 1 ready and 18 awaiting adaptation.**
+**19 skills, 6 categories, 2 sources. Currently 2 ready and 17 awaiting adaptation.**
 
 ## Layout
 
@@ -34,7 +34,8 @@ Browse by category through the [index](docs/CATALOG.md), without moving skills t
 ## Collected content
 
 - [show-me](skills/show-me/SKILL.md): ready for packaging; from HumanLayer, with portable preview behavior.
-- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. Original behavior is preserved; status remains review-needed pending [individual discussion](docs/migration-review.zh-CN.md).
+- [check-compiler-errors](skills/check-compiler-errors/SKILL.md): adapted to check/report by default and repair when requested; install the compiler-checks bundle.
+- **All 18 cursor-team-kit skills are physically imported**, including PR canvas resources. They are categorized by verification, review, code quality, delivery, and knowledge. Except for the adapted check-compiler-errors skill, the other 17 retain upstream behavior and remain review-needed pending [individual discussion](docs/migration-review.zh-CN.md).
 
 Ready means eligible for packaging, not behaviorally verified on every engine. Bundles containing unreviewed members are withheld entirely rather than silently published with missing skills. Generic third-party installers may ignore this repository's status metadata; the installer below enforces it.
 
@@ -46,11 +47,13 @@ Requires Python 3.10+ and the Codex or Claude Code CLI. Clone, then build and in
 git clone https://github.com/admax1259/SKILLS.git
 cd SKILLS
 python3 scripts/install.py --engine codex --bundle show-me
+# Compiler checking skill:
+python3 scripts/install.py --engine codex --bundle compiler-checks
 # Claude Code:
 python3 scripts/install.py --engine claude --bundle show-me
 ```
 
-Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace-<version>/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until the new layout is merged, use the PR branch or its CI artifact.
+Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until the new layout is merged, use the PR branch or its CI artifact.
 
 **The source repository is no longer a directly registrable native marketplace.** Sources do not contain generated plugin copies; the native marketplace lives in build output or an extracted installation ZIP. Do not run codex plugin marketplace add . or /plugin marketplace add admax1259/SKILLS against source. Inside Claude Code, register the generated absolute directory path and install show-me@admax-skills.
 
@@ -67,7 +70,7 @@ Outputs in dist/packages/:
 | File | Purpose |
 |---|---|
 | skills-<version>.zip | Complete native marketplace; extract and run the same installer without Git or build dependencies |
-| show-me-<version>.zip | Standalone plugin with Codex and Claude manifests at its root |
+| <bundle>-<version>.zip | Standalone plugin (show-me or compiler-checks) with both engine manifests |
 | SHA256SUMS | ZIP checksums |
 
 Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); formal versions follow the [release process](docs/releases.md). Verify with shasum -a 256 -c SHA256SUMS on macOS or sha256sum -c SHA256SUMS on Linux.

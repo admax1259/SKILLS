@@ -32,7 +32,7 @@ def main():
         version, catalog = validate(ROOT)
         if args.bundle not in {b["id"] for b in ready_bundles(catalog)}:
             parser.error("This bundle contains unreviewed skills or does not exist")
-        target = ROOT / "dist" / ("marketplace-" + version)
+        target = ROOT / "dist" / "marketplace"
         if args.dry_run:
             print(f"Would build reviewed bundles into {target}")
             print(shlex.join([args.engine, "plugin", "marketplace", "add", str(target)]))

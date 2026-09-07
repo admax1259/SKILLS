@@ -14,7 +14,7 @@
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/check-compiler-errors",
-      "status": "review-needed"
+      "status": "ready"
     },
     {
       "id": "control-cli",
@@ -144,6 +144,11 @@
     }
   ],
   "bundles": [
+    {
+      "id": "compiler-checks",
+      "description": "Check compiler and type errors; repair only when requested",
+      "skills": ["check-compiler-errors"]
+    },
     {
       "id": "show-me",
       "description": "Focused visual explanations",

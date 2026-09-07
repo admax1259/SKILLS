@@ -15,7 +15,7 @@ Ready means eligible for packaging, not verified on every engine. / 可打包不
 
 | Skill | 来源 / Source | 状态 / Status |
 |---|---|---|
-| [check-compiler-errors](../skills/check-compiler-errors/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 待适配 / Review needed |
+| [check-compiler-errors](../skills/check-compiler-errors/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 可打包 / Ready |
 | [control-cli](../skills/control-cli/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 待适配 / Review needed |
 | [control-ui](../skills/control-ui/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 待适配 / Review needed |
 | [run-smoke-tests](../skills/run-smoke-tests/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 待适配 / Review needed |
