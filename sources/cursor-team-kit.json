@@ -8,6 +8,11 @@
     "Added a final newline to get-pr-comments/SKILL.md; original SHA-256: 8bf292736cab922276feb4d8377edc2fc4102a7beb62bcd1f3f5cf72a79b16cc. imported_files records the imported snapshot."
   ],
   "adapted_files": {
+    "deslop/SKILL.md": {
+      "baseline_sha256": "2f7b7def74af7ed11f5b44b4d32f0f91fca8c5d1f92bf2171e8d12fd33a0f810",
+      "sha256": "4a8184459a31a17a37aa2101e26c8009136369700c4807ad893e00a35957d2d3",
+      "reason": "Adapted for focused diff cleanup: discover comparison refs without assuming main, preserve behavior and necessary safeguards, distinguish redundant comments from rationale, allow a no-change result, and separate unrelated bug fixes."
+    },
     "check-compiler-errors/SKILL.md": {
       "baseline_sha256": "1ad76beccd581fc285199334709e0a37cdc2f76e5d0d33c90e1dc21905518004",
       "sha256": "0c2e47d3af5769f9300002304c28899097ac51acb827d3ae542660587691e4df",

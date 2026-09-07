@@ -109,7 +109,8 @@ class DistributionTests(unittest.TestCase):
                                      "--engine", "codex", "--dry-run"], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertFalse((root / "dist").exists())
-            (root / "VERSION").write_text("0.4.0\n")
+            major, minor, patch = (root / "VERSION").read_text().strip().split(".")
+            (root / "VERSION").write_text(f"{major}.{minor}.{int(patch) + 1}\n")
             upgraded = subprocess.run([sys.executable, str(root / "scripts/install.py"),
                                        "--engine", "codex", "--dry-run"], capture_output=True, text=True)
             self.assertEqual(upgraded.returncode, 0, upgraded.stderr)

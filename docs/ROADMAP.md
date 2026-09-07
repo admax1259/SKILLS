@@ -12,7 +12,7 @@
 
 ## Engineering adaptation
 
-逐项讨论全部 18 个已收录的工程 skills；第一项 check-compiler-errors 已接受“默认检查、明确要求时修复”，完成适配并进入 compiler-checks 独立集合；其余 17 项仍待适配，下一项为 deslop。补 GitHub PR / GitLab MR 差异、自建 GitLab、分页、fork 与当前 SHA 检查。原始收录状态不代表适配完成。
+逐项讨论全部 18 个已收录的工程 skills；第一项 check-compiler-errors 已接受“默认检查、明确要求时修复”，完成适配并进入 compiler-checks 独立集合；第二项 deslop 已完成保持行为的 diff 清理适配，独立集合为 code-cleanup；其余 16 项待适配，下一项为 fix-merge-conflicts。补 GitHub PR / GitLab MR 差异、自建 GitLab、分页、fork 与当前 SHA 检查。原始收录状态不代表适配完成。
 
 ## Growth and promotion
 

@@ -16,4 +16,10 @@ The owner accepted the recommendation: check and report by default; repair when 
 
 Validation: a maintainer-led C/Make fixture walkthrough detected an undeclared identifier without modifying files; an explicit fixture repair passed the same command. This is a workflow rehearsal, not an independent model evaluation. Native packaging and engine installation are tracked separately.
 
-Next discussion: deslop. Proposed scope is removing demonstrable diff noise while preserving behavior and necessary error handling; no adaptation decision has been applied yet.
+## Migration discussion 2 — deslop (implemented)
+
+After the compiler-check PR was merged, the owner requested continuation. Implement the proposed narrow cleanup scope: preserve behavior, necessary boundary checks and rationale; discover the comparison ref instead of assuming main; allow no changes when cleanup is unjustified. Bug repair and broad refactoring remain separate tasks. Publish independently as code-cleanup.
+
+Maintainer rehearsal: removing a redundant comment left the Python AST identical, preserved a rationale comment and input exception handling, passed valid/invalid/null input cases, and left an unrelated file unchanged. This is not independent model evaluation. Packaging and native Codex installation are checked separately.
+
+Next discussion: fix-merge-conflicts. Proposed scope: respect the active Git operation and both sides' intent, regenerate lockfiles with project tools, validate before staging, and avoid automatic pushes. No adaptation has been applied to that skill.

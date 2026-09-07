@@ -4,7 +4,7 @@
 
 个人 Agent Skills 收集器：统一收录、保留来源、逐项适配，再打包给不同引擎。
 
-**19 个技能，6 个分类，2 个来源。目前 2 个可打包、17 个待适配。**
+**19 个技能，6 个分类，2 个来源。目前 3 个可打包、16 个待适配。**
 
 ## 目录
 
@@ -35,7 +35,8 @@ SKILLS/
 
 - [show-me](skills/show-me/SKILL.md)：可打包。来自 HumanLayer，已适配跨平台预览。
 - [check-compiler-errors](skills/check-compiler-errors/SKILL.md)：已适配，默认检查并报告，明确要求时修复；独立安装集合为 `compiler-checks`。
-- **cursor-team-kit 全部 18 个 skills 已实际收录**，包含 PR canvas 的配套资源；按验证、审查、代码质量、交付、知识复盘分类。除已适配的 check-compiler-errors 外，其余 17 项保留上游行为，状态为 `review-needed`，等待[逐项讨论](docs/migration-review.zh-CN.md)后适配。
+- [deslop](skills/deslop/SKILL.md)：已适配，清理当前 diff 的冗余并保持行为；保留必要注释和错误处理，独立集合为 `code-cleanup`。
+- **cursor-team-kit 全部 18 个 skills 已实际收录**，包含 PR canvas 的配套资源；按验证、审查、代码质量、交付、知识复盘分类。除已适配的 check-compiler-errors 和 deslop 外，其余 16 项保留上游行为，状态为 `review-needed`，等待[逐项讨论](docs/migration-review.zh-CN.md)后适配。
 
 `ready` 表示可以进入包，不代表每个引擎均已行为验证。包含待适配成员的 bundle 整体不生成，避免发布内容不完整的集合。通用第三方安装器可能不读取本仓库状态；使用下面的安装器可执行审核过滤。
 
@@ -49,6 +50,8 @@ cd SKILLS
 python3 scripts/install.py --engine codex --bundle show-me
 # 安装编译检查技能：
 python3 scripts/install.py --engine codex --bundle compiler-checks
+# 安装代码清理技能：
+python3 scripts/install.py --engine codex --bundle code-cleanup
 # Claude Code：
 python3 scripts/install.py --engine claude --bundle show-me
 ```
@@ -70,7 +73,7 @@ python3 scripts/package.py
 | 文件 | 用途 |
 |---|---|
 | `skills-<version>.zip` | 完整原生 marketplace；解压后执行同样的安装命令，无需 Git 或构建依赖 |
-| `<bundle>-<version>.zip` | 单个双引擎插件（show-me 或 compiler-checks），根目录含两种 manifest |
+| `<bundle>-<version>.zip` | 单个双引擎插件（show-me、compiler-checks 或 code-cleanup），根目录含两种 manifest |
 | `SHA256SUMS` | ZIP 校验和 |
 
 可从 [Actions artifacts](https://github.com/admax1259/SKILLS/actions) 下载；正式版本遵循[发版流程](docs/releases.md)。macOS 用 `shasum -a 256 -c SHA256SUMS` 校验，Linux 用 `sha256sum -c SHA256SUMS`。
