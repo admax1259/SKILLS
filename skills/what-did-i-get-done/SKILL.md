@@ -1,31 +1,21 @@
 ---
 name: what-did-i-get-done
-description: Summarize authored commits over a user-specified time period into a concise update
+description: Summarize a person's repository work within an explicit time window, distinguishing commits, merged changes, and deployment evidence.
 ---
 
-# What did I get done
+# Summarize completed work
 
-## Trigger
+Resolve the user's requested dates and timezone into a concrete interval. Use a half-open interval (start inclusive, end exclusive) when filtering timestamps to avoid counting a boundary twice. State whether authored or committed time is used.
 
-Need a short, high-signal summary of work completed in a specific time range (for example: yesterday, last 3 days, or last week).
+Identify the author from the user's supplied identity, repository config and .mailmap, or authorized provider data. Multiple emails, bots, squash merges, and connector commits can obscure attribution; do not attribute all repository activity to the user. If identity is ambiguous, ask or label the available evidence rather than changing git config.
 
-## Workflow
+Collect commits/diffs from the stated branch or default branch and requested repositories. State limits of a shallow clone, missing refs, unavailable PR/MR data, or partial date coverage. Avoid double-counting merge commits, cherry-picks, and squash equivalents.
 
-1. Resolve the requested time window into concrete dates.
-2. Read commits authored by the current git user email within that range.
-3. Exclude merge commits and uncommitted changes.
-4. Synthesize the most important shipped changes into a concise status update.
-5. Include the actual date range used in the final summary.
+Group meaningful changes by delivered behavior or theme. Distinguish:
+- authored commits on a branch;
+- changes merged into the target branch;
+- releases/deployments supported by separate evidence.
 
-## Guardrails
+A commit alone is not proof of shipping or production deployment. Exclude uncommitted work unless requested and label it separately. Do not infer motivation, business impact, or ownership from a commit title alone.
 
-- Be extremely concise and information-dense.
-- Prioritize substantial behavior or architecture changes.
-- Omit cosmetic-only changes (formatting, imports, minor renames).
-- Do not infer intent or motivation. Describe changes functionally.
-
-## Output
-
-- One short summary suitable for a status update
-- Real date range
-- Optional 2-5 bullets for major changes only
+Return a concise status update, actual interval/timezone, evidence scope, and links or commit IDs for the main claims. Mention attribution gaps where they affect the result. This is a read-only workflow.

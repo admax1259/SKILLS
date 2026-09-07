@@ -1,32 +1,16 @@
 ---
 name: weekly-review
-description: Produce a weekly synthesis of authored commits with highlights by bugfix, tech debt, and net-new work
+description: Produce an evidence-backed weekly recap of repository work grouped into fixes, maintenance, and new capabilities.
 ---
 
 # Weekly review
 
-## Trigger
+Resolve the calendar week and timezone the user means. If they do not specify, use the previous completed calendar week in their timezone and state the dates; do not silently stretch it to 7–10 days.
 
-Need a weekly recap of shipped work for status updates, retros, or planning.
+Use the supplied author identity, git config/.mailmap, or authorized provider identity without rewriting configuration. Review the requested/default branch and available commits, diffs, and PR/MR merge evidence. Flag missing history and ambiguous authorship; a squash commit or connector author may differ from the contributor.
 
-## Workflow
+Group meaningful work into fixes, maintenance/technical debt, and new capabilities when evidence supports those categories. Mark inference when classification is uncertain. Avoid double-counting merge/cherry-pick equivalents and avoid treating a branch commit as a shipped feature.
 
-1. Determine the current git user email from repo config.
-2. Collect authored commits from the last 7-10 days on the primary branch context.
-3. Exclude merge commits.
-4. Group meaningful changes into 2-5 concise bullets.
-5. Add a short classification paragraph covering:
-   - likely bug fixes
-   - likely tech debt work
-   - likely net-new functionality
+Produce a short weekly narrative with concrete date range, scope, supporting links/commits, and notable unfinished work only when requested. Report merged and deployed work separately. Use what-did-i-get-done if available for the collection principles; this skill remains usable with ordinary git/provider tools alone.
 
-## Guardrails
-
-- Keep the recap short and executive-readable.
-- Base claims only on commit history and diffs.
-- If git email is missing, ask the user to set it before proceeding.
-
-## Output
-
-- 2-5 bullet weekly summary
-- Brief classification paragraph (bugfix / tech debt / net-new)
+Do not publish the recap to chat/email or change tracking data merely because a summary was requested.

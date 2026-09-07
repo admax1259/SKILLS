@@ -1,32 +1,16 @@
 ---
 name: fix-merge-conflicts
-description: Resolve merge conflicts non-interactively, validate build and tests, and finalize conflict resolution
+description: Resolve an active Git merge, rebase, or cherry-pick conflict while preserving both sides' intent and validating the resolution.
 ---
 
-# Fix merge conflicts
+# Resolve conflicts
 
-## Trigger
+1. Inspect git status, unmerged index entries, and the active operation. Record unrelated staged/unstaged work; do not reset, abort, stash, or start a new operation implicitly.
+2. Read the common ancestor and both variants for each conflicted file. During rebase, ours/theirs refers to the rebased target and replayed commit, not necessarily the user's intuitive branch labels; inspect the actual contents.
+3. Resolve intended behavior rather than choosing whichever side compiles. Keep changes scoped to the conflict. Explain ambiguity that needs a product decision before choosing a destructive interpretation.
+4. Handle rename/delete and binary conflicts explicitly. For generated files and lockfiles, reconcile their source inputs and use the project's generator or dependency manager; do not install arbitrary new versions to force resolution.
+5. Run relevant compilation, checks, and tests. Missing tools are a blocker, not evidence that a resolution works.
+6. Confirm the unmerged index is empty after selectively staging resolved files and inspect the staged diff. Search for accidental conflict markers, distinguishing legitimate examples from unresolved content. Avoid staging unrelated files.
+7. Report the active operation, resolved files, semantic choices, checks, and remaining blockers. Continue the operation or create its final commit only when included in the user's request; resolving files alone does not request a push or tag.
 
-Branch has unresolved merge conflicts and needs a reliable path to a buildable state.
-
-## Workflow
-
-1. Detect all conflicting files from git status and conflict markers.
-2. Resolve each conflict with minimal, correctness-first edits.
-3. Prefer preserving both sides when safe. Otherwise, choose the variant that compiles and keeps public behavior stable.
-4. Regenerate lockfiles with package manager tools instead of hand-editing.
-5. Run compile, lint, and relevant tests.
-6. Stage resolved files and summarize key decisions.
-
-## Guardrails
-
-- Keep changes minimal and readable.
-- Do not leave conflict markers in any file.
-- Avoid broad refactors while resolving conflicts.
-- Do not push or tag during conflict resolution.
-
-## Output
-
-- Files resolved
-- Notable resolution choices
-- Build/test outcome
+A successful resolution preserves both branches' requirements, not necessarily both implementations. Do not turn conflict handling into broad cleanup.
