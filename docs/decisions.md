@@ -22,4 +22,10 @@ After the compiler-check PR was merged, the owner requested continuation. Implem
 
 Maintainer rehearsal: removing a redundant comment left the Python AST identical, preserved a rationale comment and input exception handling, passed valid/invalid/null input cases, and left an unrelated file unchanged. This is not independent model evaluation. Packaging and native Codex installation are checked separately.
 
-Next discussion: fix-merge-conflicts. Proposed scope: respect the active Git operation and both sides' intent, regenerate lockfiles with project tools, validate before staging, and avoid automatic pushes. No adaptation has been applied to that skill.
+## Batch adaptation — 0.5.0
+
+The owner changed the delivery process to focused local commits followed by one aggregate PR, with repository bootstrap checks. All remaining 16 skills are adapted under the accepted intent/scope/evidence principles. See migration-review.zh-CN.md and bootstrap.md.
+
+Preserve the two inherited explicit-only review policies. Native Codex validation rejects Claude's disable-model-invocation: true, so bundles requiring that policy generate separate Codex and Claude plugin directories. Only generated Codex frontmatter removes the Claude flag; agents/openai.yaml retains allow_implicit_invocation: false. Canonical sources remain single-copy.
+
+Package output is rebuilt in owned dist/packages/current to prevent obsolete ZIPs from entering artifact/release globs. Keep formal publication separate from a version bump.

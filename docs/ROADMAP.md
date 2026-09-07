@@ -12,7 +12,12 @@
 
 ## Engineering adaptation
 
-逐项讨论全部 18 个已收录的工程 skills；第一项 check-compiler-errors 已接受“默认检查、明确要求时修复”，完成适配并进入 compiler-checks 独立集合；第二项 deslop 已完成保持行为的 diff 清理适配，独立集合为 code-cleanup；其余 16 项待适配，下一项为 fix-merge-conflicts。补 GitHub PR / GitLab MR 差异、自建 GitLab、分页、fork 与当前 SHA 检查。原始收录状态不代表适配完成。
+18 项工程技能已完成适配，和 show-me 共 19 项可打包。使用本地分批提交、一次汇总 PR；自举证据见 [bootstrap.md](bootstrap.md)。已补 GitHub PR / GitLab MR 指令、分页采集、当前 SHA 检查、调用策略映射和完整 diff 展示。
+
+- [ ] GitLab 真实 MR 写入、pipeline 与 discussions 端到端验证。
+- [ ] Claude Code 安装与行为验证。
+- [ ] 新会话自动技能选择的独立评估。
+- [ ] 根据真实使用反馈继续改进，不把当前 ready 当作永久兼容认证。
 
 ## Growth and promotion
 

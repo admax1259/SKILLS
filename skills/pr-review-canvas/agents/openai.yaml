@@ -1,2 +1,5 @@
+interface:
+  display_name: "PR Review Canvas"
+  short_description: "Explicit visual walkthrough of PR and MR diffs"
 policy:
   allow_implicit_invocation: false

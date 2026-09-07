@@ -31,4 +31,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" dist/packages/*.zip dist/packages/SHA256SUMS --verify-tag --generate-notes
+        run: gh release create "$RELEASE_TAG" dist/packages/current/*.zip dist/packages/current/SHA256SUMS --verify-tag --generate-notes

@@ -34,14 +34,14 @@ class DistributionTests(unittest.TestCase):
             with zipfile.ZipFile(temp / f"a/skills-{version}.zip") as z:
                 self.assertFalse(any(".git/" in n or "catalog.json" in n or "AGENTS.md" in n for n in z.namelist()))
                 self.assertTrue(any("check-compiler-errors/SKILL.md" in n for n in z.namelist()))
-                self.assertFalse(any("fix-ci/SKILL.md" in n for n in z.namelist()))
+                self.assertTrue(any("fix-ci/SKILL.md" in n for n in z.namelist()))
+                self.assertTrue(any("pr-review-canvas/scripts/render.py" in n for n in z.namelist()))
                 z.extractall(temp / "extracted")
             extracted = temp / f"extracted/skills-{version}"
             subprocess.run([sys.executable, str(extracted / "scripts/install.py"),
                             "--engine", "claude", "--dry-run"], check=True, capture_output=True)
             self.assertIn(str(extracted.resolve()), commands("codex", "show-me", extracted)[0])
-            with self.assertRaisesRegex(ValueError, "not installable"):
-                commands("codex", "engineering-kit", extracted)
+            self.assertIn("engineering-kit@admax-skills", commands("codex", "engineering-kit", extracted)[1])
             with zipfile.ZipFile(temp / f"a/show-me-{version}.zip") as z:
                 self.assertIn(".claude-plugin/plugin.json", z.namelist())
                 self.assertIn(".codex-plugin/plugin.json", z.namelist())
@@ -115,10 +115,55 @@ class DistributionTests(unittest.TestCase):
                                        "--engine", "codex", "--dry-run"], capture_output=True, text=True)
             self.assertEqual(upgraded.returncode, 0, upgraded.stderr)
             self.assertEqual(result.stdout, upgraded.stdout, "Version upgrades must retain marketplace source identity")
+            catalog_path = root / "catalog.json"
+            data = json.loads(catalog_path.read_text())
+            next(e for e in data["skills"] if e["id"] == "fix-ci")["status"] = "review-needed"
+            catalog_path.write_text(json.dumps(data))
+            built = build_marketplace(root, Path(temp) / "pending")
+            self.assertFalse((built / "plugins/engineering-kit").exists())
             rejected = subprocess.run([sys.executable, str(root / "scripts/install.py"),
                                        "--engine", "codex", "--bundle", "engineering-kit", "--dry-run"],
                                       capture_output=True, text=True)
             self.assertNotEqual(rejected.returncode, 0)
+
+    def test_explicit_only_policy_requires_codex_mapping(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = clone(Path(temp) / "repo")
+            (root / "skills/pr-review-canvas/agents/openai.yaml").unlink()
+            with self.assertRaisesRegex(ValueError, "matching Codex"):
+                validate(root)
+
+    def test_engine_specific_invocation_policy(self):
+        with tempfile.TemporaryDirectory() as temp:
+            built = build_marketplace(ROOT, Path(temp) / "built")
+            codex = built / "plugins/engineering-kit"
+            claude = built / "claude-plugins/engineering-kit"
+            for name in ["pr-review-canvas", "thermo-nuclear-code-quality-review"]:
+                relative = Path("skills") / name
+                self.assertNotIn("disable-model-invocation:", (codex / relative / "SKILL.md").read_text())
+                self.assertIn("allow_implicit_invocation: false", (codex / relative / "agents/openai.yaml").read_text())
+                self.assertIn("disable-model-invocation: true", (claude / relative / "SKILL.md").read_text())
+            self.assertFalse((codex / ".claude-plugin").exists())
+            self.assertFalse((claude / ".codex-plugin").exists())
+            self.assertEqual((codex / "skills/pr-review-canvas/renderer.js").read_bytes(),
+                             (claude / "skills/pr-review-canvas/renderer.js").read_bytes())
+            catalog = json.loads((built / ".claude-plugin/marketplace.json").read_text())
+            self.assertEqual(next(p for p in catalog["plugins"] if p["name"] == "engineering-kit")["source"],
+                             "./claude-plugins/engineering-kit")
+
+    def test_package_output_rebuild_excludes_stale_archives(self):
+        with tempfile.TemporaryDirectory() as temp:
+            target = Path(temp) / "output"
+            package(output=target)
+            (target / "obsolete.zip").write_bytes(b"old generated artifact")
+            package(output=target)
+            self.assertFalse((target / "obsolete.zip").exists())
+            other = Path(temp) / "user-directory"
+            other.mkdir()
+            (other / "keep").write_text("user work")
+            with self.assertRaisesRegex(ValueError, "not owned"):
+                package(output=other)
+            self.assertEqual((other / "keep").read_text(), "user work")
 
 
 if __name__ == "__main__":

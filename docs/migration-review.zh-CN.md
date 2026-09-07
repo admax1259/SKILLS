@@ -1,14 +1,14 @@
 # Skills 收集器：迁移评审与逐项讨论
 
-日期：2026-09-03。状态：评审与讨论中；不是已完成的跨引擎兼容认证。
+状态：0.5.0 批量适配完成；不是全引擎行为认证。验证分层见 [bootstrap.md](bootstrap.md)。
 
 ## 目标与来源
 
 目标仓库：https://github.com/admax1259/SKILLS 。保留现有 Apache-2.0 LICENSE；收录的第三方内容分别保留其原许可证、作者和来源，不能统一改署为原创。
 
-当前可见源是 `../plugins/cursor-team-kit`，18 个 skills、2 个 Cursor agents、2 个 rules。源仓库 HEAD：`93b00b89ef425a9c1bac0d0b317dfc49c930ac99`，插件版本 1.2.0，MIT，Copyright (c) 2026 Cursor。来源声明为 https://github.com/cursor/plugins ，本地 remote 为作者的 fork https://github.com/admax1259/plugins 。本次结构调整时源工作树干净；导入文件及校验和登记在 sources/cursor-team-kit.json。
+导入时的源目录是 `../plugins/cursor-team-kit`，18 个 skills、2 个 Cursor agents、2 个 rules。源仓库 HEAD：`93b00b89ef425a9c1bac0d0b317dfc49c930ac99`，插件版本 1.2.0，MIT，Copyright (c) 2026 Cursor。来源声明为 https://github.com/cursor/plugins ，本地 remote 为作者的 fork https://github.com/admax1259/plugins 。本次结构调整时源工作树干净；导入文件及校验和登记在 sources/cursor-team-kit.json。
 
-迁移基线需比较现有工作副本与历史备份后确定，并记录本地修改，避免遗漏先前适配。
+初始导入哈希保持不变，适配后的哈希及原因另记在 adapted_files。
 
 额外收录：HumanLayer [show-me](https://github.com/humanlayer/skills/tree/main/plugins/show-me/skills/show-me)，上游快照 `3c2629142c5d437428269b1b722b08c0b87f574d`，MIT，Copyright (c) 2026 HumanLayer。
 
@@ -20,7 +20,7 @@ OpenAI 当前支持 skills-only 插件，ChatGPT 与 Codex 共享插件目录，
 
 ## 逐项评审
 
-| # | Skill | 作用与 GPT 适配判断 | 迁移时要讨论或修改的地方 |
+| # | Skill | 作用与 GPT 适配判断 | 本批已落实的适配 |
 |---|---|---|---|
 | 1 | check-compiler-errors | 高可移植；运行编译与类型检查，按文件归类错误 | 已确定：默认检查并报告，明确要求或当前任务包含修复时才修改。发现项目命令，区分环境阻塞与编译错误，不预设语言。 |
 | 2 | deslop | 高可移植；清理当前 diff 中多余注释、类型逃逸及不一致风格 | 已适配：发现比较基线，不硬编码 main；有证据才清理，不推断代码作者；保留必要容错和说明，默认保持行为。 |
@@ -36,7 +36,7 @@ OpenAI 当前支持 skills-only 插件，ChatGPT 与 Codex 共享插件目录，
 | 12 | review-and-ship | 可适配；审查、验证、提交、推送、开 PR/MR | 明确 ship 默认到创建/更新 PR/MR，原版没有自动 merge/deploy；子代理可用时再委派，缺失时串行审查。 |
 | 13 | make-pr-easy-to-review | 可适配；整理描述与审阅路径，按需整理历史 | GitHub/GitLab 元数据适配；重写历史仅在用户要求范围内；保留 tree identity 验证，避免覆盖他人的远端更新。 |
 | 14 | pr-review-canvas | 可适配；生成可交互的 diff 导览 | 保留 renderer.js、styles.css、template.html；GitLab diff 需转换为统一结构；处理分页、截断与二进制，保留防 `</script>` 注入逻辑；替换固定预览端口与宿主假设。 |
-| 15 | thermo-nuclear-code-quality-review | 可适配；严格审查抽象、边界、分支复杂度 | 原版很长、规则重复，且把 1000 行门槛视为强阻断；要讨论是否保留这一主观门槛。默认审查不应隐含全面重构；映射显式调用元数据。 |
+| 15 | thermo-nuclear-code-quality-review | 可适配；严格审查抽象、边界、分支复杂度 | 原版很长、规则重复，且把 1000 行门槛视为强阻断；已将行数门槛改为调查信号，不再单独作为阻断。默认审查不应隐含全面重构；映射显式调用元数据。 |
 | 16 | what-did-i-get-done | 高可移植；按时间范围汇总本人提交 | 明确时区、分支与作者别名；提交不等于合并/部署，不把所有 commit 都称为 shipped。 |
 | 17 | weekly-review | 高可移植；周度汇总与 bugfix/tech-debt/net-new 分类 | 与上一项重叠；可保留周报入口共享采集规则。缺 git email 时可使用用户提供的作者身份，不强迫更改 git config。 |
 | 18 | workflow-from-chats | 工作流可移植，数据源需适配 | 原版指定 Cursor chats；使用用户提供或宿主授权可读的会话；一次性意见不变永久规则；不能直接把私聊写进公开收集仓库。 |
@@ -44,7 +44,7 @@ OpenAI 当前支持 skills-only 插件，ChatGPT 与 Codex 共享插件目录，
 
 ## 已采用的收集与分发结构
 
-以 skills/<id>/ 为唯一源码，19 项均已收录。catalog.json 管理分类、来源、状态和集合；sources/ 保留固定上游版本、许可证与修改记录。插件清单与缓存所需层级在 dist/ 中生成。show-me、check-compiler-errors 和 deslop 可打包；其余 16 个工程技能保留原始行为、待逐项适配，默认安装包不包含它们。参见 [目录设计](architecture.md) 与 [全部技能索引](CATALOG.md)。
+以 skills/<id>/ 为唯一源码，19 项均已收录。catalog.json 管理分类、来源、状态和集合；sources/ 保留固定上游版本、许可证与修改记录。插件清单与缓存所需层级在 dist/ 中生成。19 项均可打包；engineering-kit 包含全部 18 项工程技能。两项显式调用技能在构建时映射引擎元数据；源码与资源保持单份。参见 [目录设计](architecture.md) 与 [全部技能索引](CATALOG.md)。
 
 GitHub 与 GitLab 是两层支持：一是收集仓库可从任意 Git URL 安装；二是工作流能操作 GitHub PR 与 GitLab MR。自建 GitLab、嵌套 group、fork、分页、当前 SHA 与外部 CI 都需要覆盖，不能只把 `gh` 替换成 `glab`。
 
@@ -52,8 +52,8 @@ GitHub 与 GitLab 是两层支持：一是收集仓库可从任意 Git URL 安�
 
 - 已收录 show-me，保留完整 MIT 声明、固定来源版本与修改说明。Codex manifest 通过官方本地校验器，已通过原生 CLI 安装到版本化插件缓存；新会话行为验证尚未完成。
 - 已确定：提供 Codex / ChatGPT 格式与 Claude Code 格式；其他界面的导入和公开目录上架独立验证。
-- 第 1 项已确认并适配：check-compiler-errors 默认检查、要求时修复。第 2 项 deslop 已适配；下一项为 fix-merge-conflicts。
-- 已提供中英文 README、安装器及 CI 打包流程；后续逐项确认工程 skills 行为后迁移。正式 Release 尚未发布。
+- check-compiler-errors 与 deslop 先行适配并合并；其余 16 项按用户后续授权批量适配，以本地分批提交和一个汇总 PR 交付。
+- 已提供中英文 README、安装器、分引擎策略、CI 打包与自举记录。正式 Release 尚未发布。
 
 ## 核实资料
 

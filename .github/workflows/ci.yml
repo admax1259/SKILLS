@@ -24,7 +24,7 @@ jobs:
         with:
           name: skills-packages-${{ github.sha }}
           path: |
-            dist/packages/*.zip
-            dist/packages/SHA256SUMS
+            dist/packages/current/*.zip
+            dist/packages/current/SHA256SUMS
           if-no-files-found: error
           retention-days: 30
