@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0-beta.4
+
+- Add UI UX Pro Max with complete search data, references, four Python runtime modules and MIT provenance. Total: 46 skills in one plugin.
+- Adapt installed paths for Codex/Claude Code, preserve existing design systems and clarify collaboration with Hallmark.
+- Verify packaged search, stack guidance, design generation and non-overwriting persistence in both engine layouts.
+
 ## 0.7.0-beta.3
 
 - Publish a generated distribution branch from the same payload as the offline Release ZIP, supporting online installation for both engines.

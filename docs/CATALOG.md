@@ -94,3 +94,4 @@ Ready means eligible for packaging, not verified on every engine. / 可打包不
 | Skill | 来源 / Source | 状态 / Status |
 |---|---|---|
 | [hallmark](../skills/hallmark/SKILL.md) | [hallmark](../sources/hallmark.json) | 可打包 / Ready |
+| [ui-ux-pro-max](../skills/ui-ux-pro-max/SKILL.md) | [ui-ux-pro-max](../sources/ui-ux-pro-max.json) | 可打包 / Ready |
