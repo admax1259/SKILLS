@@ -4,9 +4,16 @@
 
 A personal Agent Skills collection: preserve attribution, adapt workflows, and distribute together. **45 skills, 9 categories, 4 upstream sources, one complete plugin.**
 
-**[Download v0.7.0-beta.2](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.2)** — `skills-0.7.0-beta.2.zip` + `SHA256SUMS`.
+**[Download v0.7.0-beta.3](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.3)** — `skills-0.7.0-beta.3.zip` + `SHA256SUMS`.
 
 One ZIP contains native layouts for Codex and Claude Code. Install the entire collection without selecting separate packs.
+
+## Two installation methods
+
+- **Online updates**: use GitHub source `admax1259/SKILLS` and ref `distribution`, which advances only with validated releases. Claude Code supports opt-in auto-updates; Codex has explicit refresh/install commands.
+- **Offline snapshots**: download, verify and extract a Release ZIP; keep older versions for rollback.
+
+Both methods share one plugin identity and payload. Choose one registered source per engine. [Install, update, switch sources and roll back](docs/INSTALL.md#在线安装与升级--online-installation-and-updates).
 
 ## Install
 
@@ -14,8 +21,8 @@ One ZIP contains native layouts for Codex and Claude Code. Install the entire co
 
 | Field | GitHub | Extracted Release |
 |---|---|---|
-| Source | `admax1259/SKILLS` | Absolute path to extracted `skills-0.7.0-beta.2` |
-| Git ref | `v0.7.0-beta.2` | Leave empty |
+| Source | `admax1259/SKILLS` | Absolute path to extracted `skills-0.7.0-beta.3` |
+| Git ref | `distribution` | Leave empty |
 | Sparse paths | Leave empty | Leave empty |
 
 After adding the source, open **Admax Skills** and click **Install**. Source accepts a repository or directory, not a ZIP or Release page.

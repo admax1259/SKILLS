@@ -23,11 +23,41 @@ def commands(engine, marketplace):
             [engine, "plugin", "add" if engine == "codex" else "install", f"{bundle}@{catalog['name']}"]]
 
 
+
+def github_commands(engine, update=False):
+    if engine not in {"codex", "claude"}:
+        raise ValueError("Unsupported engine")
+    if update:
+        refresh = [engine, "plugin", "marketplace", "upgrade" if engine == "codex" else "update", "admax-skills"]
+        install = [engine, "plugin", "add" if engine == "codex" else "update", "admax-skills@admax-skills"]
+    else:
+        source = "https://github.com/admax1259/SKILLS.git"
+        refresh = ([engine, "plugin", "marketplace", "add", source, "--ref", "distribution"]
+                   if engine == "codex" else [engine, "plugin", "marketplace", "add", source + "#distribution"])
+        install = [engine, "plugin", "add" if engine == "codex" else "install", "admax-skills@admax-skills"]
+    return [refresh, install]
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", choices=["codex", "claude"], required=True)
     parser.add_argument("--dry-run", action="store_true", help="Preview; do not build or install")
+    parser.add_argument("--source", choices=["local", "github"], default="local",
+                        help="local: install this snapshot; github: follow published distribution")
+    parser.add_argument("--update", action="store_true", help="Refresh an existing GitHub registration and installed plugin")
     args = parser.parse_args()
+    if args.update and args.source != "github":
+        parser.error("--update requires --source github; offline updates install a newly extracted snapshot")
+    if args.source == "github":
+        steps = github_commands(args.engine, args.update)
+        for step in steps:
+            print(shlex.join(step), flush=True)
+        if not args.dry_run:
+            if not shutil.which(args.engine):
+                parser.error(f"Install the {args.engine} CLI first")
+            for step in steps:
+                subprocess.run(step, check=True)
+            print("Updated from the configured source. Start a fresh engine session.")
+        return
     if (ROOT / "catalog.json").is_file():
         from validate import validate
         version, catalog = validate(ROOT)
