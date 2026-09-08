@@ -88,3 +88,9 @@ Ready means eligible for packaging, not verified on every engine. / 可打包不
 | [to-questionnaire](../skills/to-questionnaire/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
 | [wait-what](../skills/wait-what/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
 | [writing-for-agents](../skills/writing-for-agents/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+
+## 界面设计 / Interface design
+
+| Skill | 来源 / Source | 状态 / Status |
+|---|---|---|
+| [hallmark](../skills/hallmark/SKILL.md) | [hallmark](../sources/hallmark.json) | 可打包 / Ready |

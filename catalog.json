@@ -8,7 +8,8 @@
     "delivery",
     "knowledge",
     "engineering",
-    "productivity"
+    "productivity",
+    "design"
   ],
   "skills": [
     {
@@ -117,6 +118,13 @@
       "category": "productivity",
       "source": "matt-pocock",
       "upstream_path": "skills/productivity/grilling",
+      "status": "ready"
+    },
+    {
+      "id": "hallmark",
+      "category": "design",
+      "source": "hallmark",
+      "upstream_path": "skills/hallmark",
       "status": "ready"
     },
     {

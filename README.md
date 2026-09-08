@@ -2,9 +2,9 @@
 
 [English](README.en.md) · [Catalog](docs/CATALOG.md) · [Install](docs/INSTALL.md) · [Contributing](CONTRIBUTING.md)
 
-个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**44 个技能、8 个分类、3 个上游来源，一个完整插件。**
+个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**45 个技能、9 个分类、4 个上游来源，一个完整插件。**
 
-**[Download v0.7.0-beta.1](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.1)** — `skills-0.7.0-beta.1.zip` + `SHA256SUMS`.
+**[Download v0.7.0-beta.2](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.2)** — `skills-0.7.0-beta.2.zip` + `SHA256SUMS`.
 
 同一个 ZIP 包含 Codex 和 Claude Code 两种原生插件布局；全部技能一起安装，无需挑选小包。
 
@@ -14,8 +14,8 @@
 
 | Field | GitHub | Release 解压目录 |
 |---|---|---|
-| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.1` 的绝对路径 |
-| Git ref | `v0.7.0-beta.1` | 留空 |
+| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.2` 的绝对路径 |
+| Git ref | `v0.7.0-beta.2` | 留空 |
 | Sparse paths | 留空 | 留空 |
 
 添加来源后，打开 **Admax Skills** 卡片并点击 **Install**。Source 不能填 ZIP 或 Release 网页地址。
@@ -32,7 +32,13 @@ python3 scripts/install.py --engine claude
 
 [详细步骤、校验、旧版本升级与常见问题](docs/INSTALL.md)。安装后新建会话，Codex 可用 `$show-me`，Claude Code 可用 `/admax-skills:show-me`。
 
-## 本次新增：Matt Pocock 的 25 个技能
+## 本次新增：Hallmark 界面设计
+
+[hallmark](skills/hallmark/SKILL.md) 来自 [Nutlope/Hallmark](https://github.com/Nutlope/hallmark)：面向页面和组件的设计技能，支持新建界面、`audit` 只读审计、`redesign` 重设计及 `study` 参考分析。包含全部参考文档和离线主题 token 库；保留现有品牌与框架约束。
+
+例如：`$hallmark audit src/app/page.tsx`；Claude Code 使用 `/admax-skills:hallmark audit src/app/page.tsx`。设计指南已打包，外部字体、素材及在线示例仍可能需要网络。[适配记录](docs/hallmark-import.md)。
+
+## Matt Pocock 的 25 个技能
 
 ### engineering
 
@@ -88,6 +94,7 @@ python3 scripts/install.py --engine claude
 
 | Upstream | Count | License | Provenance |
 |---|---:|---|---|
+| [Nutlope/Hallmark](https://github.com/Nutlope/hallmark) | 1 | MIT | [hallmark](sources/hallmark.json) |
 | [Cursor](https://github.com/cursor/plugins) | 18 | MIT | [cursor-team-kit](sources/cursor-team-kit.json) |
 | [HumanLayer](https://github.com/humanlayer/skills) | 1 | MIT | [humanlayer](sources/humanlayer.json) |
 | [Matt Pocock](https://github.com/mattpocock/skills) | 25 | MIT | [matt-pocock](sources/matt-pocock.json) |

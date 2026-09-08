@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0-beta.2
+
+- Add Hallmark design skill with all references, MIT attribution and a bundled theme token library. Total: 45 skills in one plugin.
+- Repair upstream-relative resource links for standalone installation and adapt tool use, context reuse and verification claims.
+- Update bilingual discovery and installation guides.
+
 ## 0.7.0-beta.1
 
 - Import 18 engineering and 7 productivity skills from Matt Pocock, with resources, MIT attribution and immutable provenance. Total: 44 skills in one plugin.
