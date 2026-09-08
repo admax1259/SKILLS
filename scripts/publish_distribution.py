@@ -16,6 +16,9 @@ def publish(marketplace, remote, source_commit):
         def git(*args):
             return subprocess.check_output(['git', '-C', str(root), *args], text=True).strip()
         git('init', '-q')
+        # No background writers may outlive this disposable checkout.
+        git('config', 'gc.auto', '0')
+        git('config', 'maintenance.auto', 'false')
         git('config', 'user.name', 'github-actions[bot]')
         git('config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com')
         git('remote', 'add', 'origin', remote)
