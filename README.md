@@ -4,9 +4,16 @@
 
 个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**45 个技能、9 个分类、4 个上游来源，一个完整插件。**
 
-**[Download v0.7.0-beta.2](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.2)** — `skills-0.7.0-beta.2.zip` + `SHA256SUMS`.
+**[Download v0.7.0-beta.3](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.3)** — `skills-0.7.0-beta.3.zip` + `SHA256SUMS`.
 
 同一个 ZIP 包含 Codex 和 Claude Code 两种原生插件布局；全部技能一起安装，无需挑选小包。
+
+## 两种安装方式
+
+- **在线持续升级**：GitHub 来源选 `admax1259/SKILLS`，Git ref 选 `distribution`。该分支只发布验证后的完整插件；Claude Code 可开启自动更新，Codex 提供显式刷新升级。
+- **离线固定版本**：下载 Release ZIP，校验解压后安装；保留旧包用于回退。
+
+两种方式使用相同插件内容和名称，同一引擎一次选择一个来源。[在线安装、升级、切换来源与回退](docs/INSTALL.md#在线安装与升级--online-installation-and-updates)。
 
 ## 安装
 
@@ -14,8 +21,8 @@
 
 | Field | GitHub | Release 解压目录 |
 |---|---|---|
-| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.2` 的绝对路径 |
-| Git ref | `v0.7.0-beta.2` | 留空 |
+| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.3` 的绝对路径 |
+| Git ref | `distribution` | 留空 |
 | Sparse paths | 留空 | 留空 |
 
 添加来源后，打开 **Admax Skills** 卡片并点击 **Install**。Source 不能填 ZIP 或 Release 网页地址。

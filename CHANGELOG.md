@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0-beta.3
+
+- Publish a generated distribution branch from the same payload as the offline Release ZIP, supporting online installation for both engines.
+- Add installer GitHub/update modes and bilingual auto-update, source-switching and rollback guidance.
+- Validate retry-safe channel publication, version upgrades and downgrade protection.
+
 ## 0.7.0-beta.2
 
 - Add Hallmark design skill with all references, MIT attribution and a bundled theme token library. Total: 45 skills in one plugin.

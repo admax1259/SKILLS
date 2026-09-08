@@ -51,8 +51,11 @@ jobs:
           sha256sum --check SHA256SUMS
           # Existing releases are immutable; reruns must not overwrite assets.
           if gh release view "$release_tag" >/dev/null 2>&1; then
-            echo "Release already exists; refusing to overwrite it."
-            exit 1
+            verify_dir="$(mktemp -d)"
+            gh release download "$release_tag" --dir "$verify_dir"
+            cmp SHA256SUMS "$verify_dir/SHA256SUMS"
+            cmp "skills-${version}.zip" "$verify_dir/skills-${version}.zip"
+            exit 0
           fi
           flags=()
           if [[ "$version" == *-beta.* ]]; then
@@ -60,3 +63,10 @@ jobs:
           fi
           gh release create "$release_tag" ./*.zip SHA256SUMS \
             --target "$GITHUB_SHA" --title "$release_tag" --generate-notes "${flags[@]}"
+      - name: Publish online marketplace channel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git
+          python3 scripts/publish_distribution.py "dist/packages/current/marketplace-$(cat VERSION)" \
+            --remote "https://github.com/${GITHUB_REPOSITORY}.git" --source-commit "$GITHUB_SHA"

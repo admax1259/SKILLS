@@ -12,3 +12,5 @@ This is admax1259's attributed skills collector. Follow the user's current instr
 - Run python3 scripts/validate.py, python3 scripts/catalog.py --check, python3 -m unittest discover -s tests -v, and python3 scripts/package.py. Check native manifests and extracted installation when changing packaging. Run scripts/check_package.py on the extracted release, with --codex-install when Codex CLI is available. Never label that result UI verification.
 - Keep source integrity tests aligned with intentional adaptations: preserve baseline hashes as provenance and document changes; do not silently rewrite attribution.
 - A release tag v<VERSION> must point into main history. Do not publish stale output or unreviewed bundles.
+
+- The distribution branch is generated release output for online consumers, not a second editable source. Publish it only from the validated Release payload using scripts/publish_distribution.py; preserve its history and version monotonicity. Main remains canonical source.

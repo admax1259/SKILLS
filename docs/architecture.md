@@ -48,3 +48,9 @@
 ## 当前结构验证
 
 19 项已登记；21 个 Cursor 原始文件已记录导入 SHA-256（get-pr-comments 的结尾换行规范化单独说明），18 份 MIT 声明跟随技能。Cursor agents/rules 未作为跨引擎配置启用。测试覆盖：额外未登记技能、非法集合引用、待适配成员隔离、打包可重现、解压安装、新技能扩展和 dry-run 无副作用。
+
+## Online and offline distribution
+
+Release ZIPs and the moving `distribution` branch contain the same generated marketplace payload, including separate Codex/Claude plugin roots. The Release workflow publishes immutable ZIP/checksum assets first, then advances the branch with a normal fast-forward push. Failed channel publication can be retried only against byte-identical Release assets. Older versions and same-version content changes cannot overwrite the channel.
+
+Consumers select Git `distribution` for updates, or an extracted Release directory for a fixed offline snapshot. Both use `admax-skills@admax-skills`; one engine registers one source per marketplace name. Host auto-update settings are distinct from publisher CI.
