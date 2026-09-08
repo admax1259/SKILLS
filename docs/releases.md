@@ -8,16 +8,12 @@ Open the latest Pre-release under Releases and download ZIP assets and SHA256SUM
 
 | Asset | 安装 / Installation |
 |---|---|
-| admax-skills-codex-<version>.zip | 全部 19 项 / All 19 skills. Extract, run `codex plugin marketplace add .` there, restart the app and install Admax Skills from Plugins Directory. CLI alternative: `codex plugin add admax-skills@admax-skills`. |
-| skills-<version>.zip | Codex / Claude Code bundle marketplace. Extract, enter skills-<version>, run `python3 scripts/install.py --engine claude --bundle engineering-kit`, then repeat with `--bundle show-me`. Use `--engine codex` for Codex. Requires Python 3.10+ and the engine CLI. |
-| engineering-kit-claude-<version>.zip | 18 项工程技能 / 18 engineering skills. Native Claude plugin for compatible import surfaces; Claude Code users should use the marketplace ZIP above. |
-| engineering-kit-codex-<version>.zip | Native Codex engineering plugin; marketplace registration uses the complete marketplace ZIP above. |
-| show-me / compiler-checks / code-cleanup ZIPs | Individual native plugins with both engine manifests. |
-| SHA256SUMS | ZIP checksums. |
+| skills-<version>.zip | 唯一完整包，包含全部已审核技能 / One complete package with all reviewed skills. Extract, enter skills-<version>, run `python3 scripts/install.py --engine codex` or `--engine claude`. |
+| SHA256SUMS | 完整包校验和 / Checksum for the complete package. |
 
-下载所有 ZIP 后，macOS 执行 `shasum -a 256 -c SHA256SUMS`；Linux 执行 `sha256sum -c SHA256SUMS`。只下载部分包时，检查对应校验行；其他文件缺失不代表已下载文件损坏。
+macOS：`LC_ALL=C shasum -a 256 -c SHA256SUMS`；Linux：`sha256sum -c SHA256SUMS`。解压目录注册后请保留。Keep the extracted marketplace at a permanent path while registered.
 
-After downloading all ZIPs, verify with those checksum commands. If downloading a subset, verify the matching entries only. Keep the extracted marketplace at a permanent path while registered. 解压目录注册后请保留。
+从 beta.2 起不再发布单独的 show-me、code-cleanup 或工程集合包。一个插件包含全部 19 个技能；同一个 ZIP 自动提供两个引擎各自的元数据。Since beta.2, individual skill/bundle downloads are retired. One plugin contains all 19 skills; the same ZIP provides both engine layouts.
 
 ## 自动发版 / Automated releases
 
@@ -28,11 +24,21 @@ After downloading all ZIPs, verify with those checksum commands. If downloading 
 
 Update VERSION, the root plugin version, and CHANGELOG in a version PR. Merging VERSION into main builds and publishes a Release at that exact commit. Manual dispatch and matching version tags are also supported. Validation precedes publication; beta releases are marked prerelease and do not replace the stable Latest release. Existing releases are never overwritten: publish a new version for corrections.
 
-## 注册来源迁移 / Marketplace identity migration
+## 注册来源迁移 / Marketplace source migration
 
-根全量来源仍为 admax-skills。0.6.0-beta.1 起，集合来源改为 admax-skills-bundles，防止安装集合时覆盖全量来源。旧集合用户先使用引擎原生命令卸载旧集合（如 engineering-kit@admax-skills），再注册新包并安装 engineering-kit@admax-skills-bundles。不要移除其他来源；检查 marketplace list 确认注册路径。
+完整插件与来源均名为 admax-skills。旧 show-me、engineering-kit、compiler-checks、code-cleanup 插件需要先通过引擎原生命令卸载，避免技能重复。旧 admax-skills-bundles 来源可以在确认属于本仓库后移除。
 
-The all-skills source remains admax-skills. Generated bundles now use admax-skills-bundles. Uninstall old bundle identifiers such as engineering-kit@admax-skills through the engine before installing engineering-kit@admax-skills-bundles. Inspect registered paths and preserve unrelated sources.
+The complete plugin and marketplace are both admax-skills. Uninstall old individual plugins through the engine to prevent duplicate skills; remove the old admax-skills-bundles registration only after verifying its origin.
+
+更换同名来源的注册路径时，先运行 marketplace list 确认来源，然后移除旧 admax-skills 注册，再注册新解压目录。Codex 命令示例：
+
+```sh
+codex plugin marketplace list
+codex plugin marketplace remove admax-skills
+codex plugin marketplace add /absolute/path/to/skills-version
+```
+
+When changing a source path, inspect the registered source and remove the old admax-skills registration before adding the new extracted directory. Preserve unrelated sources. 本仓库安装脚本不会自动删除已有来源。
 
 ## UI 支持边界 / UI support boundary
 

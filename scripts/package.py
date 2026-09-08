@@ -6,7 +6,7 @@ import re
 import shutil
 import zipfile
 from pathlib import Path
-from validate import ROOT, read_json, ready_bundles, validate
+from validate import ROOT, read_json, validate
 
 
 def write_json(path, value):
@@ -15,86 +15,51 @@ def write_json(path, value):
 
 
 def build_marketplace(root=ROOT, destination=None):
+    """One downloadable marketplace, one all-skills plugin per engine."""
     root = Path(root).resolve()
     version, catalog = validate(root)
-    destination = Path(destination) if destination else root / "dist" / "marketplace"
-    if destination.is_symlink():
-        raise ValueError("Build destination cannot be a symlink")
-    destination = destination.resolve()
-    # Generated directories are replaceable only when owned by this builder.
-    marker = destination / ".skills-build"
-    if destination.exists():
-        if destination.is_symlink() or not marker.is_file() or marker.read_text() != "admax-skills\n":
-            raise ValueError("Refusing to replace a directory not owned by this builder")
-        if destination == root or root.is_relative_to(destination):
-            raise ValueError("Build destination cannot contain source repository")
-        shutil.rmtree(destination)
-    destination.mkdir(parents=True)
-    marker.write_text("admax-skills\n")
+    destination = build_codex_plugin(root, destination or root / "dist/marketplace")
+    claude = destination / "claude-plugins/admax-skills"
+    shutil.copytree(destination / "skills", claude / "skills")
+    shutil.copyfile(destination / "SOURCES.json", claude / "SOURCES.json")
+    for entry in catalog["skills"]:
+        if entry["status"] == "ready" and entry.get("invocation") == "explicit":
+            path = claude / "skills" / entry["id"] / "SKILL.md"
+            path.write_text(re.sub(r"^(description:.*\n)",
+                                  r"\1disable-model-invocation: true\n",
+                                  path.read_text(encoding="utf-8"), count=1, flags=re.M),
+                            encoding="utf-8")
+    manifest = read_json(destination / ".codex-plugin/plugin.json")
+    write_json(claude / ".claude-plugin/plugin.json",
+               {key: manifest[key] for key in
+                ["name", "version", "description", "author", "repository", "license"]})
+    write_json(destination / ".claude-plugin/marketplace.json", {
+        "name": "admax-skills", "owner": {"name": "admax1259"},
+        "plugins": [{"name": "admax-skills", "version": version,
+                     "source": "./claude-plugins/admax-skills"}]})
     (destination / "VERSION").write_text(version + "\n")
-    bundles = ready_bundles(catalog)
-    if not bundles:
-        raise ValueError("No fully reviewed bundle is available")
-    entries = {e["id"]: e for e in catalog["skills"]}
-    codex_entries, claude_entries = [], []
-    for bundle in bundles:
-        name = bundle["id"]
-        plugin = destination / "plugins" / name
-        sources = {}
-        for member in bundle["skills"]:
-            shutil.copytree(root / "skills" / member, plugin / "skills" / member)
-            entry = entries[member]
-            sources[member] = {"upstream_path": entry["upstream_path"],
-                               **read_json(root / "sources" / (entry["source"] + ".json"))}
-        write_json(plugin / "SOURCES.json", sources)
-        base = {"name": name, "version": version, "description": bundle["description"],
-                "author": {"name": "admax1259", "url": "https://github.com/admax1259"},
-                "repository": "https://github.com/admax1259/SKILLS",
-                "license": " AND ".join(sorted({s["license"] for s in sources.values()}))}
-        write_json(plugin / ".claude-plugin/plugin.json", base)
-        write_json(plugin / ".codex-plugin/plugin.json", {
-            **base, "skills": "./skills/",
-            "interface": {"displayName": name, "shortDescription": base["description"],
-                          "longDescription": base["description"] + ". See SOURCES.json for attribution.",
-                          "developerName": "admax1259", "category": "Productivity",
-                          "capabilities": ["Write"], "defaultPrompt": ["Use the " + name + " skills."]}})
-        codex_entries.append({"name": name, "source": {"source": "local", "path": "./plugins/" + name},
-                              "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
-                              "category": "Productivity"})
-        explicit = [plugin / "skills" / member / "SKILL.md" for member in bundle["skills"]
-                    if entries[member].get("invocation") == "explicit"]
-        claude_source = "./plugins/" + name
-        if explicit:
-            # Engine metadata differs; copies exist only in generated distribution.
-            claude_plugin = destination / "claude-plugins" / name
-            shutil.copytree(plugin, claude_plugin)
-            shutil.rmtree(claude_plugin / ".codex-plugin")
-            shutil.rmtree(plugin / ".claude-plugin")
-            for path in explicit:
-                claude_path = claude_plugin / path.relative_to(plugin)
-                claude_path.write_text(re.sub(r"^(description:.*\n)",
-                                              r"\1disable-model-invocation: true\n",
-                                              claude_path.read_text(encoding="utf-8"), count=1,
-                                              flags=re.M), encoding="utf-8")
-            claude_source = "./claude-plugins/" + name
-        claude_entries.append({"name": name, "source": claude_source, "version": version})
-    write_json(destination / ".agents/plugins/marketplace.json",
-               {"name": "admax-skills-bundles", "interface": {"displayName": "Admax Skills Bundles"}, "plugins": codex_entries})
-    write_json(destination / ".claude-plugin/marketplace.json",
-               {"name": "admax-skills-bundles", "owner": {"name": "admax1259"}, "plugins": claude_entries})
     (destination / "scripts").mkdir()
     shutil.copyfile(root / "scripts/install.py", destination / "scripts/install.py")
     shutil.copyfile(root / "LICENSE", destination / "LICENSE")
     (destination / "README.md").write_text(
-        "# SKILLS install package / 安装包\n\n"
-        "Requires Python 3.10+ and the selected engine CLI. / 需要 Python 3.10+ 与对应引擎 CLI。\n\n"
-        "Run from this directory / 在本目录执行：\n\n"
-        "    python3 scripts/install.py --engine codex --bundle show-me\n\n"
-        "Use --engine claude for Claude Code; --dry-run previews commands.\n"
-        "Keep this directory while registered as a local marketplace. / 注册后保留此目录。\n\n"
-        "Only reviewed bundles are included. / 仅包含已就绪技能包。\n"
-        "Plugin licenses are beside each skill; origins are in plugins/*/SOURCES.json.\n\n"
-        "Documentation / 源码与说明：https://github.com/admax1259/SKILLS\n", encoding="utf-8")
+        "# Admax Skills — complete package / 完整安装包\n\n"
+        "One plugin contains every reviewed skill, including show-me and all engineering skills.\n"
+        "一个插件包含全部已审核技能，包括 show-me 与全部工程技能。\n\n"
+        "Extract to a permanent directory, then run / 解压到固定目录后执行：\n\n"
+        "    python3 scripts/install.py --engine codex\n\n"
+        "For Claude Code / Claude Code 使用：\n\n"
+        "    python3 scripts/install.py --engine claude\n\n"
+        "Requires Python 3.10+ and the selected engine CLI. / 需要 Python 3.10+ 与对应引擎 CLI。\n"
+        "Use --dry-run to preview commands. Start a fresh session after installation.\n"
+        "追加 --dry-run 预览命令；安装后开启新会话。\n\n"
+        "For Codex UI installation: codex plugin marketplace add .; restart the app,\n"
+        "then select Admax Skills in Plugins Directory and click Install.\n"
+        "Codex 界面安装：先注册上述本地 marketplace，重启应用，在插件目录点击安装。\n"
+        "This is not an MCP server URL or a verified generic ChatGPT ZIP upload.\n"
+        "此包不是 MCP 服务器地址，未验证通用 ChatGPT ZIP 上传。\n\n"
+        "Sources and licenses are included. Keep this extracted directory while registered.\n"
+        "保留来源与许可证；注册期间请保留解压目录。\n",
+        encoding="utf-8")
     return destination
 
 
@@ -117,7 +82,7 @@ def build_codex_plugin(root=ROOT, destination=None):
     """Build one OpenAI plugin with a local marketplace for reviewed skills."""
     root = Path(root).resolve()
     version, catalog = validate(root)
-    destination = Path(destination) if destination else root / "dist" / "chatgpt-plugin"
+    destination = Path(destination) if destination else root / "dist" / "codex-plugin"
     if destination.is_symlink():
         raise ValueError("Build destination cannot be a symlink")
     destination = destination.resolve()
@@ -185,23 +150,9 @@ def package(root=ROOT, output=None):
     output.mkdir(parents=True)
     marker.write_text("admax-skills\n")
     marketplace = build_marketplace(root, output / ("marketplace-" + version))
-    chatgpt = build_codex_plugin(root, output / ("chatgpt-plugin-" + version))
-    archives = []
-    for plugin in sorted((marketplace / "plugins").iterdir()):
-        suffix = "" if (plugin / ".claude-plugin").exists() else "-codex"
-        dest = output / f"{plugin.name}{suffix}-{version}.zip"
-        write_zip(dest, plugin)
-        archives.append(dest)
-    for plugin in sorted((marketplace / "claude-plugins").glob("*")):
-        dest = output / f"{plugin.name}-claude-{version}.zip"
-        write_zip(dest, plugin)
-        archives.append(dest)
     dest = output / f"skills-{version}.zip"
     write_zip(dest, marketplace, f"skills-{version}/")
-    archives.append(dest)
-    dest = output / f"admax-skills-codex-{version}.zip"
-    write_zip(dest, chatgpt)
-    archives.append(dest)
+    archives = [dest]
     checksums = output / "SHA256SUMS"
     checksums.write_text("".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n"
                                  for p in sorted(archives)), encoding="utf-8")

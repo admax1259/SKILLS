@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0-beta.2
+
+- Ship one complete skills ZIP plus SHA256SUMS; retire separate skill and engineering bundle downloads.
+- Install all 19 skills as one admax-skills plugin in either Codex or Claude Code, with no bundle selection.
+- Generate both engine policies within the same package from canonical sources.
+- Simplify bilingual installation instructions and document migration from existing marketplace paths.
+
 ## 0.6.0-beta.1
 
 - Publish version changes merged to main as GitHub Releases with ZIP assets and SHA256SUMS; beta versions are prereleases.

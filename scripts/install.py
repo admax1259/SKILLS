@@ -1,4 +1,4 @@
-"""Build (from source) and install reviewed bundles through native engine CLIs."""
+"""Build (from source) and install all reviewed skills through native engine CLIs."""
 import argparse
 import json
 import shlex
@@ -9,11 +9,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def commands(engine, bundle, marketplace):
+def commands(engine, marketplace):
     if engine not in {"codex", "claude"}:
         raise ValueError("Unsupported engine")
     marketplace = Path(marketplace).resolve()
-    catalog = json.loads((marketplace / ".agents/plugins/marketplace.json").read_text())
+    manifest = ".agents/plugins/marketplace.json" if engine == "codex" else ".claude-plugin/marketplace.json"
+    catalog = json.loads((marketplace / manifest).read_text())
+    bundle = "admax-skills"
     names = {e["name"] for e in catalog["plugins"]}
     if bundle not in names:
         raise ValueError(f"Bundle {bundle!r} is not installable; ready bundles: {', '.join(sorted(names))}")
@@ -24,20 +26,19 @@ def commands(engine, bundle, marketplace):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", choices=["codex", "claude"], required=True)
-    parser.add_argument("--bundle", "--plugin", dest="bundle", default="show-me")
     parser.add_argument("--dry-run", action="store_true", help="Preview; do not build or install")
     args = parser.parse_args()
     if (ROOT / "catalog.json").is_file():
-        from validate import ready_bundles, validate
+        from validate import validate
         version, catalog = validate(ROOT)
-        if args.bundle not in {b["id"] for b in ready_bundles(catalog)}:
-            parser.error("This bundle contains unreviewed skills or does not exist")
+        if not any(entry["status"] == "ready" for entry in catalog["skills"]):
+            parser.error("No reviewed skills are available")
         target = ROOT / "dist" / "marketplace"
         if args.dry_run:
-            print(f"Would build reviewed bundles into {target}")
+            print(f"Would build all reviewed skills into {target}")
             print(shlex.join([args.engine, "plugin", "marketplace", "add", str(target)]))
             print(shlex.join([args.engine, "plugin", "add" if args.engine == "codex" else "install",
-                              args.bundle + "@admax-skills-bundles"]))
+                              "admax-skills@admax-skills"]))
             return
         if not shutil.which(args.engine):
             parser.error(f"Install the {args.engine} CLI first")
@@ -45,7 +46,7 @@ def main():
         marketplace = build_marketplace(ROOT, target)
     else:
         marketplace = ROOT
-    steps = commands(args.engine, args.bundle, marketplace)
+    steps = commands(args.engine, marketplace)
     for step in steps:
         print(shlex.join(step), flush=True)
     if args.dry_run:

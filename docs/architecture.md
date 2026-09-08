@@ -8,8 +8,8 @@
 - catalog.json 是分类、审核状态和 bundle 成员的唯一维护入口；docs/CATALOG.md 自动生成并由 CI 检查。
 - sources/<source>.json 保存仓库 URL、固定 commit、授权和初始导入校验和；后续适配记录具体变更。来源不是技能分类。
 - scripts/ 是仓库工具；技能专用脚本留在该技能内部。
-- dist/ 是可删除、可重建的分发产物；插件宿主要求的 plugins/<bundle>/skills/<id>/ 只在这里出现。
-- 所有 19 项源码可直接浏览；只有全体成员 ready 的 bundle 可以生成。收录不等于适配完成。
+- dist/ 是可删除、可重建的分发产物；引擎专用副本只在这里出现；发行版只有一个完整 ZIP。
+- 所有 19 项源码可直接浏览；只有 ready 技能可以进入完整插件。收录不等于适配完成。
 
 ## 参考仓库与选择理由
 
@@ -41,7 +41,7 @@
 
 ## 引擎策略适配
 
-源码仍是单份 skills/<id>。普通 bundle 生成双 manifest；包含显式调用技能的 bundle 自动生成 plugins/<bundle>（Codex）与 claude-plugins/<bundle>（Claude），各 marketplace 指向对应产物。Codex 使用 agents/openai.yaml 调用策略，Claude 保留 disable-model-invocation 前言。复制只发生在 dist，无手工维护副本。
+源码仍是单份 skills/<id>。完整包根目录是 Codex 插件，claude-plugins/admax-skills 是包含全部相同技能的 Claude 插件；各 marketplace 都只提供一个 admax-skills 插件并指向对应产物。Codex 使用 agents/openai.yaml 调用策略，Claude 保留 disable-model-invocation 前言。复制只发生在 dist，无手工维护副本。
 
 打包目录固定为 dist/packages/current，仅重建带所有权标记的输出；CI 与 Release 只上传这里的 ZIP 和校验和，避免旧产物混入。
 
