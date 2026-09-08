@@ -41,7 +41,7 @@
 
 ## 引擎策略适配
 
-源码仍是单份 skills/<id>。完整包根目录是 Codex 插件，claude-plugins/admax-skills 是包含全部相同技能的 Claude 插件；各 marketplace 都只提供一个 admax-skills 插件并指向对应产物。Codex 使用 agents/openai.yaml 调用策略，Claude 保留 disable-model-invocation 前言。复制只发生在 dist，无手工维护副本。
+源码仍是单份 skills/<id>。完整包的 plugins/admax-skills 是 Codex 插件，claude-plugins/admax-skills 是包含全部相同技能的 Claude 插件；各 marketplace 都只提供一个 admax-skills 插件并指向对应产物。Codex 使用 agents/openai.yaml 调用策略，Claude 保留 disable-model-invocation 前言。复制只发生在 dist，无手工维护副本。
 
 打包目录固定为 dist/packages/current，仅重建带所有权标记的输出；CI 与 Release 只上传这里的 ZIP 和校验和，避免旧产物混入。
 

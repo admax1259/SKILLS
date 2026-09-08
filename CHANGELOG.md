@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0-beta.3
+
+- Isolate the Codex plugin at plugins/admax-skills so installing it does not copy the Claude plugin and marketplace installer into the cache. Keep one complete ZIP.
+- Include bilingual INSTALL.md with exact Add plugin marketplace fields for GitHub and extracted Release sources.
+- Add package path/resource validation and an isolated real Codex install checker that verifies every cached payload file.
+- Improve install metadata and remove an attribution path that did not exist in generated packages. MCP and hooks remain optional and absent for this skills-only collection.
+
 ## 0.6.0-beta.2
 
 - Ship one complete skills ZIP plus SHA256SUMS; retire separate skill and engineering bundle downloads.

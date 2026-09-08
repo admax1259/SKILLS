@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from package import build_codex_plugin, build_marketplace, package
 from validate import validate
 from install import commands
+from check_package import check
 
 
 def clone(destination):
@@ -32,7 +33,7 @@ class DistributionTests(unittest.TestCase):
                 with self.subTest(version=version), self.assertRaisesRegex(ValueError, "Invalid VERSION"):
                     validate(root)
 
-    def test_source_root_is_an_installable_marketplace(self):
+    def test_source_root_manifest_contract(self):
         marketplace = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text())
         self.assertEqual(marketplace["name"], "admax-skills")
         self.assertEqual(len(marketplace["plugins"]), 1)
@@ -61,9 +62,13 @@ class DistributionTests(unittest.TestCase):
                 self.assertFalse(any(".git/" in n or "catalog.json" in n or "AGENTS.md" in n for n in z.namelist()))
                 z.extractall(temp / "extracted")
             extracted = temp / f"extracted/skills-{version}"
+            self.assertEqual(check(extracted)[0], version)
+            self.assertTrue((extracted / "INSTALL.md").is_file())
+            self.assertFalse((extracted / ".codex-plugin").exists())
+            self.assertFalse(any(p.name == ".skills-build" for p in extracted.rglob("*")))
             expected = {e["id"] for e in catalog["skills"] if e["status"] == "ready"}
             claude = extracted / "claude-plugins/admax-skills"
-            for plugin in [extracted, claude]:
+            for plugin in [extracted / "plugins/admax-skills", claude]:
                 self.assertEqual({p.name for p in (plugin / "skills").iterdir()}, expected)
                 self.assertIn(b"Copyright (c) 2026 HumanLayer", (plugin / "skills/show-me/LICENSE").read_bytes())
                 self.assertTrue((plugin / "skills/pr-review-canvas/scripts/render.py").is_file())
@@ -71,7 +76,7 @@ class DistributionTests(unittest.TestCase):
                 subprocess.run([sys.executable, str(extracted / "scripts/install.py"),
                                 "--engine", engine, "--dry-run"], check=True, capture_output=True)
                 self.assertIn("admax-skills@admax-skills", commands(engine, extracted)[1])
-            self.assertEqual(json.loads((extracted / ".agents/plugins/marketplace.json").read_text())["plugins"][0]["source"]["path"], "./")
+            self.assertEqual(json.loads((extracted / ".agents/plugins/marketplace.json").read_text())["plugins"][0]["source"]["path"], "./plugins/admax-skills")
             self.assertEqual(json.loads((claude / ".claude-plugin/plugin.json").read_text())["version"], version)
 
     def test_cursor_import_preserves_all_recorded_files(self):
@@ -84,6 +89,25 @@ class DistributionTests(unittest.TestCase):
                     self.assertEqual(adaptation["baseline_sha256"], digest)
                     digest = adaptation["sha256"]
                 self.assertEqual(digest, hashlib.sha256((ROOT / "skills" / relative).read_bytes()).hexdigest())
+
+    def test_package_audit_rejects_missing_or_escaping_plugin_and_assets(self):
+        with tempfile.TemporaryDirectory() as temp:
+            built = build_marketplace(ROOT, Path(temp) / "built")
+            market_path = built / ".agents/plugins/marketplace.json"
+            market = json.loads(market_path.read_text())
+            for source in ["./plugins/missing", "../outside", "./../outside"]:
+                market["plugins"][0]["source"]["path"] = source
+                market_path.write_text(json.dumps(market))
+                with self.subTest(source=source), self.assertRaises(ValueError):
+                    check(built)
+            market["plugins"][0]["source"]["path"] = "./plugins/admax-skills"
+            market_path.write_text(json.dumps(market))
+            manifest_path = built / "plugins/admax-skills/.codex-plugin/plugin.json"
+            manifest = json.loads(manifest_path.read_text())
+            manifest["interface"]["logo"] = "./assets/missing.png"
+            manifest_path.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, "Missing or escaping"):
+                check(built)
 
     def test_unlisted_skill_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -117,7 +141,7 @@ class DistributionTests(unittest.TestCase):
             path.write_text(json.dumps(data))
             built = build_marketplace(root, Path(temp) / "built")
             self.assertEqual((skill / "SKILL.md").read_bytes(),
-                             (built / "skills/example/SKILL.md").read_bytes())
+                             (built / "plugins/admax-skills/skills/example/SKILL.md").read_bytes())
 
     def test_builder_refuses_unowned_output(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -162,9 +186,9 @@ class DistributionTests(unittest.TestCase):
             manifest["version"] = (root / "VERSION").read_text().strip()
             manifest_path.write_text(json.dumps(manifest))
             built = build_marketplace(root, Path(temp) / "pending")
-            self.assertFalse((built / "skills/fix-ci").exists())
+            self.assertFalse((built / "plugins/admax-skills/skills/fix-ci").exists())
             self.assertFalse((built / "claude-plugins/admax-skills/skills/fix-ci").exists())
-            self.assertTrue((built / "skills/show-me").exists())
+            self.assertTrue((built / "plugins/admax-skills/skills/show-me").exists())
 
     def test_explicit_only_policy_requires_codex_mapping(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -176,7 +200,7 @@ class DistributionTests(unittest.TestCase):
     def test_engine_specific_invocation_policy(self):
         with tempfile.TemporaryDirectory() as temp:
             built = build_marketplace(ROOT, Path(temp) / "built")
-            codex = built
+            codex = built / "plugins/admax-skills"
             claude = built / "claude-plugins/admax-skills"
             for name in ["pr-review-canvas", "thermo-nuclear-code-quality-review"]:
                 relative = Path("skills") / name
