@@ -2,9 +2,9 @@
 
 [English](README.en.md) · [Catalog](docs/CATALOG.md) · [Install](docs/INSTALL.md) · [Contributing](CONTRIBUTING.md)
 
-个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**45 个技能、9 个分类、4 个上游来源，一个完整插件。**
+个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**46 个技能、9 个分类、5 个上游来源，一个完整插件。**
 
-**[Download v0.7.0-beta.3](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.3)** — `skills-0.7.0-beta.3.zip` + `SHA256SUMS`.
+**[Download v0.7.0-beta.4](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.4)** — `skills-0.7.0-beta.4.zip` + `SHA256SUMS`.
 
 同一个 ZIP 包含 Codex 和 Claude Code 两种原生插件布局；全部技能一起安装，无需挑选小包。
 
@@ -21,7 +21,7 @@
 
 | Field | GitHub | Release 解压目录 |
 |---|---|---|
-| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.3` 的绝对路径 |
+| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.4` 的绝对路径 |
 | Git ref | `distribution` | 留空 |
 | Sparse paths | 留空 | 留空 |
 
@@ -38,6 +38,12 @@ python3 scripts/install.py --engine claude
 ```
 
 [详细步骤、校验、旧版本升级与常见问题](docs/INSTALL.md)。安装后新建会话，Codex 可用 `$show-me`，Claude Code 可用 `/admax-skills:show-me`。
+
+## UI UX Pro Max：可离线检索的设计指南
+
+[ui-ux-pro-max](skills/ui-ux-pro-max/SKILL.md) 新增到同一个完整插件，包含 22 个技术栈、192 套产品配色与推理配置、字体、图表和可访问性指南。全部检索数据与 Python 脚本随包提供；需要 **Python 3.10+**，无需 npm 或额外 Python 依赖。外部字体和素材仍可能需要网络。
+
+例如：`$ui-ux-pro-max 检查这个 Next.js 仪表盘的键盘操作和布局`；Claude Code 使用 `/admax-skills:ui-ux-pro-max`。它负责针对问题检索建议，Hallmark 负责视觉构图与审查；优先遵循项目已有设计体系，不自动生成第二套。默认检索不写项目文件，保存设计文档才使用显式输出路径。[导入与验证说明](docs/ui-ux-pro-max-import.md)。
 
 ## 本次新增：Hallmark 界面设计
 
@@ -101,6 +107,7 @@ python3 scripts/install.py --engine claude
 
 | Upstream | Count | License | Provenance |
 |---|---:|---|---|
+| [Next Level Builder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 1 | MIT | [ui-ux-pro-max](sources/ui-ux-pro-max.json) |
 | [Nutlope/Hallmark](https://github.com/Nutlope/hallmark) | 1 | MIT | [hallmark](sources/hallmark.json) |
 | [Cursor](https://github.com/cursor/plugins) | 18 | MIT | [cursor-team-kit](sources/cursor-team-kit.json) |
 | [HumanLayer](https://github.com/humanlayer/skills) | 1 | MIT | [humanlayer](sources/humanlayer.json) |

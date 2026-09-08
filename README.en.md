@@ -2,9 +2,9 @@
 
 [简体中文](README.md) · [Catalog](docs/CATALOG.md) · [Install](docs/INSTALL.md) · [Contributing](CONTRIBUTING.md)
 
-A personal Agent Skills collection: preserve attribution, adapt workflows, and distribute together. **45 skills, 9 categories, 4 upstream sources, one complete plugin.**
+A personal Agent Skills collection: preserve attribution, adapt workflows, and distribute together. **46 skills, 9 categories, 5 upstream sources, one complete plugin.**
 
-**[Download v0.7.0-beta.3](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.3)** — `skills-0.7.0-beta.3.zip` + `SHA256SUMS`.
+**[Download v0.7.0-beta.4](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.4)** — `skills-0.7.0-beta.4.zip` + `SHA256SUMS`.
 
 One ZIP contains native layouts for Codex and Claude Code. Install the entire collection without selecting separate packs.
 
@@ -21,7 +21,7 @@ Both methods share one plugin identity and payload. Choose one registered source
 
 | Field | GitHub | Extracted Release |
 |---|---|---|
-| Source | `admax1259/SKILLS` | Absolute path to extracted `skills-0.7.0-beta.3` |
+| Source | `admax1259/SKILLS` | Absolute path to extracted `skills-0.7.0-beta.4` |
 | Git ref | `distribution` | Leave empty |
 | Sparse paths | Leave empty | Leave empty |
 
@@ -38,6 +38,12 @@ python3 scripts/install.py --engine claude
 ```
 
 [Detailed setup, checksums, upgrades and troubleshooting](docs/INSTALL.md). Start a new conversation; try `$show-me` in Codex or `/admax-skills:show-me` in Claude Code.
+
+## UI UX Pro Max: searchable offline design guidance
+
+[ui-ux-pro-max](skills/ui-ux-pro-max/SKILL.md) joins the same complete plugin with 22 stacks, 192 product palettes and reasoning profiles, typography, charts and accessibility guidance. Search data and Python scripts are bundled; **Python 3.10+** is required, with no npm or additional Python dependencies. External fonts and assets may still require a network.
+
+Example: `$ui-ux-pro-max review keyboard interaction and layout in this Next.js dashboard`; in Claude Code use `/admax-skills:ui-ux-pro-max`. Use it for focused guidance retrieval and Hallmark for visual composition and review. Preserve the existing design system instead of generating another automatically. Default searches do not write project files; saving a design document requires an explicit output path. [Import and validation notes](docs/ui-ux-pro-max-import.md).
 
 ## New: Hallmark interface design
 
@@ -101,6 +107,7 @@ Start with `ask-matt` for navigation. Use `grill-with-docs` for discovery, then 
 
 | Upstream | Count | License | Provenance |
 |---|---:|---|---|
+| [Next Level Builder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 1 | MIT | [ui-ux-pro-max](sources/ui-ux-pro-max.json) |
 | [Nutlope/Hallmark](https://github.com/Nutlope/hallmark) | 1 | MIT | [hallmark](sources/hallmark.json) |
 | [Cursor](https://github.com/cursor/plugins) | 18 | MIT | [cursor-team-kit](sources/cursor-team-kit.json) |
 | [HumanLayer](https://github.com/humanlayer/skills) | 1 | MIT | [humanlayer](sources/humanlayer.json) |

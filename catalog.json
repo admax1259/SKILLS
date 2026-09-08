@@ -342,6 +342,13 @@
       "source": "matt-pocock",
       "upstream_path": "skills/productivity/writing-for-agents",
       "status": "ready"
+    },
+    {
+      "id": "ui-ux-pro-max",
+      "category": "design",
+      "source": "ui-ux-pro-max",
+      "upstream_path": ".claude/skills/ui-ux-pro-max",
+      "status": "ready"
     }
   ],
   "bundles": [
