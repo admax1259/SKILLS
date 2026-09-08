@@ -53,43 +53,26 @@ class DistributionTests(unittest.TestCase):
             version, catalog = validate(ROOT)
             first = package(output=temp / "a")
             second = package(output=temp / "b")
+            self.assertEqual([p.name for p in first], [f"skills-{version}.zip", "SHA256SUMS"])
             self.assertEqual([p.read_bytes() for p in first], [p.read_bytes() for p in second])
-            for line in (temp / "a/SHA256SUMS").read_text().splitlines():
-                digest, name = line.split("  ")
-                self.assertEqual(digest, hashlib.sha256((temp / "a" / name).read_bytes()).hexdigest())
-            with zipfile.ZipFile(temp / f"a/skills-{version}.zip") as z:
+            digest, name = (temp / "a/SHA256SUMS").read_text().strip().split("  ")
+            self.assertEqual(digest, hashlib.sha256((temp / "a" / name).read_bytes()).hexdigest())
+            with zipfile.ZipFile(first[0]) as z:
                 self.assertFalse(any(".git/" in n or "catalog.json" in n or "AGENTS.md" in n for n in z.namelist()))
-                self.assertTrue(any("check-compiler-errors/SKILL.md" in n for n in z.namelist()))
-                self.assertTrue(any("fix-ci/SKILL.md" in n for n in z.namelist()))
-                self.assertTrue(any("pr-review-canvas/scripts/render.py" in n for n in z.namelist()))
                 z.extractall(temp / "extracted")
             extracted = temp / f"extracted/skills-{version}"
-            subprocess.run([sys.executable, str(extracted / "scripts/install.py"),
-                            "--engine", "claude", "--dry-run"], check=True, capture_output=True)
-            self.assertIn(str(extracted.resolve()), commands("codex", "show-me", extracted)[0])
-            self.assertIn("engineering-kit@admax-skills-bundles", commands("codex", "engineering-kit", extracted)[1])
-            with zipfile.ZipFile(temp / f"a/show-me-{version}.zip") as z:
-                self.assertIn(".claude-plugin/plugin.json", z.namelist())
-                self.assertIn(".codex-plugin/plugin.json", z.namelist())
-                self.assertIn(b"Copyright (c) 2026 HumanLayer", z.read("skills/show-me/LICENSE"))
-            with zipfile.ZipFile(temp / f"a/admax-skills-codex-{version}.zip") as z:
-                names = z.namelist()
-                self.assertIn(".agents/plugins/marketplace.json", names)
-                self.assertEqual(json.loads(z.read(".agents/plugins/marketplace.json"))["plugins"][0]["source"]["path"], "./")
-                self.assertNotIn(b"Upload this plugin", z.read("README.md"))
-                self.assertIn(".codex-plugin/plugin.json", names)
-                self.assertFalse(any(name.startswith(f"chatgpt-plugin-{version}/") for name in names))
-                manifest = json.loads(z.read(".codex-plugin/plugin.json"))
-                self.assertEqual(manifest,
-                                 json.loads((ROOT / ".codex-plugin/plugin.json").read_text()))
-                self.assertEqual(manifest["name"], "admax-skills")
-                self.assertEqual(manifest["skills"], "./skills/")
-                self.assertEqual(
-                    {entry["id"] for entry in catalog["skills"] if entry["status"] == "ready"},
-                    {Path(name).parts[1] for name in names
-                     if len(Path(name).parts) >= 3 and Path(name).parts[0] == "skills"})
-                self.assertNotIn(b"disable-model-invocation: true",
-                                 z.read("skills/pr-review-canvas/SKILL.md"))
+            expected = {e["id"] for e in catalog["skills"] if e["status"] == "ready"}
+            claude = extracted / "claude-plugins/admax-skills"
+            for plugin in [extracted, claude]:
+                self.assertEqual({p.name for p in (plugin / "skills").iterdir()}, expected)
+                self.assertIn(b"Copyright (c) 2026 HumanLayer", (plugin / "skills/show-me/LICENSE").read_bytes())
+                self.assertTrue((plugin / "skills/pr-review-canvas/scripts/render.py").is_file())
+            for engine in ["codex", "claude"]:
+                subprocess.run([sys.executable, str(extracted / "scripts/install.py"),
+                                "--engine", engine, "--dry-run"], check=True, capture_output=True)
+                self.assertIn("admax-skills@admax-skills", commands(engine, extracted)[1])
+            self.assertEqual(json.loads((extracted / ".agents/plugins/marketplace.json").read_text())["plugins"][0]["source"]["path"], "./")
+            self.assertEqual(json.loads((claude / ".claude-plugin/plugin.json").read_text())["version"], version)
 
     def test_cursor_import_preserves_all_recorded_files(self):
         source = json.loads((ROOT / "sources/cursor-team-kit.json").read_text())
@@ -134,7 +117,7 @@ class DistributionTests(unittest.TestCase):
             path.write_text(json.dumps(data))
             built = build_marketplace(root, Path(temp) / "built")
             self.assertEqual((skill / "SKILL.md").read_bytes(),
-                             (built / "plugins/show-me/skills/example/SKILL.md").read_bytes())
+                             (built / "skills/example/SKILL.md").read_bytes())
 
     def test_builder_refuses_unowned_output(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -174,12 +157,14 @@ class DistributionTests(unittest.TestCase):
             data = json.loads(catalog_path.read_text())
             next(e for e in data["skills"] if e["id"] == "fix-ci")["status"] = "review-needed"
             catalog_path.write_text(json.dumps(data))
+            manifest_path = root / ".codex-plugin/plugin.json"
+            manifest = json.loads(manifest_path.read_text())
+            manifest["version"] = (root / "VERSION").read_text().strip()
+            manifest_path.write_text(json.dumps(manifest))
             built = build_marketplace(root, Path(temp) / "pending")
-            self.assertFalse((built / "plugins/engineering-kit").exists())
-            rejected = subprocess.run([sys.executable, str(root / "scripts/install.py"),
-                                       "--engine", "codex", "--bundle", "engineering-kit", "--dry-run"],
-                                      capture_output=True, text=True)
-            self.assertNotEqual(rejected.returncode, 0)
+            self.assertFalse((built / "skills/fix-ci").exists())
+            self.assertFalse((built / "claude-plugins/admax-skills/skills/fix-ci").exists())
+            self.assertTrue((built / "skills/show-me").exists())
 
     def test_explicit_only_policy_requires_codex_mapping(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -191,20 +176,20 @@ class DistributionTests(unittest.TestCase):
     def test_engine_specific_invocation_policy(self):
         with tempfile.TemporaryDirectory() as temp:
             built = build_marketplace(ROOT, Path(temp) / "built")
-            codex = built / "plugins/engineering-kit"
-            claude = built / "claude-plugins/engineering-kit"
+            codex = built
+            claude = built / "claude-plugins/admax-skills"
             for name in ["pr-review-canvas", "thermo-nuclear-code-quality-review"]:
                 relative = Path("skills") / name
                 self.assertNotIn("disable-model-invocation:", (codex / relative / "SKILL.md").read_text())
                 self.assertIn("allow_implicit_invocation: false", (codex / relative / "agents/openai.yaml").read_text())
                 self.assertIn("disable-model-invocation: true", (claude / relative / "SKILL.md").read_text())
-            self.assertFalse((codex / ".claude-plugin").exists())
+            self.assertFalse((codex / ".claude-plugin/plugin.json").exists())
             self.assertFalse((claude / ".codex-plugin").exists())
             self.assertEqual((codex / "skills/pr-review-canvas/renderer.js").read_bytes(),
                              (claude / "skills/pr-review-canvas/renderer.js").read_bytes())
             catalog = json.loads((built / ".claude-plugin/marketplace.json").read_text())
-            self.assertEqual(next(p for p in catalog["plugins"] if p["name"] == "engineering-kit")["source"],
-                             "./claude-plugins/engineering-kit")
+            self.assertEqual(next(p for p in catalog["plugins"] if p["name"] == "admax-skills")["source"],
+                             "./claude-plugins/admax-skills")
 
     def test_package_output_rebuild_excludes_stale_archives(self):
         with tempfile.TemporaryDirectory() as temp:
