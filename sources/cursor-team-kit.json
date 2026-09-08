@@ -96,7 +96,7 @@
     },
     "pr-review-canvas/SKILL.md": {
       "baseline_sha256": "88a07a2459197acba3c5e06b7d695e35ad618a998442b72d05cdba4efc117ac6",
-      "sha256": "f1973faa5d85fd9a1e4743e433be60c69940820bcde08bf69af42861629c6f8c",
+      "sha256": "f1d938b3b03c35fb9a7c1345891a3c5a0311067baae05dab1767e40753962ada",
       "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
     },
     "pr-review-canvas/template.html": {
@@ -106,7 +106,7 @@
     },
     "thermo-nuclear-code-quality-review/SKILL.md": {
       "baseline_sha256": "7faca08b51b643b2ddd0836f92af15574444024685dcc1e677dbbb39ae8c9e8f",
-      "sha256": "b012ca2c2cf4ed3832b3caa045a7d1552411caffb6599e443ebdaea60289a02a",
+      "sha256": "e0a87ff31018c7d6fdff7e566a47e181a87b8852dca02177e2226935299ca86e",
       "reason": "Batch adaptation: host-available tools, scoped authorization, provider-aware evidence and explicit limits; see docs/migration-review.zh-CN.md and docs/bootstrap.md."
     }
   },

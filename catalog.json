@@ -84,7 +84,8 @@
       "category": "code-review",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/pr-review-canvas",
-      "status": "ready"
+      "status": "ready",
+      "invocation": "explicit"
     },
     {
       "id": "review-and-ship",
@@ -112,7 +113,8 @@
       "category": "code-review",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/thermo-nuclear-code-quality-review",
-      "status": "ready"
+      "status": "ready",
+      "invocation": "explicit"
     },
     {
       "id": "verify-this",

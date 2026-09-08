@@ -1,0 +1,20 @@
+{
+  "name": "admax-skills",
+  "interface": {
+    "displayName": "Admax Skills"
+  },
+  "plugins": [
+    {
+      "name": "admax-skills",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

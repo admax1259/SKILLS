@@ -61,8 +61,8 @@ def build_marketplace(root=ROOT, destination=None):
         codex_entries.append({"name": name, "source": {"source": "local", "path": "./plugins/" + name},
                               "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
                               "category": "Productivity"})
-        explicit = [p for p in (plugin / "skills").glob("*/SKILL.md")
-                    if re.search(r"^disable-model-invocation: true\s*$", p.read_text(), re.M)]
+        explicit = [plugin / "skills" / member / "SKILL.md" for member in bundle["skills"]
+                    if entries[member].get("invocation") == "explicit"]
         claude_source = "./plugins/" + name
         if explicit:
             # Engine metadata differs; copies exist only in generated distribution.
@@ -71,9 +71,11 @@ def build_marketplace(root=ROOT, destination=None):
             shutil.rmtree(claude_plugin / ".codex-plugin")
             shutil.rmtree(plugin / ".claude-plugin")
             for path in explicit:
-                path.write_text(re.sub(r"^disable-model-invocation: true\n", "",
-                                       path.read_text(encoding="utf-8"), count=1, flags=re.M),
-                                encoding="utf-8")
+                claude_path = claude_plugin / path.relative_to(plugin)
+                claude_path.write_text(re.sub(r"^(description:.*\n)",
+                                              r"\1disable-model-invocation: true\n",
+                                              claude_path.read_text(encoding="utf-8"), count=1,
+                                              flags=re.M), encoding="utf-8")
             claude_source = "./claude-plugins/" + name
         claude_entries.append({"name": name, "source": claude_source, "version": version})
     write_json(destination / ".agents/plugins/marketplace.json",
@@ -146,18 +148,10 @@ def build_chatgpt_plugin(root=ROOT, destination=None):
                                    path.read_text(encoding="utf-8"), count=1, flags=re.M),
                             encoding="utf-8")
     write_json(destination / "SOURCES.json", sources)
-    description = "All reviewed skills from the Admax Skills collection"
-    write_json(destination / ".codex-plugin/plugin.json", {
-        "name": "admax-skills", "version": version, "description": description,
-        "author": {"name": "admax1259", "url": "https://github.com/admax1259"},
-        "repository": "https://github.com/admax1259/SKILLS",
-        "license": " AND ".join(sorted({source["license"] for source in sources.values()})),
-        "skills": "./skills/",
-        "interface": {"displayName": "Admax Skills", "shortDescription": description,
-                      "longDescription": description + ". See SOURCES.json for attribution.",
-                      "developerName": "admax1259", "category": "Productivity",
-                      "capabilities": ["Write"],
-                      "defaultPrompt": ["Use the Admax Skills collection for this task."]}})
+    manifest = read_json(root / ".codex-plugin/plugin.json")
+    if manifest.get("version") != version:
+        raise ValueError("Root plugin manifest version must match VERSION")
+    write_json(destination / ".codex-plugin/plugin.json", manifest)
     (destination / "README.md").write_text(
         "# Admax Skills for ChatGPT\n\n"
         "Upload this plugin directory or its ZIP in ChatGPT. It contains every reviewed skill.\n"

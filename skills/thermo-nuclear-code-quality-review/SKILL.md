@@ -1,12 +1,11 @@
 ---
 name: thermo-nuclear-code-quality-review
 description: Perform an explicitly requested strict maintainability audit of abstractions, coupling, branching, and structural simplification.
-disable-model-invocation: true
 ---
 
 # Strict code quality review
 
-Use for a requested deep maintainability audit. This is a review, not permission to refactor. Preserve the original explicit-only invocation policy through Claude frontmatter and Codex agents/openai.yaml.
+Use for a requested deep maintainability audit. This is a review, not permission to refactor. Packaging preserves the explicit-only invocation policy through engine-specific metadata.
 
 Resolve the requested diff/base or repository scope, user intent, and local architecture. Inspect meaningful callers, invariants, and tests before judging a local abstraction.
 

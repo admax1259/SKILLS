@@ -31,6 +31,8 @@ def validate(root=ROOT):
             raise ValueError("Invalid skill id")
         if entry["status"] not in {"ready", "review-needed", "deprecated"}:
             raise ValueError("Invalid skill status")
+        if entry.get("invocation", "implicit") not in {"implicit", "explicit"}:
+            raise ValueError("Invalid skill invocation policy")
         if entry["category"] not in catalog["categories"]:
             raise ValueError("Unknown category")
         source = entry["source"]
@@ -55,7 +57,7 @@ def validate(root=ROOT):
             raise ValueError("Skill name must match directory")
         if not re.search(r"^description: \S.+$", front, re.M):
             raise ValueError("Missing skill description")
-        if entry["status"] == "ready" and re.search(r"^disable-model-invocation: true", front, re.M):
+        if entry["status"] == "ready" and entry.get("invocation") == "explicit":
             policy = skill / "agents/openai.yaml"
             if not policy.is_file() or not re.search(
                 r"^policy:\n  allow_implicit_invocation: false\s*$", policy.read_text(), re.M

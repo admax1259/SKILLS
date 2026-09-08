@@ -21,6 +21,21 @@ def clone(destination):
 
 
 class DistributionTests(unittest.TestCase):
+    def test_source_root_is_an_installable_marketplace(self):
+        marketplace = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text())
+        self.assertEqual(marketplace["name"], "admax-skills")
+        self.assertEqual(len(marketplace["plugins"]), 1)
+        entry = marketplace["plugins"][0]
+        self.assertEqual(entry["name"], "admax-skills")
+        self.assertEqual(entry["source"], {"source": "local", "path": "./"})
+        manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        self.assertEqual(manifest["name"], entry["name"])
+        self.assertEqual(manifest["version"], (ROOT / "VERSION").read_text().strip())
+        self.assertEqual(manifest["skills"], "./skills/")
+        _, catalog = validate(ROOT)
+        self.assertTrue(all(entry["status"] == "ready" for entry in catalog["skills"]),
+                        "A root plugin exposes every skill; all catalog skills must be reviewed")
+
     def test_archives_round_trip_reproducibility_and_ready_gate(self):
         with tempfile.TemporaryDirectory() as temp:
             temp = Path(temp)
@@ -51,6 +66,8 @@ class DistributionTests(unittest.TestCase):
                 self.assertIn(".codex-plugin/plugin.json", names)
                 self.assertFalse(any(name.startswith(f"chatgpt-plugin-{version}/") for name in names))
                 manifest = json.loads(z.read(".codex-plugin/plugin.json"))
+                self.assertEqual(manifest,
+                                 json.loads((ROOT / ".codex-plugin/plugin.json").read_text()))
                 self.assertEqual(manifest["name"], "admax-skills")
                 self.assertEqual(manifest["skills"], "./skills/")
                 self.assertEqual(

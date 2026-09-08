@@ -60,16 +60,26 @@ python3 scripts/install.py --engine claude --bundle engineering-kit
 
 ### ChatGPT
 
-Run `python3 scripts/package.py`, then add `dist/packages/current/admax-skills-chatgpt-<version>.zip`
-through ChatGPT's plugin uploader. This is a single plugin with all reviewed skills, a manifest at
-the ZIP root, bundled licenses, and provenance. Do not upload the complete marketplace ZIP or the
-source repository: those layouts are intended for CLI marketplace installation and development.
-ChatGPT can load the instructions, but workflows that require a terminal, repository, or another
-host tool remain available only when that tool is exposed by the current conversation.
+The repository root contains both a marketplace manifest and the `admax-skills` plugin manifest and
+can be registered directly as an OpenAI marketplace. In an add-plugin flow that accepts repository
+URLs, enter `https://github.com/admax1259/SKILLS`. A local Codex installation can use
+`codex plugin marketplace add /path/to/SKILLS` followed by
+`codex plugin add admax-skills@admax-skills`.
+
+If an older checkout reported `marketplace root does not contain a supported manifest`, pull a
+revision containing `.agents/plugins/marketplace.json` and retry. Use `codex plugin marketplace list`
+and `codex plugin list` to confirm that both the marketplace and plugin are discovered.
+
+If the UI requires a file upload, run `python3 scripts/package.py`, then upload
+`dist/packages/current/admax-skills-chatgpt-<version>.zip`. This is a single plugin with all reviewed
+skills, a manifest at the ZIP root, bundled licenses, and provenance. Do not upload the complete
+marketplace ZIP as a ChatGPT plugin. ChatGPT can load the instructions, but workflows that require a
+terminal, repository, or another host tool remain available only when that tool is exposed by the
+current conversation.
 
 Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until 0.5.0 is merged, use this PR branch or its CI artifact.
 
-**The source repository is no longer a directly registrable native marketplace.** Sources do not contain generated plugin copies; the native marketplace lives in build output or an extracted installation ZIP. Do not run codex plugin marketplace add . or /plugin marketplace add admax1259/SKILLS against source. Inside Claude Code, register the generated absolute directory path and install show-me@admax-skills.
+**The source repository is directly registrable as an OpenAI marketplace.** Its root manifests reference canonical `skills/` without maintaining plugin copies; generated output remains in ignored `dist/`. Claude Code's multi-bundle marketplace continues to use the generated absolute directory.
 
 Invoke $show-me or $verify-this in Codex; /show-me:show-me or /engineering-kit:verify-this in Claude Code. Canvas and strict quality review retain explicit-only invocation. For a standalone skill, take the complete skills/show-me/ directory including its license.
 
