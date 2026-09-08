@@ -1,0 +1,34 @@
+{
+  "name": "admax-skills",
+  "version": "0.7.0-beta.3",
+  "description": "All reviewed skills from the Admax Skills collection",
+  "author": {
+    "name": "admax1259",
+    "url": "https://github.com/admax1259"
+  },
+  "repository": "https://github.com/admax1259/SKILLS",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Admax Skills",
+    "shortDescription": "All reviewed skills from the Admax Skills collection",
+    "longDescription": "All reviewed visualization and engineering skills in one plugin. Skill directories retain their licenses; provenance is documented in the source repository.",
+    "developerName": "admax1259",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use show-me to explain this repository visually.",
+      "Review the current changes with the Admax Skills workflows."
+    ],
+    "websiteURL": "https://github.com/admax1259/SKILLS"
+  },
+  "homepage": "https://github.com/admax1259/SKILLS#readme",
+  "keywords": [
+    "skills",
+    "github",
+    "gitlab",
+    "code-review"
+  ]
+}

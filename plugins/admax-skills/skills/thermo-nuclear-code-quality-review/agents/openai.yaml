@@ -1,0 +1,5 @@
+interface:
+  display_name: "Strict Code Quality Review"
+  short_description: "Explicit deep audit of maintainability and abstractions"
+policy:
+  allow_implicit_invocation: false

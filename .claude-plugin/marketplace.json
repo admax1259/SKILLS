@@ -1,0 +1,13 @@
+{
+  "name": "admax-skills",
+  "owner": {
+    "name": "admax1259"
+  },
+  "plugins": [
+    {
+      "name": "admax-skills",
+      "version": "0.7.0-beta.3",
+      "source": "./claude-plugins/admax-skills"
+    }
+  ]
+}

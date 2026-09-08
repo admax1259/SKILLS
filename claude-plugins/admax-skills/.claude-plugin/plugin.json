@@ -1,0 +1,11 @@
+{
+  "name": "admax-skills",
+  "version": "0.7.0-beta.3",
+  "description": "All reviewed skills from the Admax Skills collection",
+  "author": {
+    "name": "admax1259",
+    "url": "https://github.com/admax1259"
+  },
+  "repository": "https://github.com/admax1259/SKILLS",
+  "license": "MIT"
+}
