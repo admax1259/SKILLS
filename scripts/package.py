@@ -111,6 +111,61 @@ def write_zip(destination, root, prefix=""):
             archive.writestr(info, path.read_bytes())
 
 
+def build_chatgpt_plugin(root=ROOT, destination=None):
+    """Build one uploadable ChatGPT plugin containing every reviewed skill."""
+    root = Path(root).resolve()
+    version, catalog = validate(root)
+    destination = Path(destination) if destination else root / "dist" / "chatgpt-plugin"
+    if destination.is_symlink():
+        raise ValueError("Build destination cannot be a symlink")
+    destination = destination.resolve()
+    marker = destination / ".skills-build"
+    if destination.exists():
+        if destination.is_symlink() or not marker.is_file() or marker.read_text() != "admax-skills\n":
+            raise ValueError("Refusing to replace a directory not owned by this builder")
+        if destination == root or root.is_relative_to(destination):
+            raise ValueError("Build destination cannot contain source repository")
+        shutil.rmtree(destination)
+    destination.mkdir(parents=True)
+    marker.write_text("admax-skills\n")
+
+    ready = [entry for entry in catalog["skills"] if entry["status"] == "ready"]
+    if not ready:
+        raise ValueError("No reviewed skill is available")
+    sources = {}
+    for entry in ready:
+        member = entry["id"]
+        shutil.copytree(root / "skills" / member, destination / "skills" / member)
+        sources[member] = {"upstream_path": entry["upstream_path"],
+                           **read_json(root / "sources" / (entry["source"] + ".json"))}
+    # ChatGPT uses the OpenAI invocation policy in agents/openai.yaml. Claude's
+    # frontmatter flag is not accepted by OpenAI plugin ingestion.
+    for path in (destination / "skills").glob("*/SKILL.md"):
+        if re.search(r"^disable-model-invocation: true\s*$", path.read_text(), re.M):
+            path.write_text(re.sub(r"^disable-model-invocation: true\n", "",
+                                   path.read_text(encoding="utf-8"), count=1, flags=re.M),
+                            encoding="utf-8")
+    write_json(destination / "SOURCES.json", sources)
+    description = "All reviewed skills from the Admax Skills collection"
+    write_json(destination / ".codex-plugin/plugin.json", {
+        "name": "admax-skills", "version": version, "description": description,
+        "author": {"name": "admax1259", "url": "https://github.com/admax1259"},
+        "repository": "https://github.com/admax1259/SKILLS",
+        "license": " AND ".join(sorted({source["license"] for source in sources.values()})),
+        "skills": "./skills/",
+        "interface": {"displayName": "Admax Skills", "shortDescription": description,
+                      "longDescription": description + ". See SOURCES.json for attribution.",
+                      "developerName": "admax1259", "category": "Productivity",
+                      "capabilities": ["Write"],
+                      "defaultPrompt": ["Use the Admax Skills collection for this task."]}})
+    (destination / "README.md").write_text(
+        "# Admax Skills for ChatGPT\n\n"
+        "Upload this plugin directory or its ZIP in ChatGPT. It contains every reviewed skill.\n"
+        "Host tools still determine which workflows can run. Sources and licenses are bundled.\n",
+        encoding="utf-8")
+    return destination
+
+
 def package(root=ROOT, output=None):
     root = Path(root).resolve()
     version, _ = validate(root)
@@ -128,6 +183,7 @@ def package(root=ROOT, output=None):
     output.mkdir(parents=True)
     marker.write_text("admax-skills\n")
     marketplace = build_marketplace(root, output / ("marketplace-" + version))
+    chatgpt = build_chatgpt_plugin(root, output / ("chatgpt-plugin-" + version))
     archives = []
     for plugin in sorted((marketplace / "plugins").iterdir()):
         suffix = "" if (plugin / ".claude-plugin").exists() else "-codex"
@@ -140,6 +196,9 @@ def package(root=ROOT, output=None):
         archives.append(dest)
     dest = output / f"skills-{version}.zip"
     write_zip(dest, marketplace, f"skills-{version}/")
+    archives.append(dest)
+    dest = output / f"admax-skills-chatgpt-{version}.zip"
+    write_zip(dest, chatgpt)
     archives.append(dest)
     checksums = output / "SHA256SUMS"
     checksums.write_text("".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n"

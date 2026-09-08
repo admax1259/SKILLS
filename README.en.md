@@ -58,6 +58,15 @@ python3 scripts/install.py --engine codex --bundle code-cleanup
 python3 scripts/install.py --engine claude --bundle engineering-kit
 ```
 
+### ChatGPT
+
+Run `python3 scripts/package.py`, then add `dist/packages/current/admax-skills-chatgpt-<version>.zip`
+through ChatGPT's plugin uploader. This is a single plugin with all reviewed skills, a manifest at
+the ZIP root, bundled licenses, and provenance. Do not upload the complete marketplace ZIP or the
+source repository: those layouts are intended for CLI marketplace installation and development.
+ChatGPT can load the instructions, but workflows that require a terminal, repository, or another
+host tool remain available only when that tool is exposed by the current conversation.
+
 Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until 0.5.0 is merged, use this PR branch or its CI artifact.
 
 **The source repository is no longer a directly registrable native marketplace.** Sources do not contain generated plugin copies; the native marketplace lives in build output or an extracted installation ZIP. Do not run codex plugin marketplace add . or /plugin marketplace add admax1259/SKILLS against source. Inside Claude Code, register the generated absolute directory path and install show-me@admax-skills.
@@ -75,6 +84,7 @@ Outputs in dist/packages/current/:
 | File | Purpose |
 |---|---|
 | skills-<version>.zip | Complete native marketplace; extract and run the same installer without Git or build dependencies |
+| admax-skills-chatgpt-<version>.zip | Single root-manifest plugin for direct ChatGPT upload; includes all reviewed skills |
 | <bundle>-<version>.zip | Dual-engine show-me, compiler-checks, or code-cleanup plugin |
 | engineering-kit-<engine>-<version>.zip | Engine-specific Codex or Claude engineering plugin; differing invocation policies are generated automatically |
 | SHA256SUMS | ZIP checksums |
@@ -83,7 +93,7 @@ Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); 
 
 - Codex: native format and installation flow have been validated; new versions are rechecked.
 - Claude Code: native format generated; CLI installation remains untested on the development machine.
-- ChatGPT / other Claude surfaces: plugin ZIPs provided; UI import and public listing are separate verification steps, with no listing claimed.
+- ChatGPT: a single root-manifest plugin is generated for direct upload; public listing remains a separate verification step, with no listing claimed.
 - GitHub / GitLab: instructions cover PR/MR, forks, current-revision CI, and discussion state; Canvas includes read-only collection for both. GitHub has live repository evidence; GitLab collection uses fixtures and live MR writes remain unverified.
 
 ## Collection workflow
