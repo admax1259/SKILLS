@@ -79,9 +79,9 @@ def build_marketplace(root=ROOT, destination=None):
             claude_source = "./claude-plugins/" + name
         claude_entries.append({"name": name, "source": claude_source, "version": version})
     write_json(destination / ".agents/plugins/marketplace.json",
-               {"name": "admax-skills", "interface": {"displayName": "Admax Skills"}, "plugins": codex_entries})
+               {"name": "admax-skills-bundles", "interface": {"displayName": "Admax Skills Bundles"}, "plugins": codex_entries})
     write_json(destination / ".claude-plugin/marketplace.json",
-               {"name": "admax-skills", "owner": {"name": "admax1259"}, "plugins": claude_entries})
+               {"name": "admax-skills-bundles", "owner": {"name": "admax1259"}, "plugins": claude_entries})
     (destination / "scripts").mkdir()
     shutil.copyfile(root / "scripts/install.py", destination / "scripts/install.py")
     shutil.copyfile(root / "LICENSE", destination / "LICENSE")
@@ -113,8 +113,8 @@ def write_zip(destination, root, prefix=""):
             archive.writestr(info, path.read_bytes())
 
 
-def build_chatgpt_plugin(root=ROOT, destination=None):
-    """Build one uploadable ChatGPT plugin containing every reviewed skill."""
+def build_codex_plugin(root=ROOT, destination=None):
+    """Build one OpenAI plugin with a local marketplace for reviewed skills."""
     root = Path(root).resolve()
     version, catalog = validate(root)
     destination = Path(destination) if destination else root / "dist" / "chatgpt-plugin"
@@ -152,9 +152,17 @@ def build_chatgpt_plugin(root=ROOT, destination=None):
     if manifest.get("version") != version:
         raise ValueError("Root plugin manifest version must match VERSION")
     write_json(destination / ".codex-plugin/plugin.json", manifest)
+    write_json(destination / ".agents/plugins/marketplace.json",
+               read_json(root / ".agents/plugins/marketplace.json"))
     (destination / "README.md").write_text(
-        "# Admax Skills for ChatGPT\n\n"
-        "Upload this plugin directory or its ZIP in ChatGPT. It contains every reviewed skill.\n"
+        "# Admax Skills for Codex / Codex 安装包\n\n"
+        "Extract to a permanent directory and run there / 解压到固定目录后执行：\n\n"
+        "    codex plugin marketplace add .\n\n"
+        "Restart the app, select Admax Skills in Plugins Directory and click Install.\n"
+        "重启应用，在 Plugins Directory 选择 Admax Skills，点击安装。\n\n"
+        "CLI alternative / 命令行：codex plugin add admax-skills@admax-skills\n\n"
+        "This is a local marketplace, not an MCP connection. Generic ChatGPT ZIP upload is unverified.\n"
+        "这是本地 marketplace，不是 MCP 连接；未验证通用 ChatGPT ZIP 上传。\n"
         "Host tools still determine which workflows can run. Sources and licenses are bundled.\n",
         encoding="utf-8")
     return destination
@@ -177,7 +185,7 @@ def package(root=ROOT, output=None):
     output.mkdir(parents=True)
     marker.write_text("admax-skills\n")
     marketplace = build_marketplace(root, output / ("marketplace-" + version))
-    chatgpt = build_chatgpt_plugin(root, output / ("chatgpt-plugin-" + version))
+    chatgpt = build_codex_plugin(root, output / ("chatgpt-plugin-" + version))
     archives = []
     for plugin in sorted((marketplace / "plugins").iterdir()):
         suffix = "" if (plugin / ".claude-plugin").exists() else "-codex"
@@ -191,7 +199,7 @@ def package(root=ROOT, output=None):
     dest = output / f"skills-{version}.zip"
     write_zip(dest, marketplace, f"skills-{version}/")
     archives.append(dest)
-    dest = output / f"admax-skills-chatgpt-{version}.zip"
+    dest = output / f"admax-skills-codex-{version}.zip"
     write_zip(dest, chatgpt)
     archives.append(dest)
     checksums = output / "SHA256SUMS"

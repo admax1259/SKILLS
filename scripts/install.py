@@ -37,7 +37,7 @@ def main():
             print(f"Would build reviewed bundles into {target}")
             print(shlex.join([args.engine, "plugin", "marketplace", "add", str(target)]))
             print(shlex.join([args.engine, "plugin", "add" if args.engine == "codex" else "install",
-                              args.bundle + "@admax-skills"]))
+                              args.bundle + "@admax-skills-bundles"]))
             return
         if not shutil.which(args.engine):
             parser.error(f"Install the {args.engine} CLI first")

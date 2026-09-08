@@ -13,7 +13,7 @@ def read_json(path):
 def validate(root=ROOT):
     root = Path(root).resolve()
     version = (root / "VERSION").read_text().strip()
-    if not re.fullmatch(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)", version):
+    if not re.fullmatch(r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-beta\.(?:0|[1-9]\d*))?", version):
         raise ValueError("Invalid VERSION")
     catalog = read_json(root / "catalog.json")
     if catalog.get("schema_version") != 1:

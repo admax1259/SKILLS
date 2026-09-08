@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0-beta.1
+
+- Publish version changes merged to main as GitHub Releases with ZIP assets and SHA256SUMS; beta versions are prereleases.
+- Replace the misleading ChatGPT upload ZIP with a Codex package containing its own local marketplace manifest and bilingual installation instructions.
+- Give generated bundle marketplaces a separate name, admax-skills-bundles, so registering them does not replace the all-skills marketplace.
+- Document Release downloads, Claude Code installation, and the distinction between skills plugins and MCP connections. Desktop UI installation remains unverified.
+
 ## 0.5.0 — Unreleased
 
 - Complete the remaining 16 workflow adaptations; all 19 skills are package-eligible, with engineering-kit available.
