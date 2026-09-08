@@ -2,6 +2,8 @@
 
 ## 下载 / Download
 
+[应用内字段说明 / GUI fields](INSTALL.md) · [包结构核对 / Package audit](package-audit.md)
+
 打开 [Releases](https://github.com/admax1259/SKILLS/releases)，选择最新 Pre-release，在 Assets 下载 ZIP 与 SHA256SUMS。无需 GitHub 登录即可下载公开 Release 资产。Actions artifacts 是限期保存的 CI 构建；Source code ZIP 是源码，不能替代安装包。
 
 Open the latest Pre-release under Releases and download ZIP assets and SHA256SUMS. Public Release assets do not require signing in. Actions artifacts expire; GitHub Source code ZIPs require building.

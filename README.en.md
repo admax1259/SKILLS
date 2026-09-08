@@ -46,6 +46,17 @@ Ready means eligible for packaging, not behaviorally verified on every engine. B
 
 ## Install all skills
 
+**Fill Add plugin marketplace in the app:**
+
+| Field | GitHub source | Extracted Release source |
+|---|---|---|
+| Source | `admax1259/SKILLS` | Absolute path to the extracted `skills-0.6.0-beta.3` folder |
+| Git ref | `v0.6.0-beta.3` | Leave empty |
+| Sparse paths | Leave empty | Leave empty |
+
+Click Add marketplace, select Admax Skills, open the plugin card and click Install. Source is not a ZIP path; `plugins/codex` is only a UI example. See [INSTALL](docs/INSTALL.md) for the exact fields and [package audit](docs/package-audit.md) for required/optional files and verification limits.
+
+
 Download the complete ZIP from [GitHub Releases](https://github.com/admax1259/SKILLS/releases), extract it to a permanent location, and enter `skills-<version>/`. Requires Python 3.10+ and the engine CLI. Choose your engine:
 
 ```sh

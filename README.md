@@ -46,6 +46,17 @@ SKILLS/
 
 ## 安装全部技能
 
+**应用内 Add plugin marketplace 窗口这样填：**
+
+| 字段 | 直接从 GitHub 安装 | 从 Release 解压包安装 |
+|---|---|---|
+| Source | `admax1259/SKILLS` | `skills-0.6.0-beta.3` 解压目录的绝对路径 |
+| Git ref | `v0.6.0-beta.3` | 留空 |
+| Sparse paths | 留空 | 留空 |
+
+点击 Add marketplace 后，在 Admax Skills 来源下打开插件卡片，再点击 Install。Source 不是 ZIP 路径；`plugins/codex` 是窗口示例，不要填。完整截图字段说明见 [INSTALL](docs/INSTALL.md)，包结构与必需/可选文件核对见[安装包审计](docs/package-audit.md)。
+
+
 从 [GitHub Releases](https://github.com/admax1259/SKILLS/releases) 下载完整 ZIP，解压到固定目录并进入 `skills-<version>/`。需要 Python 3.10+ 和对应引擎 CLI。选择你使用的引擎，执行一条命令：
 
 ```sh
