@@ -202,7 +202,7 @@ class DistributionTests(unittest.TestCase):
             built = build_marketplace(ROOT, Path(temp) / "built")
             codex = built / "plugins/admax-skills"
             claude = built / "claude-plugins/admax-skills"
-            for name in ["pr-review-canvas", "thermo-nuclear-code-quality-review"]:
+            for name in [e["id"] for e in json.loads((ROOT / "catalog.json").read_text())["skills"] if e.get("invocation") == "explicit"]:
                 relative = Path("skills") / name
                 self.assertNotIn("disable-model-invocation:", (codex / relative / "SKILL.md").read_text())
                 self.assertIn("allow_implicit_invocation: false", (codex / relative / "agents/openai.yaml").read_text())

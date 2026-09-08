@@ -1,121 +1,120 @@
 # SKILLS
 
-[English](README.en.md) · [技能目录](docs/CATALOG.md) · [目录设计](docs/architecture.md) · [收录规范](CONTRIBUTING.md)
+[English](README.en.md) · [Catalog](docs/CATALOG.md) · [Install](docs/INSTALL.md) · [Contributing](CONTRIBUTING.md)
 
-个人 Agent Skills 收集器：统一收录、保留来源、逐项适配，再打包给不同引擎。
+个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**44 个技能、8 个分类、3 个上游来源，一个完整插件。**
 
-**[下载完整 Beta 安装包](https://github.com/admax1259/SKILLS/releases)：一个 ZIP，全部 19 个技能，同时支持 Codex 和 Claude Code。** 在最新 Pre-release 的 Assets 下载 `skills-<version>.zip` 与 `SHA256SUMS`。不需要挑选单独的技能包。
+**[Download v0.7.0-beta.1](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.1)** — `skills-0.7.0-beta.1.zip` + `SHA256SUMS`.
 
-**19 个技能，6 个分类，2 个来源。19 个均已适配并可打包；实际验证范围见[自举记录](docs/bootstrap.md)。**
+同一个 ZIP 包含 Codex 和 Claude Code 两种原生插件布局；全部技能一起安装，无需挑选小包。
 
-## 目录
+## 安装
 
-```text
-SKILLS/
-├── .agents/plugins/marketplace.json # 根目录单一插件的 marketplace 清单
-├── .codex-plugin/plugin.json     # 直接引用 skills/ 的根插件清单
-├── skills/                       # 唯一技能源码；每个技能一个稳定路径
-│   ├── show-me/
-│   │   ├── SKILL.md
-│   │   └── LICENSE
-│   ├── check-compiler-errors/
-│   ├── control-cli/
-│   ├── control-ui/
-│   ├── pr-review-canvas/          # 自带 renderer.js、styles.css、template.html
-│   └── …                         # 全部 19 项见技能目录
-├── catalog.json                  # 分类、来源、审核状态与 bundle 成员
-├── sources/                      # 上游 URL、固定 commit、授权、导入记录
-│   ├── cursor-team-kit.json
-│   └── humanlayer.json
-├── scripts/                      # 校验、索引、构建、安装
-├── tests/
-├── docs/
-└── dist/                         # 生成的插件与 ZIP；不提交、不手改
-```
+**Codex 应用内**：Plugins → Add plugin marketplace：
 
-分类通过[索引](docs/CATALOG.md)导航，不通过多层目录移动技能。一个技能只维护一份源码，全部已审核技能统一进入完整插件。以后增加作者、分类或引擎，都不需要改变已有 skill 路径。
-
-## 已收录内容
-
-- [show-me](skills/show-me/SKILL.md)：可打包。来自 HumanLayer，已适配跨平台预览。
-- [check-compiler-errors](skills/check-compiler-errors/SKILL.md)：已适配，默认检查并报告，明确要求时修复；包含在完整插件中。
-- [deslop](skills/deslop/SKILL.md)：已适配，清理当前 diff 的冗余并保持行为；保留必要注释和错误处理，包含在完整插件中。
-- **cursor-team-kit 全部 18 个 skills 已实际收录**，包含 PR canvas 的配套资源；按验证、审查、代码质量、交付、知识复盘分类。18 项工程技能已完成批量适配，随完整插件一起安装；逐项决策见[迁移评审](docs/migration-review.zh-CN.md)。
-
-`ready` 表示可以进入包，不代表每个引擎均已行为验证。未适配技能不会进入发布包。通用第三方安装器可能不读取本仓库状态；使用下面的安装器可执行审核过滤。
-
-## 安装全部技能
-
-**应用内 Add plugin marketplace 窗口这样填：**
-
-| 字段 | 直接从 GitHub 安装 | 从 Release 解压包安装 |
+| Field | GitHub | Release 解压目录 |
 |---|---|---|
-| Source | `admax1259/SKILLS` | `skills-0.6.0-beta.3` 解压目录的绝对路径 |
-| Git ref | `v0.6.0-beta.3` | 留空 |
+| Source | `admax1259/SKILLS` | 解压后 `skills-0.7.0-beta.1` 的绝对路径 |
+| Git ref | `v0.7.0-beta.1` | 留空 |
 | Sparse paths | 留空 | 留空 |
 
-点击 Add marketplace 后，在 Admax Skills 来源下打开插件卡片，再点击 Install。Source 不是 ZIP 路径；`plugins/codex` 是窗口示例，不要填。完整截图字段说明见 [INSTALL](docs/INSTALL.md)，包结构与必需/可选文件核对见[安装包审计](docs/package-audit.md)。
+添加来源后，打开 **Admax Skills** 卡片并点击 **Install**。Source 不能填 ZIP 或 Release 网页地址。
 
+**Claude Code**：解压后执行 `/plugin marketplace add <解压目录绝对路径>`，再到 Discover 安装 Admax Skills。
 
-从 [GitHub Releases](https://github.com/admax1259/SKILLS/releases) 下载完整 ZIP，解压到固定目录并进入 `skills-<version>/`。需要 Python 3.10+ 和对应引擎 CLI。选择你使用的引擎，执行一条命令：
+也可在解压目录一键安装（Python 3.10+ 和对应 CLI）：
 
 ```sh
-# Codex
 python3 scripts/install.py --engine codex
-
-# Claude Code
+# or
 python3 scripts/install.py --engine claude
 ```
 
-两条命令都安装同一个完整插件 `admax-skills`，包含 show-me 与全部 18 个工程技能。安装后开启新会话，保留解压目录。追加 `--dry-run` 可先预览。
+[详细步骤、校验、旧版本升级与常见问题](docs/INSTALL.md)。安装后新建会话，Codex 可用 `$show-me`，Claude Code 可用 `/admax-skills:show-me`。
 
-**Codex 界面安装**：在解压目录运行 `codex plugin marketplace add .`，重启应用，在 Plugins Directory 的 Admax Skills 中点击 Install。**Claude Code 界面安装**：运行 `/plugin marketplace add <解压目录绝对路径>`，然后从 Discover 安装 Admax Skills。
+## 本次新增：Matt Pocock 的 25 个技能
 
-如果已经注册过同名来源，先用 `codex plugin marketplace list` 或 Claude 对应命令确认它属于本仓库；更换路径前使用引擎原生命令移除旧的 `admax-skills` 来源，再注册新目录。保留其他来源。旧 show-me、engineering-kit 等独立插件应先卸载，避免重复激活。
+### engineering
 
-### 从源码安装
+| Skill | 用途 |
+|---|---|
+| [ask-matt](skills/ask-matt/SKILL.md) | 流程导航与阶段衔接 |
+| [code-review](skills/code-review/SKILL.md) | 按正确性和设计审查变更 |
+| [codebase-design](skills/codebase-design/SKILL.md) | 设计深模块与清晰接口 |
+| [diagnosing-bugs](skills/diagnosing-bugs/SKILL.md) | 复现并定位缺陷 |
+| [domain-modeling](skills/domain-modeling/SKILL.md) | 领域术语、上下文与 ADR |
+| [grill-with-docs](skills/grill-with-docs/SKILL.md) | 带文档记录的需求访谈 |
+| [implement](skills/implement/SKILL.md) | 从规格或工单实施变更 |
+| [improve-codebase-architecture](skills/improve-codebase-architecture/SKILL.md) | 发现架构改进机会 |
+| [prototype](skills/prototype/SKILL.md) | 用原型验证设计问题 |
+| [research](skills/research/SKILL.md) | 基于一手资料的研究 |
+| [resolving-merge-conflicts](skills/resolving-merge-conflicts/SKILL.md) | 按双方意图解决冲突 |
+| [setup-matt-pocock-skills](skills/setup-matt-pocock-skills/SKILL.md) | 配置跟踪器、标签与文档布局 |
+| [tdd](skills/tdd/SKILL.md) | 围绕稳定接口进行 TDD |
+| [to-spec](skills/to-spec/SKILL.md) | 将讨论整理为规格 |
+| [to-tickets](skills/to-tickets/SKILL.md) | 将规格拆分为工单 |
+| [triage](skills/triage/SKILL.md) | 分类工单并生成执行说明 |
+| [wayfinder](skills/wayfinder/SKILL.md) | 绘制问题与决策地图 |
+| [wizard](skills/wizard/SKILL.md) | 生成需要人工参与的配置向导 |
 
-```sh
-git clone https://github.com/admax1259/SKILLS.git
-cd SKILLS
-python3 scripts/install.py --engine codex
-# Claude Code 改为 --engine claude
+### productivity
+
+| Skill | 用途 |
+|---|---|
+| [grill-me](skills/grill-me/SKILL.md) | 无状态的深入访谈 |
+| [grilling](skills/grilling/SKILL.md) | 逐步澄清问题与决策 |
+| [handoff](skills/handoff/SKILL.md) | 生成可移交的上下文文档 |
+| [teach](skills/teach/SKILL.md) | 持续学习与学习记录 |
+| [to-questionnaire](skills/to-questionnaire/SKILL.md) | 为他人准备问题清单 |
+| [wait-what](skills/wait-what/SKILL.md) | 用易懂语言重新解释 |
+| [writing-for-agents](skills/writing-for-agents/SKILL.md) | 编写供 Agent 使用的文档 |
+
+建议从 `ask-matt` 了解流程；需求澄清用 `grill-with-docs`，然后按需要进入 `to-spec` → `to-tickets` → `implement`。这些是可组合工具，不要求每次走完全部步骤。
+
+`fix-merge-conflicts` 保留原有交付流程，`resolving-merge-conflicts` 提供基于双方意图的简洁方法；按任务选择一个，不重复执行。
+
+## 原有 19 个技能
+
+| Category | Skills |
+|---|---|
+| visualization | [show-me](skills/show-me/SKILL.md) |
+| verification | [check-compiler-errors](skills/check-compiler-errors/SKILL.md), [control-cli](skills/control-cli/SKILL.md), [control-ui](skills/control-ui/SKILL.md), [run-smoke-tests](skills/run-smoke-tests/SKILL.md), [verify-this](skills/verify-this/SKILL.md) |
+| code-review | [get-pr-comments](skills/get-pr-comments/SKILL.md), [make-pr-easy-to-review](skills/make-pr-easy-to-review/SKILL.md), [pr-review-canvas](skills/pr-review-canvas/SKILL.md), [thermo-nuclear-code-quality-review](skills/thermo-nuclear-code-quality-review/SKILL.md) |
+| code-quality | [deslop](skills/deslop/SKILL.md) |
+| delivery | [fix-ci](skills/fix-ci/SKILL.md), [fix-merge-conflicts](skills/fix-merge-conflicts/SKILL.md), [loop-on-ci](skills/loop-on-ci/SKILL.md), [new-branch-and-pr](skills/new-branch-and-pr/SKILL.md), [review-and-ship](skills/review-and-ship/SKILL.md) |
+| knowledge | [weekly-review](skills/weekly-review/SKILL.md), [what-did-i-get-done](skills/what-did-i-get-done/SKILL.md), [workflow-from-chats](skills/workflow-from-chats/SKILL.md) |
+
+## 来源与适配
+
+| Upstream | Count | License | Provenance |
+|---|---:|---|---|
+| [Cursor](https://github.com/cursor/plugins) | 18 | MIT | [cursor-team-kit](sources/cursor-team-kit.json) |
+| [HumanLayer](https://github.com/humanlayer/skills) | 1 | MIT | [humanlayer](sources/humanlayer.json) |
+| [Matt Pocock](https://github.com/mattpocock/skills) | 25 | MIT | [matt-pocock](sources/matt-pocock.json) |
+
+保留每个技能的许可证、资源、固定上游 commit 和文件校验值。新增适配说明见[导入评审](docs/matt-pocock-import.md)。`ready` 表示可打包，不代表所有工作流和引擎均经过行为实测。GitHub/GitLab 操作需要可用且有权限的连接器或 CLI；向导模板内置的 CI secret helper 目前是 GitHub 专用。
+
+## 仓库组织与维护
+
+```text
+skills/<id>/SKILL.md       # canonical source and adjacent resources
+catalog.json              # categories, readiness, invocation policy
+sources/*.json            # upstream revisions, licenses, adaptations
+.agents/plugins/          # Codex source marketplace
+.codex-plugin/            # Codex source manifest
+scripts/                  # validation, packaging, installation
+docs/                     # generated catalog and guides
+dist/                     # generated releases; not committed
 ```
 
-源码安装器校验 catalog，只收录 `ready` 技能，构建到固定 `dist/marketplace/` 再安装。分类与历史 bundle 记录用于管理，不再作为用户安装选项。
-
-### 下载文件
-
-| 文件 | 用途 |
-|---|---|
-| `skills-<version>.zip` | 唯一完整安装包，Codex 与 Claude Code 共用 |
-| `SHA256SUMS` | 完整包的 SHA-256 校验和 |
-
-macOS：`LC_ALL=C shasum -a 256 -c SHA256SUMS`；Linux：`sha256sum -c SHA256SUMS`。GitHub 自动生成的 Source code ZIP 是源码，不能替代安装包。每次新 VERSION 合并到 main 会自动打包发布；`-beta.N` 标为预发布。见[发版流程](docs/releases.md)。
-
-### ChatGPT 与运行时支持
-
-[OpenAI 官方测试文档](https://developers.openai.com/plugins/deploy/connect-chatgpt)将技能插件的本地 marketplace 安装与 MCP 连接分开。本项目没有 MCP 服务器地址，不应把 ZIP 或仓库链接填入 MCP URL。通用 ChatGPT ZIP 上传、公共目录上架和当前桌面 UI 点击安装尚未完成验证。
-
-Codex 清单、包内容、可重现构建已验证；Claude Code 原生格式和显式调用策略有结构测试，当前开发机没有 Claude CLI，实际激活待验证。技能依赖宿主提供终端、仓库及 GitHub/GitLab 工具。
-
-Codex 调用示例：`$show-me`、`$verify-this`；Claude Code：`/admax-skills:show-me`、`/admax-skills:verify-this`。PR canvas 与全面质量审查保持显式调用，构建器自动生成引擎专用策略，不需要用户选择不同包。
-
-## 收录与维护
-
-每个新技能：放入 `skills/<id>/` → 保留 LICENSE → 登记 source 与 catalog → 审阅与测试 → 标为 ready → 自动进入完整插件。见[收录规范](CONTRIBUTING.md)。
+分类和作者放在元数据中，技能路径保持扁平稳定。新增技能经过审阅、适配、校验后进入唯一完整插件。Release 包另行生成 Codex 与 Claude Code 目录，避免两种清单混入同一插件。
 
 ```sh
+python3 scripts/catalog.py
 python3 scripts/validate.py
 python3 scripts/catalog.py --check
 python3 -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
 
-运行完整开发测试还需要 Node.js 22+（Canvas 渲染回归）；安装预打包插件不需要 Node.js。
-
-CI 检查索引遗漏、重名、非法 bundle、未审核技能隔离、导入完整性和可重现打包。所有变动通过 PR 交付。
-
-## 授权
-
-仓库自有工具使用 [Apache-2.0](LICENSE)。收录技能保留各自许可证：Cursor 与 HumanLayer 的本批内容均为 MIT，完整声明位于每个技能目录。来源与修改见 [sources/](sources/)。本项目不是上游作者或引擎厂商的官方项目。
+[Changelog](CHANGELOG.md) · [Architecture](docs/architecture.md) · [Validation history](docs/bootstrap.md)

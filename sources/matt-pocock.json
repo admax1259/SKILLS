@@ -1,0 +1,233 @@
+{
+  "repository": "https://github.com/mattpocock/skills",
+  "revision": "3cca18b368ae95cdbdebbff572ccafa662551015",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 Matt Pocock",
+  "adaptations": [
+    "Imported only engineering (18) and productivity (7); retained all supporting resources and openai.yaml policies. Copied upstream root MIT LICENSE into each skill.",
+    "Canonical explicit policy lives in catalog and openai.yaml; builder emits Claude frontmatter. See docs/matt-pocock-import.md."
+  ],
+  "imported_files": {
+    "ask-matt/PHASE-BOUNDARIES.md": "a8aa20158609ef39e2b308b6ba0660c91066838d07a867202e63a7744a88a3ed",
+    "ask-matt/SKILL.md": "b25d86fb36b1d294eeead5d7db529f86135f9671f2afcd607579a63bb2213769",
+    "ask-matt/agents/openai.yaml": "bdffbc5a0a99ed1b6ef3253d251d755fd18162b9845972e380007f844b09b05c",
+    "code-review/SKILL.md": "47f4e52c21694def9c7c11cbfbf891ca35eac7a93e395797515be3c8a409ae50",
+    "code-review/agents/openai.yaml": "8229ca854e11dc8e6aef2131ee03f31fb1561cf905fab9ccc325180cf3331352",
+    "codebase-design/DESIGN-IT-TWICE.md": "8e740bf98446dbd4dfdc132ac4346d9a7eedaf93de6a495889171cf7f99f16bd",
+    "codebase-design/SKILL.md": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+    "codebase-design/DEEPENING.md": "f3dd099ce99289bd213914d8ee3e2429b78309c3957ca4583f7659551b1d53c1",
+    "codebase-design/agents/openai.yaml": "edebc9e4fcfe102114012575eaa9600b9b5fd08c311664f389c36e7bc717740f",
+    "diagnosing-bugs/SKILL.md": "77f3cf31bc99b2f49af943222526531fcc9fc41d047626d3640e875e85af3e84",
+    "diagnosing-bugs/agents/openai.yaml": "3e430dbe4334a87597488c060cb3dc3786bb00c9182877d6f5ec41f62490e90b",
+    "diagnosing-bugs/scripts/hitl-loop.template.sh": "35103539fc36873eea36074769ad454f9379d6fc8b2dc0e26ce987fd3bfe5503",
+    "domain-modeling/SKILL.md": "327a2b50620e2fd70abc6893cd6965e76b20f8d0adb0dc2c8d5eb3845efb643e",
+    "domain-modeling/CONTEXT-FORMAT.md": "17ab16ce783e4d2801ee52fd9acdf550cbf44de65ae76797a93943bbedf22a13",
+    "domain-modeling/ADR-FORMAT.md": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0",
+    "domain-modeling/agents/openai.yaml": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b",
+    "grill-with-docs/SKILL.md": "7de372c13488f1ee96cc11cd8907b56b6809cc93eef776eeddd37de6b6cbe3fe",
+    "grill-with-docs/agents/openai.yaml": "94cd0ab161fb468a836349f5ed482ba58ce8e709a05c57ce533d739dbd35cca9",
+    "implement/SKILL.md": "6d3fd9e83b8f36e5213854779db49b256a457a7ebb4a503e53fa7dcff696adc3",
+    "implement/agents/openai.yaml": "8970a8596ade0c28ab427f41a4ea242d6bdf6186c59ebf55e1238dbecaab79dc",
+    "improve-codebase-architecture/SKILL.md": "d1ac25511a936ff4250a48dbcefda363837d6bb9321b3cba73df99fa37270a75",
+    "improve-codebase-architecture/HTML-REPORT.md": "581e8bb5a521e46bbda8ca7e19b15948bed882187108092ebb90c62513b77528",
+    "improve-codebase-architecture/agents/openai.yaml": "c8cb20f68ebf0edb4e497bc11ae5fcaa196004e661cd189015b04f4109ced7f1",
+    "prototype/SKILL.md": "714de632d116bb73f65cdb5a882db15b9369a6713b9a47c0fad827848f0bfbe3",
+    "prototype/LOGIC.md": "f61c7d249e786a79ef289018901c348271e1798dd0b0bc5607b5c6f4d4a01ab9",
+    "prototype/UI.md": "723211e878acbc7b6ff09755263f3295cde724ba902ff0064da41eed51d45ad3",
+    "prototype/agents/openai.yaml": "5af65e43ab41a350436697b81e27b7f848d36782043b73c322bb2c9fa9cc55dc",
+    "research/SKILL.md": "985569f15739c713d6784887c3d186d4ef9ac85bec5ad9c068d25bf0739928e4",
+    "research/agents/openai.yaml": "9b4c470d63221c1f68f22df70b83e2f12401b317babe0d1b7b5f24a974474d0d",
+    "resolving-merge-conflicts/SKILL.md": "9d8114f8ef0b31f535a265fc05c364bd8cf2e2895a830040e06c22acb11f54b0",
+    "resolving-merge-conflicts/agents/openai.yaml": "a1f4f96838f2ed6282eb28abbbf99029cb8fadce552baf53da90a025b8bffddf",
+    "setup-matt-pocock-skills/issue-tracker-gitlab.md": "ea175f73d193b3f55819c0ed9bbccf6ee0e70ad8f928e3d7607596c53380acd6",
+    "setup-matt-pocock-skills/domain.md": "edc6d6131fdffc4b7135704f5262124fc43355c95f61b7399dc5a4db643e28ca",
+    "setup-matt-pocock-skills/triage-labels.md": "4f53c9b40ce2651e3611aa090eaedbd6dbc9b71ef8c5f7e65eac0d8263190d0d",
+    "setup-matt-pocock-skills/SKILL.md": "2bcd89e97777cdb705914424e39c97d5db524c8eb4eafac8120778a07774f0ec",
+    "setup-matt-pocock-skills/issue-tracker-github.md": "afd6852a80185217bd28aa5cbe456bef1e85be25be7bd1fba382d5b8ee428325",
+    "setup-matt-pocock-skills/issue-tracker-local.md": "7dcda20a2eb4bdc89b95d1143423c0691309921cadae3132e6424f371030506e",
+    "setup-matt-pocock-skills/agents/openai.yaml": "9527de0110541c45712319025155aeab8dc7d77c6ed6e5e83271bab1851ab939",
+    "tdd/mocking.md": "3ceb807fdf4a47d6a93d4d9a891e5ba6d362a6247bd08adc451feebfc17361ef",
+    "tdd/tests.md": "859f9e592c188fda4fc7277dd180e4ce9c7a2e13f6efe1f6f29eccc9d28c106a",
+    "tdd/SKILL.md": "cb01f66bebfaa25fa1f88e6b7e769cd9fd9f35b1120b8563749820738814c927",
+    "tdd/agents/openai.yaml": "ea6f01cf1b8c06a4b0f5b649d74b1b8ce8685e72af1b38d70d877693e092af0b",
+    "to-spec/SKILL.md": "43ad9cf318e5e7d3d1fa360253a37021796dc87a0c2e595ad262661a10f85088",
+    "to-spec/agents/openai.yaml": "1c5b4d1e3d8e52287ef19cc2742fdbbfae1914ac75d33af3e4c8174f08cc55bb",
+    "to-tickets/SKILL.md": "5c9fba69845c2519b9b35b9af42ae5142c21f8ca15ac2123dc2722002c8058ae",
+    "to-tickets/agents/openai.yaml": "21bc6215fffcd7614e9f772bb1760e87cc5fc7dcc707e7d282bc9414267a6090",
+    "triage/OUT-OF-SCOPE.md": "1fbf9b432130c6380aa65813b55553cfda150309b27c595e183f8e335b8a190d",
+    "triage/SKILL.md": "623a2ed692bdc77d2090e2a3dea3b627dd722ad3bbaca0be83aada75292c8fc4",
+    "triage/AGENT-BRIEF.md": "7f5f87fed3033df1b06e083c480f3e847b1fbb0647746b8a4c6a50f9f26ef44f",
+    "triage/agents/openai.yaml": "2e683717720cf456d165d0bb1a68bb600d0b6a8ccb61841c172e50d26f95351c",
+    "wayfinder/SKILL.md": "fee6e1d0c50f0e736b4ef8a599060c959afae904c9a97d82c97f049fcc3aa0f1",
+    "wayfinder/agents/openai.yaml": "88bc81a11a6d52ac67aeaa76b8b619e387020d47c5133a4dd4927fd15c4ad073",
+    "wizard/template.sh": "33cbe9dfb1d0e9185b60248a52aabed14bc64785a00cac695e302e739dd6c153",
+    "wizard/SKILL.md": "bdf31d48211ea559878f95a4f344aeabf8d85897488ba564382bab0b000daac1",
+    "wizard/agents/openai.yaml": "98f44d682d58e262f160dc59a8befc365e0aa65820dd0261864af26aa8e59d83",
+    "grill-me/SKILL.md": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
+    "grill-me/agents/openai.yaml": "c061e39c3e0f9d865fb1b97556d485704af2a8a58f4b8221a8917a5c2074a32b",
+    "grilling/SKILL.md": "10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2",
+    "grilling/agents/openai.yaml": "1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b",
+    "handoff/SKILL.md": "7c62de979fdc7ac32fb5ddb2146156c917f80ee070d30fadc9d40343c4b6ed25",
+    "handoff/agents/openai.yaml": "5c479fd562c691851690e8b18c8501045bef0943c10743d636b2fae26add1d28",
+    "teach/MISSION-FORMAT.md": "8cacbb3c0644d3ae0ea4965564797099401a6930a23f7cf462918576587f2418",
+    "teach/RESOURCES-FORMAT.md": "e9cacf34026e11a8d1c8f9de88abe5bcbf654f4ebdb25cae8c0de0d5f48f44ec",
+    "teach/LEARNING-RECORD-FORMAT.md": "701fa34b6748aa89e6c960ffb815257f481a7d77fb2900f9028f7edf3fdd6052",
+    "teach/GLOSSARY-FORMAT.md": "9b99859ec28437668130d8f2ce5a342938970f8a1ed4fd38c3eab4f4b5fff210",
+    "teach/SKILL.md": "a32df9dcdfc0c4fdc1c98e1ed3940c5f56b84c1aa90ff60346f32b8b53915b43",
+    "teach/agents/openai.yaml": "5856f3ae8aec742f1499c640aecdd5f1d6af5fa210a7c6ec794de8263a6f733f",
+    "to-questionnaire/SKILL.md": "b5eb929842ee0e93d867c5e906d183d350f2f2d149eaeaa86967d94d8eda1d3b",
+    "to-questionnaire/agents/openai.yaml": "9e8a06c38c8842eea8d4922cb9d1ead8e3ace647bab259b943c994a1b4742bc2",
+    "wait-what/SKILL.md": "e3f44e3ccbc0e7b62f20ba70b295fc9c9f4aa3f96c77168faee1c71bacbf4215",
+    "wait-what/agents/openai.yaml": "b41faadf741d51e4ea184148b2d1854d93f947aaf754c7844f70a00f04194999",
+    "writing-for-agents/SKILL-MECHANICS.md": "c768e6307c7c10728c401c213f2c4ba71c542127eeb7ad2956aabd15a0fa0059",
+    "writing-for-agents/SKILL.md": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a",
+    "writing-for-agents/agents/openai.yaml": "eacb24b2a618cfb81dacb0416f4fdd75ddf3a8060f8ddb99aae1b1e301907e4b"
+  },
+  "adapted_files": {
+    "ask-matt/PHASE-BOUNDARIES.md": {
+      "baseline_sha256": "a8aa20158609ef39e2b308b6ba0660c91066838d07a867202e63a7744a88a3ed",
+      "sha256": "554d1747da87bebcf19451edab06e6bcee8ce7c52939a9e5ab062bb9bdadd697",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "ask-matt/SKILL.md": {
+      "baseline_sha256": "b25d86fb36b1d294eeead5d7db529f86135f9671f2afcd607579a63bb2213769",
+      "sha256": "aa60f013fe52a57d430e79b6ee8d492061d8a313f626e0bad592a8dda0759bd4",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "code-review/SKILL.md": {
+      "baseline_sha256": "47f4e52c21694def9c7c11cbfbf891ca35eac7a93e395797515be3c8a409ae50",
+      "sha256": "e47cb94c7a6901ed29dd807caf7426f121b0466e608057728979ef45c56cd770",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "codebase-design/SKILL.md": {
+      "baseline_sha256": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "sha256": "0287431f246ad8be090fcd1fdd17dd3f328ec64b16da22c32579ee8e6da62bd7",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "diagnosing-bugs/SKILL.md": {
+      "baseline_sha256": "77f3cf31bc99b2f49af943222526531fcc9fc41d047626d3640e875e85af3e84",
+      "sha256": "40d7801463e23f9678659ce5673171b7525cbb9a1935202746f2f21dbe28d445",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "domain-modeling/SKILL.md": {
+      "baseline_sha256": "327a2b50620e2fd70abc6893cd6965e76b20f8d0adb0dc2c8d5eb3845efb643e",
+      "sha256": "bfe167ba149a85ebdb6b9ccc2ee921df047ff5c446685eadc8fc5e7d32565521",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "grill-with-docs/SKILL.md": {
+      "baseline_sha256": "7de372c13488f1ee96cc11cd8907b56b6809cc93eef776eeddd37de6b6cbe3fe",
+      "sha256": "143a5e374b8915817ccc6223c7fe9f447985fa68d960af14447961b25b0b0626",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "implement/SKILL.md": {
+      "baseline_sha256": "6d3fd9e83b8f36e5213854779db49b256a457a7ebb4a503e53fa7dcff696adc3",
+      "sha256": "46f30b6f301032776a03977ae95bfa3819b3494c64e8b633fe4e61e82918120a",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "improve-codebase-architecture/SKILL.md": {
+      "baseline_sha256": "d1ac25511a936ff4250a48dbcefda363837d6bb9321b3cba73df99fa37270a75",
+      "sha256": "2d60445ba826418931299f33de89febf59645680a8fda8584b60e688b4fb54ef",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "improve-codebase-architecture/HTML-REPORT.md": {
+      "baseline_sha256": "581e8bb5a521e46bbda8ca7e19b15948bed882187108092ebb90c62513b77528",
+      "sha256": "da6d1c2489d91171ef411b877f5f217d5afe62905b4f901b65f51a1f4ce9422a",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "prototype/SKILL.md": {
+      "baseline_sha256": "714de632d116bb73f65cdb5a882db15b9369a6713b9a47c0fad827848f0bfbe3",
+      "sha256": "e4de7365ae7b12dfc28bf0614cd08d64e50966b1289379951318f96d0f35cec9",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "research/SKILL.md": {
+      "baseline_sha256": "985569f15739c713d6784887c3d186d4ef9ac85bec5ad9c068d25bf0739928e4",
+      "sha256": "648b7cfe116b004b64cbc7a4c57b29debbd6d367750009f6ac27c897e5852a67",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "resolving-merge-conflicts/SKILL.md": {
+      "baseline_sha256": "9d8114f8ef0b31f535a265fc05c364bd8cf2e2895a830040e06c22acb11f54b0",
+      "sha256": "dee030af0993ef907ac02ab847b0803e05427d2bcf28d92f7638e694ad41dec7",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "setup-matt-pocock-skills/issue-tracker-gitlab.md": {
+      "baseline_sha256": "ea175f73d193b3f55819c0ed9bbccf6ee0e70ad8f928e3d7607596c53380acd6",
+      "sha256": "b921648801f7f0f958b1c1c2f2d24842bc7eb69b3364062d09bfd72c9f895b82",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "setup-matt-pocock-skills/SKILL.md": {
+      "baseline_sha256": "2bcd89e97777cdb705914424e39c97d5db524c8eb4eafac8120778a07774f0ec",
+      "sha256": "166cb9dd8d73b22fe7237f9ea0baa6d657c80b5a720fad7f04883187b0e52839",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "setup-matt-pocock-skills/issue-tracker-github.md": {
+      "baseline_sha256": "afd6852a80185217bd28aa5cbe456bef1e85be25be7bd1fba382d5b8ee428325",
+      "sha256": "92fefb412c088bba261c24113475a5ece0c55df92e697127519c931043780818",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "tdd/SKILL.md": {
+      "baseline_sha256": "cb01f66bebfaa25fa1f88e6b7e769cd9fd9f35b1120b8563749820738814c927",
+      "sha256": "2382d914623c7a007f8acd5e425e6bc8f3fb54f4e7e4323084e7915f7da2706f",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "to-spec/SKILL.md": {
+      "baseline_sha256": "43ad9cf318e5e7d3d1fa360253a37021796dc87a0c2e595ad262661a10f85088",
+      "sha256": "a28d882de3c45253ac154306746afc1a2ad5597cf7a2cd5e4b3c1e55e2ebea24",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "to-tickets/SKILL.md": {
+      "baseline_sha256": "5c9fba69845c2519b9b35b9af42ae5142c21f8ca15ac2123dc2722002c8058ae",
+      "sha256": "43e68409e8e68bb2599deda7cdb0a2e8fd60c19d77fc73febde6a64098d8a722",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "triage/SKILL.md": {
+      "baseline_sha256": "623a2ed692bdc77d2090e2a3dea3b627dd722ad3bbaca0be83aada75292c8fc4",
+      "sha256": "da347d99d805e8bf958dc4437cb671aea968d32b7540e1a4c9bfc648cdfd3f38",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "wayfinder/SKILL.md": {
+      "baseline_sha256": "fee6e1d0c50f0e736b4ef8a599060c959afae904c9a97d82c97f049fcc3aa0f1",
+      "sha256": "7f77f77986b8a676bc857ddb315af13d8476ddd162112825670d8b0bafa6da5d",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "wizard/SKILL.md": {
+      "baseline_sha256": "bdf31d48211ea559878f95a4f344aeabf8d85897488ba564382bab0b000daac1",
+      "sha256": "b1ffb1aa081d463882adb2eeb03b570afe420d8919d172a36e25d2e6df111657",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "grill-me/SKILL.md": {
+      "baseline_sha256": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
+      "sha256": "82ef556a567a1e263f988c0b711d121dbce91acad3ef347fad0a75ef47eb12c6",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "grilling/SKILL.md": {
+      "baseline_sha256": "10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2",
+      "sha256": "9bb8efa16daa6272b89ca3383635b80bb5de7500d0d9131a894a9163367d85ed",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "handoff/SKILL.md": {
+      "baseline_sha256": "7c62de979fdc7ac32fb5ddb2146156c917f80ee070d30fadc9d40343c4b6ed25",
+      "sha256": "e7d50c60f399f4acfe71f0d80244100a404fc0155da72ef52fe6b7c734f3c285",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "teach/SKILL.md": {
+      "baseline_sha256": "a32df9dcdfc0c4fdc1c98e1ed3940c5f56b84c1aa90ff60346f32b8b53915b43",
+      "sha256": "916ab68b5171fed77e9b56dfb2804300a07f98777f3343df3ef9e286fa658ecf",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "to-questionnaire/SKILL.md": {
+      "baseline_sha256": "b5eb929842ee0e93d867c5e906d183d350f2f2d149eaeaa86967d94d8eda1d3b",
+      "sha256": "a193ebf72fc54cd6c9a7712b6ac66973316c719da74b4f4a9b5a34c343c53f01",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "wait-what/SKILL.md": {
+      "baseline_sha256": "e3f44e3ccbc0e7b62f20ba70b295fc9c9f4aa3f96c77168faee1c71bacbf4215",
+      "sha256": "a6b81155aa1d2f22e39c96f87a675154e78f2557b4c9458c4bb8c3ba1a084533",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    },
+    "writing-for-agents/SKILL.md": {
+      "baseline_sha256": "551adca942227b44192edba88acd4e8db911f0121ce58ad16944ccf6a896a74a",
+      "sha256": "ed2386cbbfc16e7d2b161c37499beaf113eeb6624cea8d4fac91a5154c2753b2",
+      "reason": "Cross-engine skill resolution and invocation metadata; authorized tools/actions, provider and context handling; targeted conflict, testing, language and HTML safety corrections. See docs/matt-pocock-import.md."
+    }
+  }
+}

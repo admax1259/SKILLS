@@ -53,3 +53,38 @@ Ready means eligible for packaging, not verified on every engine. / 可打包不
 | [weekly-review](../skills/weekly-review/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 可打包 / Ready |
 | [what-did-i-get-done](../skills/what-did-i-get-done/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 可打包 / Ready |
 | [workflow-from-chats](../skills/workflow-from-chats/SKILL.md) | [cursor-team-kit](../sources/cursor-team-kit.json) | 可打包 / Ready |
+
+## 工程设计 / Engineering
+
+| Skill | 来源 / Source | 状态 / Status |
+|---|---|---|
+| [ask-matt](../skills/ask-matt/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [code-review](../skills/code-review/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [codebase-design](../skills/codebase-design/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [diagnosing-bugs](../skills/diagnosing-bugs/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [domain-modeling](../skills/domain-modeling/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [grill-with-docs](../skills/grill-with-docs/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [implement](../skills/implement/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [improve-codebase-architecture](../skills/improve-codebase-architecture/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [prototype](../skills/prototype/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [research](../skills/research/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [resolving-merge-conflicts](../skills/resolving-merge-conflicts/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [setup-matt-pocock-skills](../skills/setup-matt-pocock-skills/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [tdd](../skills/tdd/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [to-spec](../skills/to-spec/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [to-tickets](../skills/to-tickets/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [triage](../skills/triage/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [wayfinder](../skills/wayfinder/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [wizard](../skills/wizard/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+
+## 生产力 / Productivity
+
+| Skill | 来源 / Source | 状态 / Status |
+|---|---|---|
+| [grill-me](../skills/grill-me/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [grilling](../skills/grilling/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [handoff](../skills/handoff/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [teach](../skills/teach/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [to-questionnaire](../skills/to-questionnaire/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [wait-what](../skills/wait-what/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [writing-for-agents](../skills/writing-for-agents/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |

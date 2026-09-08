@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0-beta.1
+
+- Import 18 engineering and 7 productivity skills from Matt Pocock, with resources, MIT attribution and immutable provenance. Total: 44 skills in one plugin.
+- Preserve explicit invocation policies across Codex and Claude Code; adapt provider/tool access and task authorization boundaries.
+- Reorganize bilingual READMEs around installation, skill discovery and contribution; extend distribution integrity checks.
+
 ## 0.6.0-beta.3
 
 - Isolate the Codex plugin at plugins/admax-skills so installing it does not copy the Claude plugin and marketplace installer into the cache. Keep one complete ZIP.

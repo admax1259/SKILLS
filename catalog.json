@@ -6,14 +6,38 @@
     "code-review",
     "code-quality",
     "delivery",
-    "knowledge"
+    "knowledge",
+    "engineering",
+    "productivity"
   ],
   "skills": [
+    {
+      "id": "ask-matt",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/ask-matt",
+      "status": "ready",
+      "invocation": "explicit"
+    },
     {
       "id": "check-compiler-errors",
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/check-compiler-errors",
+      "status": "ready"
+    },
+    {
+      "id": "code-review",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/code-review",
+      "status": "ready"
+    },
+    {
+      "id": "codebase-design",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/codebase-design",
       "status": "ready"
     },
     {
@@ -38,6 +62,20 @@
       "status": "ready"
     },
     {
+      "id": "diagnosing-bugs",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/diagnosing-bugs",
+      "status": "ready"
+    },
+    {
+      "id": "domain-modeling",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/domain-modeling",
+      "status": "ready"
+    },
+    {
       "id": "fix-ci",
       "category": "delivery",
       "source": "cursor-team-kit",
@@ -57,6 +95,53 @@
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/get-pr-comments",
       "status": "ready"
+    },
+    {
+      "id": "grill-me",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/grill-me",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "grill-with-docs",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/grill-with-docs",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "grilling",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/grilling",
+      "status": "ready"
+    },
+    {
+      "id": "handoff",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/handoff",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "implement",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/implement",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "improve-codebase-architecture",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/improve-codebase-architecture",
+      "status": "ready",
+      "invocation": "explicit"
     },
     {
       "id": "loop-on-ci",
@@ -88,6 +173,27 @@
       "invocation": "explicit"
     },
     {
+      "id": "prototype",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/prototype",
+      "status": "ready"
+    },
+    {
+      "id": "research",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/research",
+      "status": "ready"
+    },
+    {
+      "id": "resolving-merge-conflicts",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/resolving-merge-conflicts",
+      "status": "ready"
+    },
+    {
       "id": "review-and-ship",
       "category": "delivery",
       "source": "cursor-team-kit",
@@ -102,11 +208,34 @@
       "status": "ready"
     },
     {
+      "id": "setup-matt-pocock-skills",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/setup-matt-pocock-skills",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
       "id": "show-me",
       "category": "visualization",
       "source": "humanlayer",
       "upstream_path": "plugins/show-me/skills/show-me",
       "status": "ready"
+    },
+    {
+      "id": "tdd",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/tdd",
+      "status": "ready"
+    },
+    {
+      "id": "teach",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/teach",
+      "status": "ready",
+      "invocation": "explicit"
     },
     {
       "id": "thermo-nuclear-code-quality-review",
@@ -117,11 +246,59 @@
       "invocation": "explicit"
     },
     {
+      "id": "to-questionnaire",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/to-questionnaire",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "to-spec",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/to-spec",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "to-tickets",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/to-tickets",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "triage",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/triage",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
       "id": "verify-this",
       "category": "verification",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/verify-this",
       "status": "ready"
+    },
+    {
+      "id": "wait-what",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/wait-what",
+      "status": "ready",
+      "invocation": "explicit"
+    },
+    {
+      "id": "wayfinder",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/wayfinder",
+      "status": "ready",
+      "invocation": "explicit"
     },
     {
       "id": "weekly-review",
@@ -138,10 +315,24 @@
       "status": "ready"
     },
     {
+      "id": "wizard",
+      "category": "engineering",
+      "source": "matt-pocock",
+      "upstream_path": "skills/engineering/wizard",
+      "status": "ready"
+    },
+    {
       "id": "workflow-from-chats",
       "category": "knowledge",
       "source": "cursor-team-kit",
       "upstream_path": "plugins/cursor-team-kit/skills/workflow-from-chats",
+      "status": "ready"
+    },
+    {
+      "id": "writing-for-agents",
+      "category": "productivity",
+      "source": "matt-pocock",
+      "upstream_path": "skills/productivity/writing-for-agents",
       "status": "ready"
     }
   ],

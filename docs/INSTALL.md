@@ -11,7 +11,7 @@ Open Plugins → Add plugin marketplace. Choose one source below.
 | 字段 / Field | GitHub 安装 / GitHub | Release 离线包 / Extracted Release |
 |---|---|---|
 | Source | `admax1259/SKILLS` | 解压后 `skills-<version>` 文件夹的绝对路径 / Absolute path to the extracted `skills-<version>` folder |
-| Git ref | 所下载版本的 tag，如 `v0.6.0-beta.3` / Release tag, e.g. `v0.6.0-beta.3` | 留空 / Leave empty |
+| Git ref | 所下载版本的 tag，如 `v0.7.0-beta.1` / Release tag, e.g. `v0.7.0-beta.1` | 留空 / Leave empty |
 | Sparse paths | 留空 / Leave empty | 留空 / Leave empty |
 
 点击 **Add marketplace**，选择 **Admax Skills** 来源，打开同名插件卡片，再点击 **Install**。注册来源和安装插件是两个步骤。界面未刷新时，退出并重启应用，然后新建会话。
