@@ -58,6 +58,14 @@ python3 scripts/install.py --engine codex --bundle code-cleanup
 python3 scripts/install.py --engine claude --bundle engineering-kit
 ```
 
+### ChatGPT
+
+运行 `python3 scripts/package.py`，然后通过 ChatGPT 的插件上传界面添加
+`dist/packages/current/admax-skills-chatgpt-<version>.zip`。这是包含全部已审核技能的单一插件；
+插件清单位于 ZIP 根目录，并随包保留许可证和来源信息。不要上传完整 marketplace ZIP 或源码仓库，
+它们分别用于 CLI marketplace 安装和开发。ChatGPT 可以载入技能说明，但需要终端、代码仓库或其他
+宿主工具的工作流，仍然只有在当前对话提供对应工具时才能运行。
+
 `--dry-run` 只预览，不写文件、不安装。安装器从就绪技能构建 `dist/marketplace/`，注册该目录后调用引擎原生安装命令。保留这个目录供后续使用。0.5.0 合并前请使用本次 PR 分支或对应 CI artifact。
 
 **源码仓库不再直接作为原生 marketplace 注册。** 这是明确的分离：源码不保存生成的插件副本；原生 marketplace 位于生成目录或解压后的安装包。不要对源码根目录运行 `codex plugin marketplace add .` 或 `/plugin marketplace add admax1259/SKILLS`。Claude Code 可在对话中注册构建后的绝对路径，再安装 `show-me@admax-skills`。
@@ -75,6 +83,7 @@ python3 scripts/package.py
 | 文件 | 用途 |
 |---|---|
 | `skills-<version>.zip` | 完整原生 marketplace；解压后执行同样的安装命令，无需 Git 或构建依赖 |
+| `admax-skills-chatgpt-<version>.zip` | 可直接上传 ChatGPT 的根清单单一插件；包含全部已审核技能 |
 | `<bundle>-<version>.zip` | show-me、compiler-checks、code-cleanup 的双引擎插件 |
 | `engineering-kit-<engine>-<version>.zip` | Codex／Claude 专用工程插件；引擎调用策略不同，构建时自动分开 |
 | `SHA256SUMS` | ZIP 校验和 |
@@ -83,7 +92,7 @@ python3 scripts/package.py
 
 - Codex：原生格式与安装流程已验证；新版本会重新检查。
 - Claude Code：生成原生格式；当前开发机没有 Claude CLI，实际安装待验证。
-- ChatGPT／其他 Claude 界面：提供插件 ZIP；界面导入能力、公共目录上架独立验证，未宣称已上架。
+- ChatGPT：生成根清单单一插件供直接上传；公共目录上架仍需独立验证，未宣称已上架。
 - GitHub／GitLab：工程指令覆盖 PR/MR、fork、当前提交 CI 与讨论状态；Canvas 提供双平台只读采集。GitHub 有本仓库实测；GitLab 采集使用 fixture 验证，真实 MR 写入尚未验证。
 
 ## 收录与维护
