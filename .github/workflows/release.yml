@@ -1,9 +1,15 @@
 name: Release
 on:
   push:
+    branches: [main]
+    paths: [VERSION]
     tags: ['v*']
+  workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: skills-release
+  cancel-in-progress: false
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -17,18 +23,40 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify release tag and main ancestry
+      - name: Verify version and main ancestry
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          python3 -c 'import os,pathlib; assert os.environ["RELEASE_TAG"] == "v" + pathlib.Path("VERSION").read_text().strip(), "Tag/version mismatch"'
+          python3 -c 'import os,pathlib; assert os.environ["REF_TYPE"] != "tag" or os.environ["REF_NAME"] == "v" + pathlib.Path("VERSION").read_text().strip(), "Tag/version mismatch"'
           git merge-base --is-ancestor HEAD origin/main
       - run: python3 scripts/validate.py
       - run: python3 scripts/catalog.py --check
       - run: python3 -m unittest discover -s tests -v
       - run: python3 scripts/package.py
-      - name: Publish immutable release assets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-packages
+          path: |
+            dist/packages/current/*.zip
+            dist/packages/current/SHA256SUMS
+          if-no-files-found: error
+      - name: Publish release assets
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" dist/packages/current/*.zip dist/packages/current/SHA256SUMS --verify-tag --generate-notes
+        run: |
+          version="$(cat VERSION)"
+          release_tag="v${version}"
+          cd dist/packages/current
+          sha256sum --check SHA256SUMS
+          # Existing releases are immutable; reruns must not overwrite assets.
+          if gh release view "$release_tag" >/dev/null 2>&1; then
+            echo "Release already exists; refusing to overwrite it."
+            exit 1
+          fi
+          flags=()
+          if [[ "$version" == *-beta.* ]]; then
+            flags+=(--prerelease --latest=false)
+          fi
+          gh release create "$release_tag" ./*.zip SHA256SUMS \
+            --target "$GITHUB_SHA" --title "$release_tag" --generate-notes "${flags[@]}"

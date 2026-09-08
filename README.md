@@ -4,6 +4,14 @@
 
 个人 Agent Skills 收集器：统一收录、保留来源、逐项适配，再打包给不同引擎。
 
+**Beta 下载：[GitHub Releases](https://github.com/admax1259/SKILLS/releases)。** 选择标记为 Pre-release 的最新版本，在 Assets 下载安装 ZIP 与 `SHA256SUMS`，不要选择 GitHub 自动生成的 Source code ZIP。
+
+- **Codex 全量安装**：下载 `admax-skills-codex-<version>.zip`，解压到固定目录，在该目录运行 `codex plugin marketplace add .`。重启应用，在 Plugins Directory 选择 Admax Skills 并点击安装。
+- **Claude Code**：下载 `skills-<version>.zip`，进入解压目录，运行 `python3 scripts/install.py --engine claude --bundle engineering-kit`；再用 `--bundle show-me` 安装可视化技能。也可用 `/plugin marketplace add <解压目录绝对路径>`，再从 Discover 安装对应集合。
+- **ChatGPT 添加要求**：[官方文档](https://developers.openai.com/plugins/deploy/connect-chatgpt)要求技能插件从本地 marketplace 安装。“添加 MCP 连接”需要服务器地址；本仓库没有 MCP 服务。ZIP 不是 MCP 地址，通用 ZIP 上传及公共目录上架尚未验证。
+
+每次将新的 `VERSION` 合并到 main，Release 工作流会检查、打包并发布；`-beta.N` 自动标为预发布。详见[下载与发版](docs/releases.md)。
+
 **19 个技能，6 个分类，2 个来源。19 个均已适配并可打包；实际验证范围见[自举记录](docs/bootstrap.md)。**
 
 ## 目录
@@ -84,19 +92,19 @@ codex plugin list
 
 这条路径不运行 Python 构建器，也不会按 `catalog.json` 的审核状态过滤；它暴露整个 `skills/`，当前为 19 个技能。根插件测试要求 catalog 全部为 `ready`。需要审核过滤时使用按 bundle 安装或下面的生成包。
 
-根 marketplace 与生成 marketplace 都名为 `admax-skills`，但插件列表不同；选择一种布局，并检查 CLI 列出的注册路径，避免混淆 `admax-skills@admax-skills` 与 `engineering-kit@admax-skills`。根目录没有 Claude marketplace 清单；Claude Code 请使用生成目录。
+根 marketplace 名为 `admax-skills`，生成的集合 marketplace 名为 `admax-skills-bundles`，避免注册来源互相覆盖。对应插件分别为 `admax-skills@admax-skills` 和 `engineering-kit@admax-skills-bundles`。根目录没有 Claude marketplace 清单；Claude Code 请使用生成目录。旧集合注册升级请参阅[发版说明](docs/releases.md)。
 
 若报 `marketplace root does not contain a supported manifest`，先确认当前分支与目录确实包含根清单；不要把旧版本源码目录或错误目录当作生成 marketplace。清单存在与 CLI 实际兼容是不同验证项。
 
-### ChatGPT 目标 ZIP
+### Codex 全量安装包
 
-`scripts/package.py` 的 `build_chatgpt_plugin()` 会从 catalog 选取全部 `ready` 技能，生成单一 OpenAI 格式插件 ZIP：
+`scripts/package.py` 的 `build_codex_plugin()` 会从 catalog 选取全部 `ready` 技能，生成单一 OpenAI 格式插件 ZIP：
 
 ```sh
 python3 scripts/package.py
 ```
 
-输出为 `dist/packages/current/admax-skills-chatgpt-<version>.zip`，其中 `<version>` 来自 `VERSION`。ZIP 根层包含 `.codex-plugin/plugin.json`、`skills/`、`SOURCES.json` 和 README；技能许可证随包保留。插件清单复制自根清单，版本必须与 `VERSION` 一致。
+输出为 `dist/packages/current/admax-skills-codex-<version>.zip`，其中 `<version>` 来自 `VERSION`。ZIP 根层包含 `.agents/plugins/marketplace.json`、`.codex-plugin/plugin.json`、`skills/`、`SOURCES.json` 和 README；技能许可证随包保留。插件清单复制自根清单，版本必须与 `VERSION` 一致。
 
 代码和测试能证明打包结构与内容，不能证明当前 ChatGPT 界面支持仓库 URL 添加、ZIP 上传或已成功导入。仅在你的界面明确支持该格式时使用此 ZIP；不要将完整 marketplace ZIP 当作单一插件。宿主仍须提供终端、仓库或其他工作流所需工具，插件本身不提供这些连接能力。
 
@@ -117,7 +125,7 @@ python3 scripts/package.py
 | 文件 | 用途 |
 |---|---|
 | `skills-<version>.zip` | 完整原生 marketplace；解压后执行同样的安装命令，无需 Git 或重新构建；仍需 Python 3.10+ 与对应 CLI |
-| `admax-skills-chatgpt-<version>.zip` | ChatGPT 目标单一插件；包含全部 ready 技能，界面导入待验证 |
+| `admax-skills-codex-<version>.zip` | Codex 全量插件与本地 marketplace；包含全部 ready 技能，界面导入待验证 |
 | `<bundle>-<version>.zip` | show-me、compiler-checks、code-cleanup 的双引擎插件 |
 | `engineering-kit-<engine>-<version>.zip` | Codex／Claude 专用工程插件；引擎调用策略不同，构建时自动分开 |
 | `SHA256SUMS` | ZIP 校验和 |

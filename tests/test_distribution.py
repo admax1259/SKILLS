@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from package import build_chatgpt_plugin, build_marketplace, package
+from package import build_codex_plugin, build_marketplace, package
 from validate import validate
 from install import commands
 
@@ -21,6 +21,17 @@ def clone(destination):
 
 
 class DistributionTests(unittest.TestCase):
+    def test_release_versions_accept_beta_and_reject_unsafe_tags(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = clone(Path(temp) / "repo")
+            for version in ["1.0.0", "0.6.0-beta.1", "0.6.0-beta.12"]:
+                (root / "VERSION").write_text(version)
+                self.assertEqual(validate(root)[0], version)
+            for version in ["01.0.0", "0.6.0-beta.01", "0.6.0-beta", "../main", "v0.6.0", "0.6.0\nunsafe"]:
+                (root / "VERSION").write_text(version)
+                with self.subTest(version=version), self.assertRaisesRegex(ValueError, "Invalid VERSION"):
+                    validate(root)
+
     def test_source_root_is_an_installable_marketplace(self):
         marketplace = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text())
         self.assertEqual(marketplace["name"], "admax-skills")
@@ -56,13 +67,16 @@ class DistributionTests(unittest.TestCase):
             subprocess.run([sys.executable, str(extracted / "scripts/install.py"),
                             "--engine", "claude", "--dry-run"], check=True, capture_output=True)
             self.assertIn(str(extracted.resolve()), commands("codex", "show-me", extracted)[0])
-            self.assertIn("engineering-kit@admax-skills", commands("codex", "engineering-kit", extracted)[1])
+            self.assertIn("engineering-kit@admax-skills-bundles", commands("codex", "engineering-kit", extracted)[1])
             with zipfile.ZipFile(temp / f"a/show-me-{version}.zip") as z:
                 self.assertIn(".claude-plugin/plugin.json", z.namelist())
                 self.assertIn(".codex-plugin/plugin.json", z.namelist())
                 self.assertIn(b"Copyright (c) 2026 HumanLayer", z.read("skills/show-me/LICENSE"))
-            with zipfile.ZipFile(temp / f"a/admax-skills-chatgpt-{version}.zip") as z:
+            with zipfile.ZipFile(temp / f"a/admax-skills-codex-{version}.zip") as z:
                 names = z.namelist()
+                self.assertIn(".agents/plugins/marketplace.json", names)
+                self.assertEqual(json.loads(z.read(".agents/plugins/marketplace.json"))["plugins"][0]["source"]["path"], "./")
+                self.assertNotIn(b"Upload this plugin", z.read("README.md"))
                 self.assertIn(".codex-plugin/plugin.json", names)
                 self.assertFalse(any(name.startswith(f"chatgpt-plugin-{version}/") for name in names))
                 manifest = json.loads(z.read(".codex-plugin/plugin.json"))
@@ -132,14 +146,14 @@ class DistributionTests(unittest.TestCase):
                 build_marketplace(ROOT, target)
             self.assertEqual(important.read_text(), "keep")
 
-    def test_chatgpt_builder_excludes_unreviewed_skills(self):
+    def test_codex_builder_excludes_unreviewed_skills(self):
         with tempfile.TemporaryDirectory() as temp:
             root = clone(Path(temp) / "repo")
             path = root / "catalog.json"
             catalog = json.loads(path.read_text())
             next(e for e in catalog["skills"] if e["id"] == "show-me")["status"] = "review-needed"
             path.write_text(json.dumps(catalog))
-            built = build_chatgpt_plugin(root, Path(temp) / "chatgpt")
+            built = build_codex_plugin(root, Path(temp) / "chatgpt")
             self.assertFalse((built / "skills/show-me").exists())
             self.assertTrue((built / "skills/verify-this").is_dir())
 
@@ -150,7 +164,7 @@ class DistributionTests(unittest.TestCase):
                                      "--engine", "codex", "--dry-run"], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertFalse((root / "dist").exists())
-            major, minor, patch = (root / "VERSION").read_text().strip().split(".")
+            major, minor, patch = (root / "VERSION").read_text().strip().split("-", 1)[0].split(".")
             (root / "VERSION").write_text(f"{major}.{minor}.{int(patch) + 1}\n")
             upgraded = subprocess.run([sys.executable, str(root / "scripts/install.py"),
                                        "--engine", "codex", "--dry-run"], capture_output=True, text=True)
