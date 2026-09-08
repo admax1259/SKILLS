@@ -58,9 +58,22 @@ python3 scripts/install.py --engine codex --bundle code-cleanup
 python3 scripts/install.py --engine claude --bundle engineering-kit
 ```
 
+### ChatGPT
+
+Enter `https://github.com/admax1259/SKILLS` directly in ChatGPT's add-plugin flow. The repository
+root now contains both a marketplace manifest and the `admax-skills` plugin manifest, so no build is
+required. A local Codex installation can use `codex plugin marketplace add /path/to/SKILLS` followed
+by `codex plugin add admax-skills@admax-skills`. If the UI asks for an upload instead, run
+`python3 scripts/package.py` and upload `dist/packages/current/admax-skills-chatgpt-<version>.zip`.
+Workflows needing a terminal, repository, or another host tool still require that tool in the chat.
+
+If an older checkout reported `marketplace root does not contain a supported manifest`, pull a
+revision containing `.agents/plugins/marketplace.json` and retry. Use `codex plugin marketplace list`
+and `codex plugin list` to confirm that both the marketplace and plugin are discovered.
+
 Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until 0.5.0 is merged, use this PR branch or its CI artifact.
 
-**The source repository is no longer a directly registrable native marketplace.** Sources do not contain generated plugin copies; the native marketplace lives in build output or an extracted installation ZIP. Do not run codex plugin marketplace add . or /plugin marketplace add admax1259/SKILLS against source. Inside Claude Code, register the generated absolute directory path and install show-me@admax-skills.
+**The source repository is directly registrable as an OpenAI marketplace.** Its root manifests reference canonical `skills/` without maintaining plugin copies; generated output remains in ignored `dist/`. Claude Code's multi-bundle marketplace continues to use the generated absolute directory.
 
 Invoke $show-me or $verify-this in Codex; /show-me:show-me or /engineering-kit:verify-this in Claude Code. Canvas and strict quality review retain explicit-only invocation. For a standalone skill, take the complete skills/show-me/ directory including its license.
 
@@ -75,6 +88,7 @@ Outputs in dist/packages/current/:
 | File | Purpose |
 |---|---|
 | skills-<version>.zip | Complete native marketplace; extract and run the same installer without Git or build dependencies |
+| admax-skills-chatgpt-<version>.zip | Single root-manifest plugin for direct ChatGPT upload; includes all reviewed skills |
 | <bundle>-<version>.zip | Dual-engine show-me, compiler-checks, or code-cleanup plugin |
 | engineering-kit-<engine>-<version>.zip | Engine-specific Codex or Claude engineering plugin; differing invocation policies are generated automatically |
 | SHA256SUMS | ZIP checksums |
@@ -83,7 +97,7 @@ Download from [Actions artifacts](https://github.com/admax1259/SKILLS/actions); 
 
 - Codex: native format and installation flow have been validated; new versions are rechecked.
 - Claude Code: native format generated; CLI installation remains untested on the development machine.
-- ChatGPT / other Claude surfaces: plugin ZIPs provided; UI import and public listing are separate verification steps, with no listing claimed.
+- ChatGPT: a single root-manifest plugin is generated for direct upload; public listing remains a separate verification step, with no listing claimed.
 - GitHub / GitLab: instructions cover PR/MR, forks, current-revision CI, and discussion state; Canvas includes read-only collection for both. GitHub has live repository evidence; GitLab collection uses fixtures and live MR writes remain unverified.
 
 ## Collection workflow

@@ -7,6 +7,8 @@
 - Add read-only dual-provider Canvas collection, safe offline rendering and faithful import/whitespace line numbers.
 - Generate engine-specific engineering plugins to preserve explicit invocation policies; retain one canonical source.
 - Rebuild owned current package output to prevent stale release assets; add provider, rendering and distribution regressions.
+- Add a single root-manifest ChatGPT upload package containing every reviewed skill.
+- Make the source root directly registrable by ChatGPT and Codex with native marketplace and plugin manifests.
 - Document repository bootstrap evidence and unverified Claude/GitLab/automatic-selection boundaries. No release tag is created.
 
 ## 0.4.0 — Unreleased

@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from package import build_marketplace, package
+from package import build_chatgpt_plugin, build_marketplace, package
 from validate import validate
 from install import commands
 
@@ -21,6 +21,21 @@ def clone(destination):
 
 
 class DistributionTests(unittest.TestCase):
+    def test_source_root_is_an_installable_marketplace(self):
+        marketplace = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text())
+        self.assertEqual(marketplace["name"], "admax-skills")
+        self.assertEqual(len(marketplace["plugins"]), 1)
+        entry = marketplace["plugins"][0]
+        self.assertEqual(entry["name"], "admax-skills")
+        self.assertEqual(entry["source"], {"source": "local", "path": "./"})
+        manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        self.assertEqual(manifest["name"], entry["name"])
+        self.assertEqual(manifest["version"], (ROOT / "VERSION").read_text().strip())
+        self.assertEqual(manifest["skills"], "./skills/")
+        _, catalog = validate(ROOT)
+        self.assertTrue(all(entry["status"] == "ready" for entry in catalog["skills"]),
+                        "A root plugin exposes every skill; all catalog skills must be reviewed")
+
     def test_archives_round_trip_reproducibility_and_ready_gate(self):
         with tempfile.TemporaryDirectory() as temp:
             temp = Path(temp)
@@ -46,6 +61,21 @@ class DistributionTests(unittest.TestCase):
                 self.assertIn(".claude-plugin/plugin.json", z.namelist())
                 self.assertIn(".codex-plugin/plugin.json", z.namelist())
                 self.assertIn(b"Copyright (c) 2026 HumanLayer", z.read("skills/show-me/LICENSE"))
+            with zipfile.ZipFile(temp / f"a/admax-skills-chatgpt-{version}.zip") as z:
+                names = z.namelist()
+                self.assertIn(".codex-plugin/plugin.json", names)
+                self.assertFalse(any(name.startswith(f"chatgpt-plugin-{version}/") for name in names))
+                manifest = json.loads(z.read(".codex-plugin/plugin.json"))
+                self.assertEqual(manifest,
+                                 json.loads((ROOT / ".codex-plugin/plugin.json").read_text()))
+                self.assertEqual(manifest["name"], "admax-skills")
+                self.assertEqual(manifest["skills"], "./skills/")
+                self.assertEqual(
+                    {entry["id"] for entry in catalog["skills"] if entry["status"] == "ready"},
+                    {Path(name).parts[1] for name in names
+                     if len(Path(name).parts) >= 3 and Path(name).parts[0] == "skills"})
+                self.assertNotIn(b"disable-model-invocation: true",
+                                 z.read("skills/pr-review-canvas/SKILL.md"))
 
     def test_cursor_import_preserves_all_recorded_files(self):
         source = json.loads((ROOT / "sources/cursor-team-kit.json").read_text())
@@ -101,6 +131,17 @@ class DistributionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "not owned"):
                 build_marketplace(ROOT, target)
             self.assertEqual(important.read_text(), "keep")
+
+    def test_chatgpt_builder_excludes_unreviewed_skills(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = clone(Path(temp) / "repo")
+            path = root / "catalog.json"
+            catalog = json.loads(path.read_text())
+            next(e for e in catalog["skills"] if e["id"] == "show-me")["status"] = "review-needed"
+            path.write_text(json.dumps(catalog))
+            built = build_chatgpt_plugin(root, Path(temp) / "chatgpt")
+            self.assertFalse((built / "skills/show-me").exists())
+            self.assertTrue((built / "skills/verify-this").is_dir())
 
     def test_dry_run_does_not_build_or_install(self):
         with tempfile.TemporaryDirectory() as temp:

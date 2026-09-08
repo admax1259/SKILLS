@@ -1,12 +1,11 @@
 ---
 name: pr-review-canvas
 description: Generate a local interactive HTML walkthrough of a GitHub PR or GitLab MR when a visual review is explicitly requested.
-disable-model-invocation: true
 ---
 
 # PR review canvas
 
-Create a local, self-contained review artifact with complete available diffs and clear evidence limits. Preserve explicit-only invocation through Claude frontmatter and Codex agents/openai.yaml.
+Create a local, self-contained review artifact with complete available diffs and clear evidence limits. Packaging preserves explicit-only invocation through engine-specific metadata.
 
 ## Collect
 
