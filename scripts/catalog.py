@@ -2,7 +2,7 @@
 import argparse
 from validate import ROOT, validate
 
-LABELS = {"visualization": "可视化 / Visualization", "verification": "验证 / Verification",
+LABELS = {"engineering": "工程设计 / Engineering", "productivity": "生产力 / Productivity", "visualization": "可视化 / Visualization", "verification": "验证 / Verification",
           "code-review": "代码审查 / Code review", "code-quality": "代码质量 / Code quality",
           "delivery": "交付与 CI / Delivery & CI", "knowledge": "知识与复盘 / Knowledge"}
 STATUS = {"ready": "可打包 / Ready", "review-needed": "待适配 / Review needed", "deprecated": "已弃用 / Deprecated"}

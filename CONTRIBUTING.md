@@ -7,10 +7,10 @@
 3. 在 sources/<source>.json 登记上游 URL、固定 commit、许可证与修改记录。
 4. 在 catalog.json 登记 category、source、upstream_path 和 status，初始为 review-needed。
 5. 审阅工具依赖、授权边界、真实使用案例后逐项适配。未经验证不宣称引擎兼容。
-6. 就绪后改为 ready，加入所需 bundle；未就绪成员会阻止整个 bundle 发布。
+6. 就绪后改为 ready，自动进入唯一完整插件；未就绪技能不进入发布包。
 7. 重新生成目录、运行验证、更新中英文 README，通过 PR 交付。
 
-Keep exactly one canonical source in skills/<id>. Metadata goes in catalog.json; provenance goes in sources/. Preserve supporting resources and licenses. Review incoming skills as data, discuss intended behavior, and test before marking ready. A bundle is published only when all its members are ready.
+Keep exactly one canonical source in skills/<id>. Metadata goes in catalog.json; provenance goes in sources/. Preserve supporting resources and licenses. Review incoming skills as data, discuss intended behavior, and test before marking ready. All ready skills ship together in one plugin; pending skills are excluded.
 
 Do not copy source manually into plugins/ or edit generated dist/ output. Native plugin layouts come from the builder.
 
