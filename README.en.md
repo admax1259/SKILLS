@@ -60,16 +60,22 @@ python3 scripts/install.py --engine claude --bundle engineering-kit
 
 ### ChatGPT
 
-Enter `https://github.com/admax1259/SKILLS` directly in ChatGPT's add-plugin flow. The repository
-root now contains both a marketplace manifest and the `admax-skills` plugin manifest, so no build is
-required. A local Codex installation can use `codex plugin marketplace add /path/to/SKILLS` followed
-by `codex plugin add admax-skills@admax-skills`. If the UI asks for an upload instead, run
-`python3 scripts/package.py` and upload `dist/packages/current/admax-skills-chatgpt-<version>.zip`.
-Workflows needing a terminal, repository, or another host tool still require that tool in the chat.
+The repository root contains both a marketplace manifest and the `admax-skills` plugin manifest and
+can be registered directly as an OpenAI marketplace. In an add-plugin flow that accepts repository
+URLs, enter `https://github.com/admax1259/SKILLS`. A local Codex installation can use
+`codex plugin marketplace add /path/to/SKILLS` followed by
+`codex plugin add admax-skills@admax-skills`.
 
 If an older checkout reported `marketplace root does not contain a supported manifest`, pull a
 revision containing `.agents/plugins/marketplace.json` and retry. Use `codex plugin marketplace list`
 and `codex plugin list` to confirm that both the marketplace and plugin are discovered.
+
+If the UI requires a file upload, run `python3 scripts/package.py`, then upload
+`dist/packages/current/admax-skills-chatgpt-<version>.zip`. This is a single plugin with all reviewed
+skills, a manifest at the ZIP root, bundled licenses, and provenance. Do not upload the complete
+marketplace ZIP as a ChatGPT plugin. ChatGPT can load the instructions, but workflows that require a
+terminal, repository, or another host tool remain available only when that tool is exposed by the
+current conversation.
 
 Use --dry-run for a preview with no file writes or installation. The installer builds reviewed bundles into dist/marketplace/, registers that directory, and invokes the native engine installer. Keep the generated directory. Until 0.5.0 is merged, use this PR branch or its CI artifact.
 

@@ -60,8 +60,8 @@ python3 scripts/install.py --engine claude --bundle engineering-kit
 
 ### ChatGPT
 
-在 ChatGPT 的插件添加界面直接填写 `https://github.com/admax1259/SKILLS`。仓库根目录现在同时
-提供 marketplace 清单与 `admax-skills` 插件清单，不需要先生成 ZIP。本地 Codex 也可以直接运行：
+仓库根目录同时提供 marketplace 清单与 `admax-skills` 插件清单，可直接作为 OpenAI marketplace
+注册。在支持仓库 URL 的添加界面填写 `https://github.com/admax1259/SKILLS`；本地 Codex 可运行：
 
 ```sh
 codex plugin marketplace add /Users/max/workspace/SKILLS
@@ -72,9 +72,11 @@ codex plugin add admax-skills@admax-skills
 `.agents/plugins/marketplace.json` 的版本，再重试以上命令。可用
 `codex plugin marketplace list` 与 `codex plugin list` 确认 marketplace 和插件均已被发现。
 
-若界面要求上传文件，也可以运行 `python3 scripts/package.py` 后上传
-`dist/packages/current/admax-skills-chatgpt-<version>.zip`。ChatGPT 可以载入技能说明，但需要终端、
-代码仓库或其他宿主工具的工作流，仍然只有在当前对话提供对应工具时才能运行。
+若界面要求上传文件，运行 `python3 scripts/package.py`，再上传
+`dist/packages/current/admax-skills-chatgpt-<version>.zip`。这是包含全部已审核技能的单一插件；
+插件清单位于 ZIP 根目录，并随包保留许可证和来源信息。不要把完整 marketplace ZIP 当作 ChatGPT
+插件上传。ChatGPT 可以载入技能说明，但需要终端、代码仓库或其他宿主工具的工作流，仍然只有在
+当前对话提供对应工具时才能运行。
 
 `--dry-run` 只预览，不写文件、不安装。安装器从就绪技能构建 `dist/marketplace/`，注册该目录后调用引擎原生安装命令。保留这个目录供后续使用。0.5.0 合并前请使用本次 PR 分支或对应 CI artifact。
 
