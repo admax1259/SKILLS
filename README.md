@@ -2,7 +2,7 @@
 
 [English](README.en.md) · [Catalog](docs/CATALOG.md) · [Install](docs/INSTALL.md) · [Contributing](CONTRIBUTING.md)
 
-个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**46 个技能、9 个分类、5 个上游来源，一个完整插件。**
+个人 Agent Skills 收集器：保留作者与来源，适配工作流，统一分发。**47 个技能、9 个分类、5 个上游来源及原创工具，一个完整插件。**
 
 **[Download v0.7.0-beta.4](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.4)** — `skills-0.7.0-beta.4.zip` + `SHA256SUMS`.
 
@@ -38,6 +38,18 @@ python3 scripts/install.py --engine claude
 ```
 
 [详细步骤、校验、旧版本升级与常见问题](docs/INSTALL.md)。安装后新建会话，Codex 可用 `$show-me`，Claude Code 可用 `/admax-skills:show-me`。
+
+## macOS 上的 Orca Antigravity worker
+
+[orca-antigravity-launch](skills/orca-antigravity-launch/SKILL.md) 提供用户自有启动助手，将冷启动与结构化派发分开。它等待稳定的已登录输入界面，通过官方 Orca CLI 派发一次任务，并保留状态不确定的尝试供检查。这是本地规避方案，不代表 Orca 上游已经修复。
+
+此源码新增功能可独立于已发布的 beta.4 安装：
+
+```sh
+python3 skills/orca-antigravity-launch/scripts/install.py
+```
+
+命令位于 `~/.local/bin/orca-antigravity-launch`；补充技能位于 `~/.agents/skills/orca-antigravity-launch`，供新 Codex/Grok 会话发现。官方 Orca 技能保持不变。[实测结果与限制](skills/orca-antigravity-launch/references/validation.md)。
 
 ## UI UX Pro Max：可离线检索的设计指南
 
@@ -107,6 +119,7 @@ python3 scripts/install.py --engine claude
 
 | Upstream | Count | License | Provenance |
 |---|---:|---|---|
+| [Admax original tooling](https://github.com/admax1259/SKILLS) | 1 | Apache-2.0 | [admax-original](sources/admax-original.json) |
 | [Next Level Builder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 1 | MIT | [ui-ux-pro-max](sources/ui-ux-pro-max.json) |
 | [Nutlope/Hallmark](https://github.com/Nutlope/hallmark) | 1 | MIT | [hallmark](sources/hallmark.json) |
 | [Cursor](https://github.com/cursor/plugins) | 18 | MIT | [cursor-team-kit](sources/cursor-team-kit.json) |

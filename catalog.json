@@ -349,6 +349,13 @@
       "source": "ui-ux-pro-max",
       "upstream_path": ".claude/skills/ui-ux-pro-max",
       "status": "ready"
+    },
+    {
+      "id": "orca-antigravity-launch",
+      "category": "engineering",
+      "source": "admax-original",
+      "upstream_path": "skills/orca-antigravity-launch",
+      "status": "ready"
     }
   ],
   "bundles": [

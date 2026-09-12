@@ -2,7 +2,7 @@
 
 [简体中文](README.md) · [Catalog](docs/CATALOG.md) · [Install](docs/INSTALL.md) · [Contributing](CONTRIBUTING.md)
 
-A personal Agent Skills collection: preserve attribution, adapt workflows, and distribute together. **46 skills, 9 categories, 5 upstream sources, one complete plugin.**
+A personal Agent Skills collection: preserve attribution, adapt workflows, and distribute together. **47 skills, 9 categories, 5 upstream sources plus original tooling, one complete plugin.**
 
 **[Download v0.7.0-beta.4](https://github.com/admax1259/SKILLS/releases/tag/v0.7.0-beta.4)** — `skills-0.7.0-beta.4.zip` + `SHA256SUMS`.
 
@@ -38,6 +38,18 @@ python3 scripts/install.py --engine claude
 ```
 
 [Detailed setup, checksums, upgrades and troubleshooting](docs/INSTALL.md). Start a new conversation; try `$show-me` in Codex or `/admax-skills:show-me` in Claude Code.
+
+## Antigravity workers in Orca on macOS
+
+[orca-antigravity-launch](skills/orca-antigravity-launch/SKILL.md) adds a user-owned launch helper that separates cold startup from structured dispatch. It waits for a stable signed-in prompt, sends the task once through the official Orca CLI, and preserves uncertain attempts for inspection. This is a local workaround, not an upstream Orca fix.
+
+Install this source addition independently of the published beta.4 release:
+
+```sh
+python3 skills/orca-antigravity-launch/scripts/install.py
+```
+
+The command is `~/.local/bin/orca-antigravity-launch`; the supplemental skill is discoverable in `~/.agents/skills/orca-antigravity-launch` by new Codex/Grok sessions. Official Orca skills stay unchanged. [Measured behavior and limits](skills/orca-antigravity-launch/references/validation.md).
 
 ## UI UX Pro Max: searchable offline design guidance
 
@@ -107,6 +119,7 @@ Start with `ask-matt` for navigation. Use `grill-with-docs` for discovery, then 
 
 | Upstream | Count | License | Provenance |
 |---|---:|---|---|
+| [Admax original tooling](https://github.com/admax1259/SKILLS) | 1 | Apache-2.0 | [admax-original](sources/admax-original.json) |
 | [Next Level Builder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 1 | MIT | [ui-ux-pro-max](sources/ui-ux-pro-max.json) |
 | [Nutlope/Hallmark](https://github.com/Nutlope/hallmark) | 1 | MIT | [hallmark](sources/hallmark.json) |
 | [Cursor](https://github.com/cursor/plugins) | 18 | MIT | [cursor-team-kit](sources/cursor-team-kit.json) |

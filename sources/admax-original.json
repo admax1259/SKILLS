@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/admax1259/SKILLS",
+  "revision": "6c35282fc1db4a14ada30d2133c94514392b154e",
+  "revision_role": "Repository baseline before this original implementation; implementation history is tracked by Git, not imported from this baseline.",
+  "license": "Apache-2.0",
+  "kind": "original",
+  "adaptations": [
+    "Original user-owned Antigravity launch helper; no Orca app code or managed skill text copied."
+  ],
+  "imported_files": {}
+}

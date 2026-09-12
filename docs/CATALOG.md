@@ -66,6 +66,7 @@ Ready means eligible for packaging, not verified on every engine. / 可打包不
 | [grill-with-docs](../skills/grill-with-docs/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
 | [implement](../skills/implement/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
 | [improve-codebase-architecture](../skills/improve-codebase-architecture/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
+| [orca-antigravity-launch](../skills/orca-antigravity-launch/SKILL.md) | [admax-original](../sources/admax-original.json) | 可打包 / Ready |
 | [prototype](../skills/prototype/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
 | [research](../skills/research/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
 | [resolving-merge-conflicts](../skills/resolving-merge-conflicts/SKILL.md) | [matt-pocock](../sources/matt-pocock.json) | 可打包 / Ready |
